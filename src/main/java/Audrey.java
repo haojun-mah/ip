@@ -1,5 +1,13 @@
 import java.util.Scanner;
+import components.List;
 public class Audrey {
+    private static void print(String string) {
+        System.out.println("    ____________________________________________________________________");
+        System.out.println("    " + string);
+        System.out.println("    ____________________________________________________________________");
+
+    }
+
     public static void main(String[] args) {
         String logo = "\n" +
                 "  #####  ##   ## #####  ##### ####### ##   ##\n" +
@@ -9,7 +17,7 @@ public class Audrey {
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ##  #####  ##  ## ##  ## #######     ##\n";
-        
+        print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
         System.out.println("____________________________________________________________________");
         System.out.println("Hello! I'm Audrey");
         System.out.println("What can I do for you?");
@@ -20,16 +28,28 @@ public class Audrey {
         while (true) {
             if ("bye".equalsIgnoreCase(input)) {
                 break;
+            } else if ("list".equalsIgnoreCase(input)) {
+                List toDoList = new List();
+                print("To Do List Activated!");
+                input = scanner.nextLine();
+                while (true) {
+                    if ("bye".equalsIgnoreCase(input)) {
+                        break;
+                    } else if ("list".equalsIgnoreCase(input)) {
+                        print(toDoList.showList());
+                        input = scanner.nextLine();
+                    } else {
+                        print(toDoList.addToList(input));
+                        input = scanner.nextLine();
+                    }
+                }
+                
             } else {
-                System.out.println("    ____________________________________________________________________");
-                System.out.println("    " + input);
-                System.out.println("    ____________________________________________________________________");
+                print(input);
                 input = scanner.nextLine();
             }
         }
         scanner.close();
-        System.out.println("____________________________________________________________________");
-        System.out.println("Bye. Hope to see you again!");
-        System.out.println("____________________________________________________________________");
+        print("Bye! Hope to see you again!");
     }
 }
