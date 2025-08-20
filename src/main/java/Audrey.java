@@ -2,10 +2,18 @@ import java.util.Scanner;
 import components.List;
 public class Audrey {
     private static void print(String string) {
+        String[] splitString = string.split("\n");
+        String formattedString = "";
+        for (int i = 0; i < splitString.length; i++) {
+            if (i+1 == splitString.length) {
+                formattedString += "    " + splitString[i];
+            } else {
+                formattedString += "    " + splitString[i] + '\n';
+            }
+        }
         System.out.println("    ____________________________________________________________________");
-        System.out.println("    " + string);
+        System.out.println(formattedString);
         System.out.println("    ____________________________________________________________________");
-
     }
 
     public static void main(String[] args) {
