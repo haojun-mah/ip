@@ -25,14 +25,21 @@ public class List {
     }
 
     public String markTask(int task) { 
-        taskStorage[task].markTask();
-        return String.format("Nice! I've marked this task as done!:\n   %s", taskStorage[task]);
-    
+        int correctedTaskIndex = task - 1;
+        if (correctedTaskIndex > count) {
+            return "Task does not exist!";
+        }
+        taskStorage[correctedTaskIndex].markTask();
+        return String.format("Nice! I've marked this task as done!:\n   %s", taskStorage[correctedTaskIndex]);
     }
 
     public String unmarkTask(int task) {
-        taskStorage[task].unmarkTask();
-        return String.format("Ok! I've marked this task as not done yet!:\n   %s", taskStorage[task]);
+        int correctedTaskIndex = task - 1;
+        if (correctedTaskIndex > count) {
+                    return "Task does not exist!";
+                }
+        taskStorage[correctedTaskIndex].unmarkTask();
+        return String.format("Ok! I've marked this task as not done yet!:\n   %s", taskStorage[correctedTaskIndex]);
     }
 }
  
