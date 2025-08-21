@@ -1,5 +1,5 @@
-import java.util.Scanner;
 import components.List;
+import java.util.Scanner;
 public class Audrey {
     private static void print(String string) {
         String[] splitString = string.split("\n");
@@ -39,14 +39,21 @@ public class Audrey {
             } else if ("list".equalsIgnoreCase(input)) {
                 List toDoList = new List();
                 print("To Do List Activated!");
+
+
                 input = scanner.nextLine();
-                while (true) {
+                String[] processedInput = input.split(" "); // obtain first string of words before whitespace
+                String detectMark = processedInput[0];
                     if ("bye".equalsIgnoreCase(input)) {
                         break;
                     } else if ("list".equalsIgnoreCase(input)) {
                         print(toDoList.showList());
                         input = scanner.nextLine();
-                    } else {
+                    } else if ("mark".equalsIgnoreCase(detectMark)) {
+                        print(toDoList.markTask(Integer.parseInt(processedInput[1])));
+
+                    }
+                    else {
                         print(toDoList.addToList(input));
                         input = scanner.nextLine();
                     }

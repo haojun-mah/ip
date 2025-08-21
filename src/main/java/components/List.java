@@ -24,15 +24,15 @@ public class List {
         return output;
     }
 
-    public void markTask(int task) {
+    public String markTask(int task) { 
         taskStorage[task].markTask();
+        return String.format("Nice! I've marked this task as done!:\n   %s", taskStorage[task]);
+    
     }
 
-    public void unmarkTask(int task) {
+    public String unmarkTask(int task) {
         taskStorage[task].unmarkTask();
+        return String.format("Ok! I've marked this task as not done yet!:\n   %s", taskStorage[task]);
     }
-
-
-
 }
  
