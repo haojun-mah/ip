@@ -1,39 +1,38 @@
 package components;
 
-import java.util.Arrays;
-
 public class List {
-    private final String[] storage;
-    private final boolean[] taskCompletedStatus;
+    private Task[] taskStorage;
     private int count;
 
     public List() {
-        storage = new String[100];
-        taskCompletedStatus = new boolean[100];
-        Arrays.fill(taskCompletedStatus, false);
+        taskStorage = new Task[100]; 
         count = 0;
     }
 
     public String addToList(String task) {
-        storage[count] = task;
+        Task createdTask = new Task(task);
+        taskStorage[count] = createdTask;
         count++;
-        return String.format("added: %s", task);
+        return createdTask.toString();
     }
 
     public String showList() {
         String output = "Here are the tasks in your list:\n";
         for (int i = 0; i < count; i++) {
-           output += String.format("%s.[%s] %s\n", i + 1, taskCompletedStatus[i] ? 'X' : ' ', storage[i]);
+           output += String.format("%s.%s\n", i + 1, taskStorage[i]);
         }
         return output;
     }
- 
-    public String markTask(int task) {
-        taskCompletedStatus[task] = true;
-        
+
+    public void markTask(int task) {
+        taskStorage[task].markTask();
     }
 
-    public String unmarkTask(int task) {
-        taskCompletedStatus[task] = false;
+    public void unmarkTask(int task) {
+        taskStorage[task].unmarkTask();
     }
+
+
+
 }
+ 
