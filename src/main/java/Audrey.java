@@ -1,4 +1,5 @@
 import components.List;
+import components.Command;
 import java.util.Scanner;
 public class Audrey {
     private static void print(String string) {
@@ -26,12 +27,13 @@ public class Audrey {
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ##  #####  ##  ## ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();        
-        while (true) {
-            if ("bye".equalsIgnoreCase(input)) {
-                break;
-            } else if ("list".equalsIgnoreCase(input)) { // list mode
+        
+        try (Scanner scanner = new Scanner(System.in)) {
+            String input = scanner.nextLine();        
+            while (true) {
+                if ("bye".equalsIgnoreCase(input)) {
+                    break;
+                } else if ("list".equalsIgnoreCase(input)) { 
                 List toDoList = new List();
                 print("To Do List Activated!");
 
@@ -39,41 +41,66 @@ public class Audrey {
                     input = scanner.nextLine();
                     String[] processedInput = input.split(" ", 2); // obtain first string of words before whitespace
                     String detectMark = processedInput[0];
-                    if ("bye".equalsIgnoreCase(detectMark)) {
+                    
+                    Command command = Command.fromString(detectMark);
+                    if (command == null) {
+                        print("Invalid Task");
+                        continue;
+                    }
+                    
+                    switch (command) {
+                        case BYE:
+                            break; // This will break out of the while loop
+                        case LIST:
+                            print(toDoList.showList());
+                            break;
+                        case MARK:
+                            try {
+                                print(toDoList.markTask(Integer.parseInt(processedInput[1])));
+                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                print("Number not provided!");
+                            }
+                            break;
+                        case UNMARK:
+                            try {
+                                print(toDoList.unmarkTask(Integer.parseInt(processedInput[1])));
+                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                print("Number not provided!");
+                            }
+                            break;
+                        case TODO:
+                            if (processedInput.length > 1) {
+                                print(toDoList.addToDos(processedInput[1]));
+                            } else {
+                                print("Todo description cannot be empty!");
+                            }
+                            break;
+                        case DEADLINE:
+                            if (processedInput.length > 1) {
+                                print(toDoList.addDeadline(processedInput[1]));
+                            } else {
+                                print("Deadline description cannot be empty!");
+                            }
+                            break;
+                        case EVENT:
+                            if (processedInput.length > 1) {
+                                print(toDoList.addEvent(processedInput[1]));
+                            } else {
+                                print("Event description cannot be empty!");
+                            }
+                            break;
+                        case DELETE:
+                            try {
+                                print(toDoList.delete(Integer.parseInt(processedInput[1])));
+                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                print("Number not provided!");
+                            }
+                            break;
+                    }
+                    
+                    if (command == Command.BYE) {
                         break;
-                    } else if ("list".equalsIgnoreCase(input)) {
-                        print(toDoList.showList());
-                        input = scanner.nextLine();
-                    } else if ("mark".equalsIgnoreCase(detectMark)) {
-                        try {
-                            print(toDoList.markTask(Integer.parseInt(processedInput[1])));
-                        } catch (NumberFormatException e) {
-                            print("Number not provided!");
-                        }
-                    } else if ("unmark".equalsIgnoreCase(detectMark)) {
-                        try {
-                            print(toDoList.unmarkTask(Integer.parseInt(processedInput[1])));
-                        } catch (NumberFormatException e) {
-                            print("Number not provided!");
-                        }
-                    } else if ("todo".equalsIgnoreCase(detectMark)){
-                        print(toDoList.addToDos(processedInput[1]));
-                    } else if ("deadline".equalsIgnoreCase(detectMark)){
-                        print(toDoList.addDeadline(processedInput[1]));
-                    } else if ("event".equalsIgnoreCase(detectMark)){
-                        print(toDoList.addEvent(processedInput[1]));
-                    } else if ("delete".equalsIgnoreCase(detectMark)) {
-                        try {
-                            print(toDoList.delete(Integer.parseInt(processedInput[1])));
-                        } catch (NumberFormatException e) {
-                            print("Number not provided!");
-                        }
                     }
-                        else {
-                        print("Invalid Task add");
-                    }
-
-
                 }
                 print("To Do List Deactivated");
             } else {
@@ -81,7 +108,8 @@ public class Audrey {
                 input = scanner.nextLine();
             }
         }
-        scanner.close();
+        
         print("Bye! Hope to see you again!");
-    }
-}
+        } // Close try-with-resources
+    } // Close main method
+} // Close class
