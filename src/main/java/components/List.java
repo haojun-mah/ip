@@ -27,6 +27,13 @@ public class List {
         }
         return output;
     }
-   
+ 
+    public String markTask(int task) {
+        taskCompletedStatus[task] = true;
+        
+    }
 
+    public String unmarkTask(int task) {
+        taskCompletedStatus[task] = false;
+    }
 }
