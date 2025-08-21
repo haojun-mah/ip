@@ -26,11 +26,6 @@ public class Audrey {
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ##  #####  ##  ## ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
-        System.out.println("____________________________________________________________________");
-        System.out.println("Hello! I'm Audrey");
-        System.out.println("What can I do for you?");
-        System.out.println(logo);
-        System.out.println("____________________________________________________________________");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();        
         while (true) {
