@@ -6,11 +6,15 @@ class Event extends Task {
     private final String to;
     private static final Pattern pattern = Pattern.compile("/\\s*(\\S+)/\\s*(\\S+)");
 
-    public Event(String details) {
+    public Event(String details) throws MissingEventException{
         super(pattern.matcher(details).group(0));
-        from = pattern.matcher(details).group(1);
-        to = pattern.matcher(details).group(2);
-    }
+        if (pattern.matcher(details).group().length() == 2) {
+            from = pattern.matcher(details).group(1);
+            to = pattern.matcher(details).group(2);
+        } else {
+            throw new MissingEventException();
+        }
+   }
 
     @Override 
     public String toString() {
