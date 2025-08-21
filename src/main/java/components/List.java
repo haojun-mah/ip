@@ -1,7 +1,7 @@
 package components;
 
 public class List {
-    private Task[] taskStorage;
+    private final Task[] taskStorage;
     private int count;
 
     public List() {
@@ -9,12 +9,35 @@ public class List {
         count = 0;
     }
 
-    public String addToList(String task) {
-        Task createdTask = new Task(task);
+    public String addToDos(String task) {
+        Task createdTask = new Todo(task);
         taskStorage[count] = createdTask;
         count++;
         return createdTask.toString();
     }
+
+    public String addDeadline(String task) {
+        try {
+            Task createdTask = new Deadline(task);
+            taskStorage[count] = createdTask;
+            count++;
+            return createdTask.toString();   
+        } catch (MissingDeadlineException e) {
+            return e.getMessage();
+        }
+    }
+
+    public String addEvent(String task) {
+        try {
+            Task createdTask = new Event(task);
+            taskStorage[count] = createdTask;
+            count++;
+            return createdTask.toString();   
+        } catch (MissingEventException e) {
+            return e.getMessage();
+        }
+    }
+
 
     public String showList() {
         String output = "Here are the tasks in your list:\n";
