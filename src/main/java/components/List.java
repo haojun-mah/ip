@@ -61,10 +61,22 @@ public class List {
     public String unmarkTask(int task) {
         int correctedTaskIndex = task - 1;
         if (correctedTaskIndex >= count || task <= 0) {
-                    return "Task does not exist!";
-                }
+            return "Task does not exist!";
+        }
         taskStorage.get(correctedTaskIndex).unmarkTask();
         return String.format("Ok! I've marked this task as not done yet!:\n   %s", taskStorage.get(correctedTaskIndex));
+    }
+
+    public String delete(int task) {
+        int correctedTaskIndex = task - 1;
+        if (correctedTaskIndex >= count || task <= 0) {
+            return "Task does not exist!";
+        }
+        String output = String.format("Removing this task!\n %s\nNow you have %s task in your list!", taskStorage.get(correctedTaskIndex), count -1
+        );
+        taskStorage.remove(correctedTaskIndex);
+        count--;
+        return output;
     }
 }
  

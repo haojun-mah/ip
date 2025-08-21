@@ -62,7 +62,14 @@ public class Audrey {
                         print(toDoList.addDeadline(processedInput[1]));
                     } else if ("event".equalsIgnoreCase(detectMark)){
                         print(toDoList.addEvent(processedInput[1]));
-                    } else {
+                    } else if ("delete".equalsIgnoreCase(detectMark)) {
+                        try {
+                            print(toDoList.delete(Integer.parseInt(processedInput[1])));
+                        } catch (NumberFormatException e) {
+                            print("Number not provided!");
+                        }
+                    }
+                        else {
                         print("Invalid Task add");
                     }
 
