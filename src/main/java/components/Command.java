@@ -1,5 +1,8 @@
 package components;
 
+/**
+ * Enum which maps command for easier use in Audrey
+ */
 public enum Command {
     BYE("bye"),
     LIST("list"), 
