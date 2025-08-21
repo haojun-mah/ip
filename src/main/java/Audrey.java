@@ -55,6 +55,12 @@ public class Audrey {
                         } catch (NumberFormatException e) {
                             print("Number not provided!");
                         }
+                    } else if ("unmark".equalsIgnoreCase(detectMark)) {
+                        try {
+                            print(toDoList.unmarkTask(Integer.parseInt(processedInput[1])));
+                        } catch (NumberFormatException e) {
+                            print("Number not provided!");
+                        }
                     } else {
                         print(toDoList.addToList(input));
                     }

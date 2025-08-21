@@ -26,7 +26,7 @@ public class List {
 
     public String markTask(int task) { 
         int correctedTaskIndex = task - 1;
-        if (correctedTaskIndex > count) {
+        if (correctedTaskIndex >= count || task <= 0) {
             return "Task does not exist!";
         }
         taskStorage[correctedTaskIndex].markTask();
@@ -35,7 +35,7 @@ public class List {
 
     public String unmarkTask(int task) {
         int correctedTaskIndex = task - 1;
-        if (correctedTaskIndex > count) {
+        if (correctedTaskIndex >= count || task <= 0) {
                     return "Task does not exist!";
                 }
         taskStorage[correctedTaskIndex].unmarkTask();
