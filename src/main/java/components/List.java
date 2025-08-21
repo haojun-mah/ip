@@ -13,7 +13,7 @@ public class List {
         Task createdTask = new Todo(task);
         taskStorage[count] = createdTask;
         count++;
-        return createdTask.toString();
+        return String.format("Got it. I've added this task:\n   %s\nNow you have %s tasks in the list.", createdTask.toString(), count);
     }
 
     public String addDeadline(String task) {
@@ -21,7 +21,7 @@ public class List {
             Task createdTask = new Deadline(task);
             taskStorage[count] = createdTask;
             count++;
-            return createdTask.toString();   
+            return String.format("Got it. I've added this task:\n   %s\nNow you have %s tasks in the list.", createdTask.toString(), count);
         } catch (MissingDeadlineException e) {
             return e.getMessage();
         }
@@ -32,7 +32,7 @@ public class List {
             Task createdTask = new Event(task);
             taskStorage[count] = createdTask;
             count++;
-            return createdTask.toString();   
+            return String.format("Got it. I've added this task:\n   %s\nNow you have %s tasks in the list.", createdTask.toString(), count);
         } catch (MissingEventException e) {
             return e.getMessage();
         }

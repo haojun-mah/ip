@@ -1,6 +1,6 @@
 package components;
 
-public class Task {
+abstract class Task {
     private final String description;
     private boolean completed;
 
@@ -22,3 +22,5 @@ public class Task {
         return String.format("[%s] %s", completed ? 'X' : ' ', description);
     }
 }
+
+

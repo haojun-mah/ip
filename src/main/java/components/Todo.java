@@ -1,7 +1,7 @@
 package components;
 
-class ToDo extends Task {
-    public ToDo(String task) {
+class Todo extends Task {
+    public Todo(String task) {
         super(task);
     }    
 

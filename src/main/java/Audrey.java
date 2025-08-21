@@ -36,13 +36,13 @@ public class Audrey {
         while (true) {
             if ("bye".equalsIgnoreCase(input)) {
                 break;
-            } else if ("list".equalsIgnoreCase(input)) {
+            } else if ("list".equalsIgnoreCase(input)) { // list mode
                 List toDoList = new List();
                 print("To Do List Activated!");
 
                 while (true) {
                     input = scanner.nextLine();
-                    String[] processedInput = input.split(" "); // obtain first string of words before whitespace
+                    String[] processedInput = input.split(" ", 2); // obtain first string of words before whitespace
                     String detectMark = processedInput[0];
                     if ("bye".equalsIgnoreCase(detectMark)) {
                         break;
@@ -61,9 +61,17 @@ public class Audrey {
                         } catch (NumberFormatException e) {
                             print("Number not provided!");
                         }
+                    } else if ("todo".equalsIgnoreCase(detectMark)){
+                        print(toDoList.addToDos(processedInput[1]));
+                    } else if ("deadline".equalsIgnoreCase(detectMark)){
+                        print(toDoList.addDeadline(processedInput[1]));
+                    } else if ("event".equalsIgnoreCase(detectMark)){
+                        print(toDoList.addEvent(processedInput[1]));
                     } else {
-                        print(toDoList.addToList(input));
+                        print("Invalid Task add");
                     }
+
+
                 }
                 print("To Do List Deactivated");
             } else {

@@ -1,20 +1,39 @@
 package components;
-import java.util.regex.*;
 
 class Event extends Task {
     private final String from;
     private final String to;
-    private static final Pattern pattern = Pattern.compile("/\\s*(\\S+)/\\s*(\\S+)");
 
     public Event(String details) throws MissingEventException{
-        super(pattern.matcher(details).group(0));
-        if (pattern.matcher(details).group().length() == 2) {
-            from = pattern.matcher(details).group(1);
-            to = pattern.matcher(details).group(2);
-        } else {
+        super(processDetail(details));
+        from = processFrom(details);
+        to = processTo(details);
+    }
+
+    private static String processDetail(String detail) throws MissingEventException {
+        String[] processed = detail.split("/from");
+        if (processed.length != 2 || processed[0].trim().isEmpty()) { 
             throw new MissingEventException();
         }
-   }
+        return processed[0].trim();
+    }
+
+    private static String processFrom(String detail) throws MissingEventException {
+        String[] processed = detail.split("/from");
+        processed = detail.split("/to");
+        if (processed.length != 2 || processed[1].trim().isEmpty()) { 
+            throw new MissingEventException();
+        }
+        return processed[1].trim();
+    }
+
+    private static String processTo(String detail) throws MissingEventException {
+        String[] processed = detail.split("/to");
+        if (processed.length != 2 || processed[1].trim().isEmpty()) { 
+            throw new MissingEventException();
+        }
+        return processed[1].trim();
+    }
 
     @Override 
     public String toString() {

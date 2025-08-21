@@ -1,18 +1,30 @@
 package components;
-import java.util.regex.*;;
 
 class Deadline extends Task {
     private final String deadline;
-    private static final Pattern pattern = Pattern.compile("/\\s*(\\S+)");
 
     public Deadline(String details) throws MissingDeadlineException{
-        super(pattern.matcher(details).group(0));
-        if (pattern.matcher(details).group().length() != 1) {
-            throw new MissingDeadlineException();
-        } else {
-            deadline = pattern.matcher(details).group(1);
-        }
+        super(processDetail(details));
+        deadline = processDeadline(details);
     }
+
+    private static String processDetail(String detail) throws MissingDeadlineException {
+        String[] processed = detail.split("/by");
+        if (processed.length != 2 || processed[0].trim().isEmpty()) { 
+            throw new MissingDeadlineException();
+        }
+        return processed[0].trim();
+    }
+
+    private static String processDeadline(String detail) throws MissingDeadlineException {
+        String[] processed = detail.split("/by");
+        if (processed.length != 2 || processed[1].trim().isEmpty()) { 
+            throw new MissingDeadlineException();
+        }
+        return processed[1].trim();
+    }
+
+
 
     @Override 
     public String toString() {
