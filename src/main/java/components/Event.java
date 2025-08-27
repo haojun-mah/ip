@@ -1,11 +1,14 @@
 package components;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Event task containing from and to
  */
 class Event extends Task {
-    private final String from;
-    private final String to;
+    private final LocalDate from;
+    private final LocalDate to;
 
     public Event(String details) throws MissingEventException{
         super(processDetail(details));
@@ -33,13 +36,13 @@ class Event extends Task {
      * @return from info
      * @throws MissingEventException error if missing from and to detail
      */
-    private static String processFrom(String detail) throws MissingEventException {
+    private static LocalDate processFrom(String detail) throws MissingEventException {
         String[] processed = detail.split("/from");
         processed = detail.split("/to");
         if (processed.length != 2 || processed[1].trim().isEmpty()) { 
             throw new MissingEventException();
         }
-        return processed[1].trim();
+        return LocalDate.parse(processed[1].trim());
     }
 
     /**
@@ -48,16 +51,18 @@ class Event extends Task {
      * @return to info
      * @throws MissingEventException error if missing from and to detail
      */
-    private static String processTo(String detail) throws MissingEventException {
+    private static LocalDate processTo(String detail) throws MissingEventException {
         String[] processed = detail.split("/to");
         if (processed.length != 2 || processed[1].trim().isEmpty()) { 
             throw new MissingEventException();
         }
-        return processed[1].trim();
+        return LocalDate.parse(processed[1].trim());
     }
 
     @Override 
     public String toString() {
-        return String.format("[E]%s (from:%s to:%s)", super.toString(), from, to);
+        return String.format("[E]%s (from:%s to:%s)", super.toString(),
+        from.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+        to.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 }

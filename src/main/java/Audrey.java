@@ -185,7 +185,6 @@ public class Audrey {
                         }
                     } 
             } else {
-                print(input);
                 input = scanner.nextLine();
             }
         }

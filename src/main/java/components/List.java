@@ -1,6 +1,7 @@
 package components;
 
 import java.time.format.DateTimeParseException;
+import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +43,8 @@ public class List {
             return e.getMessage();
         } catch (DateTimeParseException e) {
             return "Invalid Format for date. Enter: YYYY-MM-DD . E.g.: 2018-03-07";
+        } catch (UnsupportedTemporalTypeException e) {
+            return "Invalid time date";
         }
     }
 
@@ -58,6 +61,10 @@ public class List {
             return String.format("Got it. I've added this task:\n   %s\nNow you have %s tasks in the list.", createdTask.toString(), count);
         } catch (MissingEventException e) {
             return e.getMessage();
+        } catch (DateTimeParseException e) {
+            return "Invalid Format for date. Enter: YYYY-MM-DD . E.g.: 2018-03-07";
+        } catch (UnsupportedTemporalTypeException e) {
+            return "Invalide time date";
         }
     }
 
