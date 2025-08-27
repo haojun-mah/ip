@@ -1,5 +1,6 @@
 package components;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,7 @@ public class List {
     private int count;
 
     public List() {
-        taskStorage = new ArrayList<Task>(); 
+        taskStorage = new ArrayList<>(); 
         count = 0;
     }
 
@@ -39,6 +40,8 @@ public class List {
             return String.format("Got it. I've added this task:\n   %s\nNow you have %s tasks in the list.", createdTask.toString(), count);
         } catch (MissingDeadlineException e) {
             return e.getMessage();
+        } catch (DateTimeParseException e) {
+            return "Invalid Format for date. Enter: YYYY-MM-DD . E.g.: 2018-03-07";
         }
     }
 

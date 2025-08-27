@@ -1,10 +1,14 @@
 package components;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+
 /**
  * Deadline task containing deadline
  */
 class Deadline extends Task {
-    private final String deadline;
+    private final LocalDate deadline;
 
     public Deadline(String details) throws MissingDeadlineException{
         super(processDetail(details));
@@ -31,17 +35,18 @@ class Deadline extends Task {
      * @return task deadline
      * @throws MissingDeadlineException error if deadline is missing
      */
-    private static String processDeadline(String detail) throws MissingDeadlineException {
+    private static LocalDate processDeadline(String detail) throws MissingDeadlineException {
         String[] processed = detail.split("/by");
         if (processed.length != 2 || processed[1].trim().isEmpty()) { 
             throw new MissingDeadlineException();
         }
-        return processed[1].trim();
+        return LocalDate.parse(processed[1].trim());
     }
 
     @Override 
     public String toString() {
-        return String.format("[D]%s (by:%s)", super.toString(), deadline);
+        return String.format("[D]%s (by:%s)", super.toString(),
+        deadline.format(DateTimeFormatter.ofPattern("MMMM d yyyy")));
     }
 }
 
