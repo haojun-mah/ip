@@ -1,7 +1,11 @@
-import components.List;
 import components.Command;
+import components.List;
+
+import java.io.FileWriter;
 import java.util.Scanner;
-import javax.security.auth.x500.X500Principal;
+import java.io.File;
+
+import java.io.IOException;
 
 /**
  * Contains logic for bot workflow
@@ -33,6 +37,9 @@ public class Audrey {
      * @param args
      */
     public static void main(String[] args) {
+        String FILE_PATH = "audrey_db.txt";
+        FileWriter fw;
+        File audreyDB;
         String logo = "\n" +
                 "  #####  ##   ## #####  ##### ####### ##   ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n" +
@@ -42,6 +49,12 @@ public class Audrey {
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ##  #####  ##  ## ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
+
+        try {
+            fw = new FileWriter(FILE_PATH);
+        } catch (IOException e) {
+            audreyDB = new File(FILE_PATH);
+        }
         
         try (Scanner scanner = new Scanner(System.in)) {
             String input = scanner.nextLine();        
@@ -53,19 +66,22 @@ public class Audrey {
                     // List Management Mode
                     List toDoList = new List();
                     print("To Do List Activated!");
-
+                    
                     while (true) {
                         input = scanner.nextLine();
                         String[] processedInput = input.split(" ", 2); // obtain first string of words before whitespace
                         String detectMark = processedInput[0];
-                        
                         Command command = Command.fromString(detectMark);
+
                         if (command == null) {
                             print("Invalid Task");
-                            continue;
-                        }
-                        
-                        switch (command) {
+                        } else if (command == Command.BYE) {
+                            // Terminates List Mode
+                            input = "";
+                            print("To Do List Deactivated");
+                            break;
+                        } else {
+                            switch (command) {
                             case BYE:
                                 break; // This will break out of the while loop
                             case LIST:
@@ -114,19 +130,15 @@ public class Audrey {
                                 }
                                 break;
                             }
-                    // Terminates List Mode
-                    if (command == Command.BYE) {
-                        break;
-                    }
-                }
-                print("To Do List Deactivated");
+                        }
+                    } 
             } else {
                 print(input);
                 input = scanner.nextLine();
             }
         }
-        
-        print("Bye! Hope to see you again!");
-        } 
+        } finally {
+            print("Bye! Hope to see you again!");
+        }
     } 
 } 
