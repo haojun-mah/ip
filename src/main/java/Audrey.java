@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.File;
 
 import java.io.IOException;
+import javax.sound.sampled.Line;
 
 /**
  * Contains logic for bot workflow
@@ -38,22 +39,43 @@ public class Audrey {
      */
     public static void main(String[] args) {
         String FILE_PATH = "audrey_db.txt";
-        FileWriter fw;
-        File audreyDB;
+        FileWriter fw = null;
+        File audreyDB = new File(FILE_PATH);
+        List toDoList = new List();
         String logo = "\n" +
                 "  #####  ##   ## #####  ##### ####### ##   ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##       ## ##\n" +
-                " ####### ##   ## #####  #####  #####     ### \n" +
+                " ####### ##   ## ##  ## #####  #####     ### \n" +
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
-                " ##   ##  #####  ##  ## ##  ## #######     ##\n";
+                " ##   ##  #####  #####  ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
 
         try {
-            fw = new FileWriter(FILE_PATH);
+            if (audreyDB.exists()) {
+                // Loads DB info into bot
+                Scanner fileScanner = new Scanner(audreyDB);
+                fw = new FileWriter(FILE_PATH);
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine().trim();
+                    if (line.startsWith("[T}]")) {
+                        toDoList.addToDos(line);
+                    } else if (line.startsWith("[D]")) {
+                        toDoList.addDeadline(line);
+                    } else if (line.startsWith("[E]")) {
+                        toDoList.addEvent(line);
+                    }
+                }
+            } else {
+                // Create new file
+                audreyDB.createNewFile();
+                fw = new FileWriter(FILE_PATH);
+            } 
         } catch (IOException e) {
-            audreyDB = new File(FILE_PATH);
+            print(e.getMessage());
+        } finally {
+            print(toDoList.showList());
         }
         
         try (Scanner scanner = new Scanner(System.in)) {
@@ -64,7 +86,6 @@ public class Audrey {
                     break;
                 } else if ("list".equalsIgnoreCase(input)) { 
                     // List Management Mode
-                    List toDoList = new List();
                     print("To Do List Activated!");
                     
                     while (true) {
