@@ -1,12 +1,9 @@
 import components.Command;
 import components.List;
-
-import java.io.FileWriter;
-import java.util.Scanner;
 import java.io.File;
-
+import java.io.FileWriter;
 import java.io.IOException;
-import javax.sound.sampled.Line;
+import java.util.Scanner;
 
 /**
  * Contains logic for bot workflow
@@ -39,7 +36,6 @@ public class Audrey {
      */
     public static void main(String[] args) {
         String FILE_PATH = "audrey_db.txt";
-        FileWriter fw = null;
         File audreyDB = new File(FILE_PATH);
         List toDoList = new List();
         String logo = "\n" +
@@ -56,21 +52,56 @@ public class Audrey {
             if (audreyDB.exists()) {
                 // Loads DB info into bot
                 Scanner fileScanner = new Scanner(audreyDB);
-                fw = new FileWriter(FILE_PATH);
                 while (fileScanner.hasNextLine()) {
-                    String line = fileScanner.nextLine().trim();
-                    if (line.startsWith("[T}]")) {
-                        toDoList.addToDos(line);
-                    } else if (line.startsWith("[D]")) {
-                        toDoList.addDeadline(line);
-                    } else if (line.startsWith("[E]")) {
-                        toDoList.addEvent(line);
+                    String line = fileScanner.nextLine();
+                    try {
+                        // Regex patterns for different task types
+                        String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
+                        String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
+                        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
+                        
+                        if (line.substring(2).matches(todoPattern)) {
+                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
+                            if (matcher.find()) {
+                                String status = matcher.group(1);
+                                String task = matcher.group(2);
+                                toDoList.addToDos(task);
+                                if ("X".equals(status)) {
+                                    toDoList.markTask(toDoList.size());
+                                }
+                            }
+                        } else if (line.substring(2).matches(deadlinePattern)) {
+                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
+                            if (matcher.find()) {
+                                String status = matcher.group(1);
+                                String task = matcher.group(2);
+                                String deadline = matcher.group(3);
+                                toDoList.addDeadline(task + " /by " + deadline);
+                                if ("X".equals(status)) {
+                                    toDoList.markTask(toDoList.size());
+                                }
+                            }
+                        } else if (line.substring(2).matches(eventPattern)) {
+                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(eventPattern).matcher(line);
+                            if (matcher.find()) {
+                                String status = matcher.group(1);
+                                String task = matcher.group(2);
+                                String from = matcher.group(3);
+                                String to = matcher.group(4);
+                                toDoList.addEvent(task + " /from " + from + " /to " + to);
+                                if ("X".equals(status)) {
+                                    toDoList.markTask(toDoList.size());
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error parsing line: " + line);
                     }
                 }
+                fileScanner.close();
             } else {
                 // Create new file
                 audreyDB.createNewFile();
-                fw = new FileWriter(FILE_PATH);
             } 
         } catch (IOException e) {
             print(e.getMessage());
@@ -159,6 +190,15 @@ public class Audrey {
             }
         }
         } finally {
+            try {
+                FileWriter fw = new FileWriter(FILE_PATH); // This will overwrite
+                if (fw != null) {
+                    fw.write(toDoList.toString());
+                    fw.close();
+                }
+           } catch (IOException e) {
+                print(e.getMessage());
+            } 
             print("Bye! Hope to see you again!");
         }
     } 

@@ -63,11 +63,8 @@ public class List {
      * @return message with all tasks listed
      */
     public String showList() {
-        String output = "Here are the tasks in your list:\n";
-        for (int i = 0; i < count; i++) {
-           output += String.format("%s.%s\n", i + 1, taskStorage.get(i));
-        }
-        return output;
+        return "Here are the tasks in your list:\n" + toString();
+     
     }
 
     /**
@@ -112,6 +109,35 @@ public class List {
         taskStorage.remove(correctedTaskIndex);
         count--;
         return output;
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+        for (int i = 0; i < count; i++) {
+        output += String.format("%s.%s\n", i + 1, taskStorage.get(i));
+        }
+        return output;
+    }
+
+    /**
+     * Get the number of tasks in the list
+     * @return number of tasks
+     */
+    public int size() {
+        return count;
+    }
+
+    /**
+     * Get a task at specific index
+     * @param index index of task (0-based)
+     * @return Task object at index
+     */
+    public Task getTask(int index) {
+        if (index >= 0 && index < count) {
+            return taskStorage.get(index);
+        }
+        return null;
     }
 }
  
