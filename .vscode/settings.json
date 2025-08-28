@@ -1,0 +1,6 @@
+{
+    "java.saveActions.organizeImports": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+    }
+}

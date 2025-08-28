@@ -10,13 +10,13 @@ import audrey.task.List;
 public class Storage {
     private final String filePath;
     private File db;
-    private final List toDoList; 
+    private final List toDoList;
 
     public Storage(String filePath) {
         this.filePath = filePath;
         this.db = new File(filePath);
-        this.toDoList = new List();  
-        
+        this.toDoList = new List();
+
         if (db.exists()) {
             loadFromFile();
         } else {
@@ -28,7 +28,7 @@ public class Storage {
      * Internal function which load db information into List
      */
     private void loadFromFile() {
-        try (Scanner fileScanner = new Scanner(db)) { 
+        try (Scanner fileScanner = new Scanner(db)) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
                 if (!line.isEmpty()) {
@@ -42,6 +42,7 @@ public class Storage {
 
     /**
      * Regex matching to store tasks into List
+     * 
      * @param line Task from db
      */
     private void parseTaskLine(String line) {
@@ -50,8 +51,9 @@ public class Storage {
             String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
             String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
             String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
-            
-            if (line.matches(todoPattern)) {  // Remove substring(2) - it was causing issues
+
+            if (line.matches(todoPattern)) { // Remove substring(2) - it was
+                                             // causing issues
                 java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
                 if (matcher.find()) {
                     String status = matcher.group(1);
@@ -91,7 +93,7 @@ public class Storage {
     }
 
     /**
-     * Creates a new DB 
+     * Creates a new DB
      */
     private void createNewFile() {
         try {
@@ -103,7 +105,7 @@ public class Storage {
     }
 
     /**
-     * Save info into DB 
+     * Save info into DB
      */
     public void saveToFile() {
         try (FileWriter fw = new FileWriter(filePath)) {
@@ -117,6 +119,7 @@ public class Storage {
 
     /**
      * Returns list object containing tasks loaded from db.
+     * 
      * @return List object containing tasks
      */
     public List getToDoList() {
