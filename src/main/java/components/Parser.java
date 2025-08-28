@@ -2,6 +2,9 @@ package components;
 
 import java.util.Scanner;
 
+/**
+ *  Parser class encapsulates command logic
+ */
 public class Parser {
     private Scanner scanner;
     private List toDoList;
@@ -11,6 +14,10 @@ public class Parser {
         this.toDoList = toDoList;
     }
 
+    /**
+     * Prettier print for CLI
+     * @param string text to print
+     */
     private void print(String string) {
         String[] splitString = string.split("\n");
         StringBuilder formattedString = new StringBuilder();
@@ -26,6 +33,9 @@ public class Parser {
         System.out.println("    ____________________________________________________________________");
     }
 
+    /**
+     *  Run command loop
+     */
     public void runInput() {
         String input = scanner.nextLine();
         

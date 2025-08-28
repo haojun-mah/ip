@@ -1,12 +1,6 @@
-import components.Command;
 import components.List;
 import components.Parser;
 import components.Storage;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Contains logic for bot workflow
@@ -44,6 +38,10 @@ public class Audrey {
         }
     }
 
+    /**
+     * Prettier print for CLI
+     * @param string text to print
+     */
     private static void print(String string) {
         String[] splitString = string.split("\n");
         StringBuilder formattedString = new StringBuilder();
