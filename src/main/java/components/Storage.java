@@ -22,7 +22,7 @@ public class Storage {
         }
     }
 
-    /*
+    /**
      * Internal function which load db information into List
      */
     private void loadFromFile() {
@@ -38,8 +38,9 @@ public class Storage {
         }
     }
 
-    /*
-     * Obtains task from DB and store it into list
+    /**
+     * Regex matching to store tasks into List
+     * @param line Task from db
      */
     private void parseTaskLine(String line) {
         try {

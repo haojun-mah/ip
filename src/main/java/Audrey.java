@@ -1,5 +1,8 @@
 import components.Command;
 import components.List;
+import components.Parser;
+import components.Storage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,34 +13,13 @@ import java.util.Scanner;
  * 
 */
 public class Audrey {
+    private static final String AUDREY_DB = "audrey_db.txt";
+    
     /**
-     * Print function which adds indentation and seperation line for cleaner
-     * response code
-     * 
-     * @param string String to be printed
-     */
-    private static void print(String string) {
-        String[] splitString = string.split("\n");
-        String formattedString = "";
-        for (int i = 0; i < splitString.length; i++) {
-            if (i+1 == splitString.length) {
-                formattedString += "    " + splitString[i];
-            } else {
-                formattedString += "    " + splitString[i] + '\n';
-            }
-        }
-        System.out.println("    ____________________________________________________________________");
-        System.out.println(formattedString);
-        System.out.println("    ____________________________________________________________________");
-    }
-    /**
-     * Entry point for code
+     * Entry point
      * @param args
      */
     public static void main(String[] args) {
-        String FILE_PATH = "audrey_db.txt";
-        File audreyDB = new File(FILE_PATH);
-        List toDoList = new List();
         String logo = "\n" +
                 "  #####  ##   ## #####  ##### ####### ##   ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n" +
@@ -48,102 +30,33 @@ public class Audrey {
                 " ##   ##  #####  #####  ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
 
+        Storage audreyStorage = new Storage(AUDREY_DB);
+        List toDoList = audreyStorage.getToDoList();
+        Parser command = new Parser(toDoList);
+
         try {
-
+            command.runInput();
+        } catch (Exception e) {
+            print("Error with parser");
         } finally {
-            print(toDoList.showList());
-        }
-        
-        try (Scanner scanner = new Scanner(System.in)) {
-            String input = scanner.nextLine();        
-            while (true) {
-                // Terminates bot when input is bye
-                if ("bye".equalsIgnoreCase(input)) {
-                    break;
-                } else if ("list".equalsIgnoreCase(input)) { 
-                    // List Management Mode
-                    print("To Do List Activated!");
-                    
-                    while (true) {
-                        input = scanner.nextLine();
-                        String[] processedInput = input.split(" ", 2); // obtain first string of words before whitespace
-                        String detectMark = processedInput[0];
-                        Command command = Command.fromString(detectMark);
-
-                        if (command == null) {
-                            print("Invalid Task");
-                        } else if (command == Command.BYE) {
-                            // Terminates List Mode
-                            input = "";
-                            print("To Do List Deactivated");
-                            break;
-                        } else {
-                            switch (command) {
-                            case BYE:
-                                break; // This will break out of the while loop
-                            case LIST:
-                                print(toDoList.showList());
-                                break;
-                            case MARK:
-                                try {
-                                    print(toDoList.markTask(Integer.parseInt(processedInput[1])));
-                                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                                    print("Number not provided!");
-                                }
-                                break;
-                            case UNMARK:
-                                try {
-                                    print(toDoList.unmarkTask(Integer.parseInt(processedInput[1])));
-                                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                                    print("Number not provided!");
-                                }
-                                break;
-                            case TODO:
-                                if (processedInput.length > 1) {
-                                    print(toDoList.addToDos(processedInput[1]));
-                                } else {
-                                    print("Todo description cannot be empty!");
-                                }
-                                break;
-                            case DEADLINE:
-                                if (processedInput.length > 1) {
-                                    print(toDoList.addDeadline(processedInput[1]));
-                                } else {
-                                    print("Deadline description cannot be empty!");
-                                }
-                                break;
-                            case EVENT:
-                                if (processedInput.length > 1) {
-                                    print(toDoList.addEvent(processedInput[1]));
-                                } else {
-                                    print("Event description cannot be empty!");
-                                }
-                                break;
-                            case DELETE:
-                                try {
-                                    print(toDoList.delete(Integer.parseInt(processedInput[1])));
-                                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                                    print("Number not provided!");
-                                }
-                                break;
-                            }
-                        }
-                    } 
-            } else {
-                input = scanner.nextLine();
-            }
-        }
-        } finally {
-            try {
-                FileWriter fw = new FileWriter(FILE_PATH); // This will overwrite
-                if (fw != null) {
-                    fw.write(toDoList.toString());
-                    fw.close();
-                }
-           } catch (IOException e) {
-                print(e.getMessage());
-            } 
+            audreyStorage.saveToFile();;
             print("Bye! Hope to see you again!");
         }
-    } 
+    }
+
+    private static void print(String string) {
+        String[] splitString = string.split("\n");
+        StringBuilder formattedString = new StringBuilder();
+        for (int i = 0; i < splitString.length; i++) {
+            if (i + 1 == splitString.length) {
+                formattedString.append("    ").append(splitString[i]);
+            } else {
+                formattedString.append("    ").append(splitString[i]).append('\n');
+            }
+        }
+        System.out.println("    ____________________________________________________________________");
+        System.out.println(formattedString.toString());
+        System.out.println("    ____________________________________________________________________");
+    }
+
 } 
