@@ -7,12 +7,13 @@ import audrey.task.List;
 /**
  * Contains logic for bot workflow
  * 
-*/
+ */
 public class Audrey {
     private static final String AUDREY_DB = "audrey_db.txt";
-    
+
     /**
      * Entry point
+     * 
      * @param args
      */
     public static void main(String[] args) {
@@ -36,13 +37,14 @@ public class Audrey {
         } catch (Exception e) {
             print("Error with parser");
         } finally {
-            audreyStorage.saveToFile();;
+            audreyStorage.saveToFile();
             print("Bye! Hope to see you again!");
         }
     }
 
     /**
      * Prettier print for CLI
+     * 
      * @param string text to print
      */
     private static void print(String string) {
@@ -60,4 +62,4 @@ public class Audrey {
         System.out.println("    ____________________________________________________________________");
     }
 
-} 
+}
