@@ -2,15 +2,17 @@ package audrey.task;
 
 import java.time.format.DateTimeParseException;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import audrey.exception.MissingDeadlineException;
 
-
+/**
+ * Unit test for deadline class
+ */
 public class DeadlineTest {
    @Test
    @DisplayName("Ensure dateline string format is within expectation")
