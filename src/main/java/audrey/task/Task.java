@@ -1,4 +1,4 @@
-package audrey.ui.components;
+package audrey.task;
 
 /**
  * Task class for Todo, Deadline and Event to inherit from

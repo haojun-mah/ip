@@ -1,6 +1,6 @@
-package audrey.ui.components;
+package audrey.exception;
 
-class MissingDeadlineException extends Exception{
+public class MissingDeadlineException extends Exception{
     public MissingDeadlineException() {
         super("Missing Deadline Details!");
     }

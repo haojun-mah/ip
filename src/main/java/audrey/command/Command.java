@@ -1,4 +1,4 @@
-package audrey.ui.components;
+package audrey.command;
 
 /**
  * Enum which maps command for easier use in Audrey

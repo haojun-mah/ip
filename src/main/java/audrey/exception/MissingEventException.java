@@ -1,6 +1,6 @@
-package components;
+package audrey.exception;
 
-class MissingEventException extends Exception{
+public class MissingEventException extends Exception{
     public MissingEventException() {
         super("Missing Event Details!");
     }

@@ -1,9 +1,9 @@
-package components;
+package audrey.task;
 
 /**
  * Todo task
  */
-class Todo extends Task {
+public class Todo extends Task {
     public Todo(String task) {
         super(task);
     }    

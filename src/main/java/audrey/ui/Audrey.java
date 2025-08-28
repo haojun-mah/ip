@@ -1,6 +1,8 @@
-import audrey.ui.components.List;
-import audrey.ui.components.Parser;
-import audrey.ui.components.Storage;
+package audrey.ui;
+
+import audrey.task.List;
+import audrey.command.Parser;
+import audrey.storage.Storage;
 
 /**
  * Contains logic for bot workflow

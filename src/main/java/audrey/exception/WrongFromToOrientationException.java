@@ -1,4 +1,4 @@
-package components;
+package audrey.exception;
 
 public class WrongFromToOrientationException extends Exception {
     public WrongFromToOrientationException() {

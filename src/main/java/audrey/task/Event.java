@@ -1,12 +1,13 @@
-package components;
+package audrey.task;
 
+import audrey.exception.MissingEventException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
  * Event task containing from and to
  */
-class Event extends Task {
+public class Event extends Task {
     private final LocalDate from;
     private final LocalDate to;
 
