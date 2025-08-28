@@ -1,8 +1,8 @@
 package audrey.task;
 
+import audrey.exception.MissingEventException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import audrey.exception.MissingEventException;
 
 /**
  * Event task containing from and to
