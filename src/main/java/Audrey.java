@@ -49,62 +49,7 @@ public class Audrey {
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
 
         try {
-            if (audreyDB.exists()) {
-                // Loads DB info into bot
-                Scanner fileScanner = new Scanner(audreyDB);
-                while (fileScanner.hasNextLine()) {
-                    String line = fileScanner.nextLine();
-                    try {
-                        // Regex patterns for different task types
-                        String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
-                        String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
-                        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
-                        
-                        if (line.substring(2).matches(todoPattern)) {
-                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
-                            if (matcher.find()) {
-                                String status = matcher.group(1);
-                                String task = matcher.group(2);
-                                toDoList.addToDos(task);
-                                if ("X".equals(status)) {
-                                    toDoList.markTask(toDoList.size());
-                                }
-                            }
-                        } else if (line.substring(2).matches(deadlinePattern)) {
-                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
-                            if (matcher.find()) {
-                                String status = matcher.group(1);
-                                String task = matcher.group(2);
-                                String deadline = matcher.group(3);
-                                toDoList.addDeadline(task + " /by " + deadline);
-                                if ("X".equals(status)) {
-                                    toDoList.markTask(toDoList.size());
-                                }
-                            }
-                        } else if (line.substring(2).matches(eventPattern)) {
-                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(eventPattern).matcher(line);
-                            if (matcher.find()) {
-                                String status = matcher.group(1);
-                                String task = matcher.group(2);
-                                String from = matcher.group(3);
-                                String to = matcher.group(4);
-                                toDoList.addEvent(task + " /from " + from + " /to " + to);
-                                if ("X".equals(status)) {
-                                    toDoList.markTask(toDoList.size());
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Error parsing line: " + line);
-                    }
-                }
-                fileScanner.close();
-            } else {
-                // Create new file
-                audreyDB.createNewFile();
-            } 
-        } catch (IOException e) {
-            print(e.getMessage());
+
         } finally {
             print(toDoList.showList());
         }
