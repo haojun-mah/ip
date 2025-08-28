@@ -3,7 +3,7 @@ package components;
 /**
  * Task class for Todo, Deadline and Event to inherit from
  */
-abstract class Task {
+public abstract class Task {
     private final String description;
     private boolean completed;
 

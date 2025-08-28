@@ -1,7 +1,9 @@
-import components.List;
 import components.Command;
+import components.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
-import javax.security.auth.x500.X500Principal;
 
 /**
  * Contains logic for bot workflow
@@ -33,15 +35,79 @@ public class Audrey {
      * @param args
      */
     public static void main(String[] args) {
+        String FILE_PATH = "audrey_db.txt";
+        File audreyDB = new File(FILE_PATH);
+        List toDoList = new List();
         String logo = "\n" +
                 "  #####  ##   ## #####  ##### ####### ##   ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##       ## ##\n" +
-                " ####### ##   ## #####  #####  #####     ### \n" +
+                " ####### ##   ## ##  ## #####  #####     ### \n" +
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
                 " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
-                " ##   ##  #####  ##  ## ##  ## #######     ##\n";
+                " ##   ##  #####  #####  ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
+
+        try {
+            if (audreyDB.exists()) {
+                // Loads DB info into bot
+                Scanner fileScanner = new Scanner(audreyDB);
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine();
+                    try {
+                        // Regex patterns for different task types
+                        String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
+                        String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
+                        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
+                        
+                        if (line.substring(2).matches(todoPattern)) {
+                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
+                            if (matcher.find()) {
+                                String status = matcher.group(1);
+                                String task = matcher.group(2);
+                                toDoList.addToDos(task);
+                                if ("X".equals(status)) {
+                                    toDoList.markTask(toDoList.size());
+                                }
+                            }
+                        } else if (line.substring(2).matches(deadlinePattern)) {
+                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
+                            if (matcher.find()) {
+                                String status = matcher.group(1);
+                                String task = matcher.group(2);
+                                String deadline = matcher.group(3);
+                                toDoList.addDeadline(task + " /by " + deadline);
+                                if ("X".equals(status)) {
+                                    toDoList.markTask(toDoList.size());
+                                }
+                            }
+                        } else if (line.substring(2).matches(eventPattern)) {
+                            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(eventPattern).matcher(line);
+                            if (matcher.find()) {
+                                String status = matcher.group(1);
+                                String task = matcher.group(2);
+                                String from = matcher.group(3);
+                                String to = matcher.group(4);
+                                toDoList.addEvent(task + " /from " + from + " /to " + to);
+                                if ("X".equals(status)) {
+                                    toDoList.markTask(toDoList.size());
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error parsing line: " + line);
+                    }
+                }
+                fileScanner.close();
+            } else {
+                // Create new file
+                audreyDB.createNewFile();
+            } 
+        } catch (IOException e) {
+            print(e.getMessage());
+        } finally {
+            print(toDoList.showList());
+        }
         
         try (Scanner scanner = new Scanner(System.in)) {
             String input = scanner.nextLine();        
@@ -51,21 +117,23 @@ public class Audrey {
                     break;
                 } else if ("list".equalsIgnoreCase(input)) { 
                     // List Management Mode
-                    List toDoList = new List();
                     print("To Do List Activated!");
-
+                    
                     while (true) {
                         input = scanner.nextLine();
                         String[] processedInput = input.split(" ", 2); // obtain first string of words before whitespace
                         String detectMark = processedInput[0];
-                        
                         Command command = Command.fromString(detectMark);
+
                         if (command == null) {
                             print("Invalid Task");
-                            continue;
-                        }
-                        
-                        switch (command) {
+                        } else if (command == Command.BYE) {
+                            // Terminates List Mode
+                            input = "";
+                            print("To Do List Deactivated");
+                            break;
+                        } else {
+                            switch (command) {
                             case BYE:
                                 break; // This will break out of the while loop
                             case LIST:
@@ -114,19 +182,24 @@ public class Audrey {
                                 }
                                 break;
                             }
-                    // Terminates List Mode
-                    if (command == Command.BYE) {
-                        break;
-                    }
-                }
-                print("To Do List Deactivated");
+                        }
+                    } 
             } else {
                 print(input);
                 input = scanner.nextLine();
             }
         }
-        
-        print("Bye! Hope to see you again!");
-        } 
+        } finally {
+            try {
+                FileWriter fw = new FileWriter(FILE_PATH); // This will overwrite
+                if (fw != null) {
+                    fw.write(toDoList.toString());
+                    fw.close();
+                }
+           } catch (IOException e) {
+                print(e.getMessage());
+            } 
+            print("Bye! Hope to see you again!");
+        }
     } 
 } 
