@@ -32,9 +32,11 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "audrey"
     archiveClassifier = null
+    destinationDirectory = file('src/builds/libs')
 }
+
 
 run{
     standardInput = System.in
