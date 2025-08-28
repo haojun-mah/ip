@@ -1,8 +1,8 @@
 package audrey.ui;
 
-import audrey.task.List;
 import audrey.command.Parser;
 import audrey.storage.Storage;
+import audrey.task.List;
 
 /**
  * Contains logic for bot workflow
@@ -28,6 +28,7 @@ public class Audrey {
 
         Storage audreyStorage = new Storage(AUDREY_DB);
         List toDoList = audreyStorage.getToDoList();
+        print("Task that you have pending:\n" + toDoList.toString());
         Parser command = new Parser(toDoList);
 
         try {
