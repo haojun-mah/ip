@@ -1,14 +1,9 @@
 package audrey.task;
 
-<<<<<<< HEAD
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 import audrey.exception.MissingDeadlineException;
-=======
-import audrey.exception.MissingDeadlineException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
->>>>>>> branch-Level-8
 
 
 /**

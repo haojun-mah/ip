@@ -38,12 +38,24 @@ public class Event extends Task {
      * @throws MissingEventException error if missing from and to detail
      */
     private static LocalDate processFrom(String detail) throws MissingEventException {
-        String[] processed = detail.split("/from");
-        processed = detail.split("/to");
-        if (processed.length != 2 || processed[1].trim().isEmpty()) { 
+        // Split by /from to get the part after /from
+        String[] fromSplit = detail.split("/from");
+        if (fromSplit.length != 2) {
             throw new MissingEventException();
         }
-        return LocalDate.parse(processed[1].trim());
+        
+        // Get the part after /from and split by /to to extract just the from date
+        String afterFrom = fromSplit[1].trim();
+        String[] toSplit = afterFrom.split("/to");
+        if (toSplit.length != 2 || toSplit[0].trim().isEmpty()) {
+            throw new MissingEventException();
+        }
+        
+        try {
+            return LocalDate.parse(toSplit[0].trim());
+        } catch (Exception e) {
+            throw new MissingEventException();
+        }
     }
 
     /**

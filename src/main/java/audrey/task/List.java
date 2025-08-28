@@ -1,18 +1,11 @@
 package audrey.task;
 
-<<<<<<< HEAD
 import java.time.format.DateTimeParseException;
 import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.ArrayList;
+
 import audrey.exception.MissingDeadlineException;
 import audrey.exception.MissingEventException;
-=======
-import audrey.exception.MissingDeadlineException;
-import audrey.exception.MissingEventException;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.UnsupportedTemporalTypeException;
-import java.util.ArrayList;
->>>>>>> branch-Level-8
 
 /**
  * List object manages and hold task objects

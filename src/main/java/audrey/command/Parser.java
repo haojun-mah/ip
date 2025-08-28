@@ -1,24 +1,15 @@
 package audrey.command;
 
-<<<<<<< HEAD
 import java.util.Scanner;
+
 import audrey.task.List;
-=======
-import audrey.task.List;
-import java.util.Scanner;
->>>>>>> branch-Level-8
 
 /**
  *  Parser class encapsulates command logic
  */
 public class Parser {
-<<<<<<< HEAD
-    private final Scanner scanner;
-    private final List toDoList;
-=======
     private Scanner scanner;
     private List toDoList;
->>>>>>> branch-Level-8
 
     public Parser(List toDoList) {
         scanner = new Scanner(System.in);

@@ -25,8 +25,5 @@ public abstract class Task {
         return String.format("[%s] %s", completed ? 'X' : ' ', description);
     }
 }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> branch-Level-8
