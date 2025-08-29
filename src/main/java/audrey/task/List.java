@@ -152,5 +152,21 @@ public class List {
         }
         return null;
     }
+
+    /**
+     * Returns specific tasks which matches with given regex
+     * @param task Target task characters
+     * @return ArrayList<Task> contains matched task
+     */
+    public ArrayList<Task> findTasks(String task) {
+        ArrayList<Task> output = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            Task targetTask = taskStorage.get(i);
+            if (targetTask.toString().contains(task)) {
+                output.add(targetTask);
+            }
+        }
+        return output;
+    }
 }
  

@@ -36,7 +36,7 @@ public class Audrey {
         } catch (Exception e) {
             print("Error with parser");
         } finally {
-            audreyStorage.saveToFile();;
+            audreyStorage.saveToFile();
             print("Bye! Hope to see you again!");
         }
     }
