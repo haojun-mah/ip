@@ -7,23 +7,23 @@ import audrey.task.List;
 /**
  * Contains logic for bot workflow
  * 
-*/
+ */
 public class Audrey {
     private static final String AUDREY_DB = "audrey_db.txt";
-    
+
     /**
      * Entry point
+     * 
      * @param args
      */
     public static void main(String[] args) {
-        String logo = "\n" +
-                "  #####  ##   ## #####  ##### ####### ##   ##\n" +
-                " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n" +
-                " ##   ## ##   ## ##  ## ##  ## ##       ## ##\n" +
-                " ####### ##   ## ##  ## #####  #####     ### \n" +
-                " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
-                " ##   ## ##   ## ##  ## ##  ## ##          ##\n" +
-                " ##   ##  #####  #####  ##  ## #######     ##\n";
+        String logo = "\n" + "  #####  ##   ## #####  ##### ####### ##   ##\n"
+                                        + " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n"
+                                        + " ##   ## ##   ## ##  ## ##  ## ##       ## ##\n"
+                                        + " ####### ##   ## ##  ## #####  #####     ### \n"
+                                        + " ##   ## ##   ## ##  ## ##  ## ##          ##\n"
+                                        + " ##   ## ##   ## ##  ## ##  ## ##          ##\n"
+                                        + " ##   ##  #####  #####  ##  ## #######     ##\n";
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
 
         Storage audreyStorage = new Storage(AUDREY_DB);
@@ -36,13 +36,14 @@ public class Audrey {
         } catch (Exception e) {
             print("Error with parser");
         } finally {
-            audreyStorage.saveToFile();;
+            audreyStorage.saveToFile();
             print("Bye! Hope to see you again!");
         }
     }
 
     /**
      * Prettier print for CLI
+     * 
      * @param string text to print
      */
     private static void print(String string) {
@@ -60,4 +61,4 @@ public class Audrey {
         System.out.println("    ____________________________________________________________________");
     }
 
-} 
+}
