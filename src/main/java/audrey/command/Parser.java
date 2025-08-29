@@ -1,8 +1,10 @@
 package audrey.command;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import audrey.task.List;
+import audrey.task.Task;
 
 /**
  *  Parser class encapsulates command logic
@@ -109,7 +111,22 @@ public class Parser {
                                     print("Number not provided!");
                                 }
                                 break;
-                            default:
+                            case FIND:
+                            if (processedInput.length > 1) {
+                                String printString = "Here are the matching tasks in your list:\n";
+                                ArrayList<Task> findList = toDoList.findTasks(processedInput[1].trim());
+                                if (findList.isEmpty()) {
+                                    print("No matching task found!");
+                                } else {
+                                    for (int i = 0; i < findList.size(); i++) {
+                                        printString += String.format("%d.%s\n", i + 1, findList.get(i));  // Fix format
+                                    }
+                                    print(printString);
+                                }
+                            } else {
+                                print("Find description is empty");
+                            }
+                           default:
                                 break;
                         }
                     }
