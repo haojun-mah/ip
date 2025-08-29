@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
+/**
+ * Encapsulate the command logic
+ */
 public class Storage {
     private final String filePath;
     private File db;
