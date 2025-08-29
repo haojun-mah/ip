@@ -1,7 +1,7 @@
 package audrey.task;
 
 /**
- * Task class for Todo, Deadline and Event to inherit from
+ * Task class for Todo, Deadline and Event to inherit from.
  */
 public abstract class Task {
     private final String description;
@@ -25,5 +25,3 @@ public abstract class Task {
         return String.format("[%s] %s", completed ? 'X' : ' ', description);
     }
 }
-
-

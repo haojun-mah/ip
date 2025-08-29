@@ -7,21 +7,22 @@ import audrey.exception.MissingDeadlineException;
 
 
 /**
- * Deadline task containing deadline
+ * Deadline task containing deadline.
  */
 public class Deadline extends Task {
     private final LocalDate deadline;
 
-    public Deadline(String details) throws MissingDeadlineException{
+    public Deadline(String details) throws MissingDeadlineException {
         super(processDetail(details));
         deadline = processDeadline(details);
     }
 
     /**
-     * Process task detail to sieve out task description
-     * @param detail task detail
-     * @return task description
-     * @throws MissingDeadlineException error if deadline is missing
+     * Process task detail to sieve out task description.
+     *
+     * @param detail Task detail
+     * @return Task description
+     * @throws MissingDeadlineException Error if deadline is missing
      */
     private static String processDetail(String detail) throws MissingDeadlineException {
         String[] processed = detail.split("/by");
@@ -32,10 +33,11 @@ public class Deadline extends Task {
     }
 
     /**
-     * Process task detail to sieve out task deadline
-     * @param detail task detail
-     * @return task deadline
-     * @throws MissingDeadlineException error if deadline is missing
+     * Process task detail to sieve out task deadline.
+     *
+     * @param detail Task detail
+     * @return Task deadline
+     * @throws MissingDeadlineException Error if deadline is missing
      */
     private static LocalDate processDeadline(String detail) throws MissingDeadlineException {
         String[] processed = detail.split("/by");
@@ -48,7 +50,6 @@ public class Deadline extends Task {
     @Override 
     public String toString() {
         return String.format("[D]%s (by:%s)", super.toString(),
-        deadline.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                deadline.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 }
-

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import audrey.exception.MissingDeadlineException;
 import audrey.exception.MissingEventException;
+import audrey.exception.WrongFromToOrientationException;
 
 /**
  * List object manages and hold task objects
@@ -70,10 +71,12 @@ public class List {
                     createdTask.toString(), count);
         } catch (MissingEventException e) {
             return e.getMessage();
+        } catch (WrongFromToOrientationException e) {
+            return e.getMessage();
         } catch (DateTimeParseException e) {
             return "Invalid Format for date. Enter: YYYY-MM-DD . E.g.: 2018-03-07";
         } catch (UnsupportedTemporalTypeException e) {
-            return "Invalide time date";
+            return "Invalid time date";
         }
     }
 

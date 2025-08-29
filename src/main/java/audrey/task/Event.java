@@ -4,26 +4,32 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import audrey.exception.MissingEventException;
+import audrey.exception.WrongFromToOrientationException;
 
 /**
- * Event task containing from and to
+ * Event task containing from and to.
  */
 public class Event extends Task {
     private final LocalDate from;
     private final LocalDate to;
 
-    public Event(String details) throws MissingEventException {
+    public Event(String details) throws MissingEventException, WrongFromToOrientationException {
         super(processDetail(details));
         from = processFrom(details);
         to = processTo(details);
+        
+        // Validate that from date is not after to date
+        if (from.isAfter(to)) {
+            throw new WrongFromToOrientationException();
+        }
     }
 
     /**
-     * Process task description from task detail
-     * 
-     * @param detail task detail
-     * @return task description
-     * @throws MissingEventException error if missing from and to detail
+     * Process task description from task detail.
+     *
+     * @param detail Task detail
+     * @return Task description
+     * @throws MissingEventException Error if missing from and to detail
      */
     private static String processDetail(String detail) throws MissingEventException {
         String[] processed = detail.split("/from");
@@ -34,20 +40,18 @@ public class Event extends Task {
     }
 
     /**
-     * Process from info from task detail
-     * 
-     * @param detail task detail
-     * @return from info
-     * @throws MissingEventException error if missing from and to detail
+     * Process from info from task detail.
+     *
+     * @param detail Task detail
+     * @return From info
+     * @throws MissingEventException Error if missing from and to detail
      */
     private static LocalDate processFrom(String detail) throws MissingEventException {
-        // Split by /from to get the part after /from
         String[] fromSplit = detail.split("/from");
         if (fromSplit.length != 2) {
             throw new MissingEventException();
         }
 
-        // Get the part after /from and split by /to to extract just the from date
         String afterFrom = fromSplit[1].trim();
         String[] toSplit = afterFrom.split("/to");
         if (toSplit.length != 2 || toSplit[0].trim().isEmpty()) {
@@ -62,11 +66,11 @@ public class Event extends Task {
     }
 
     /**
-     * Process to info from task detail
-     * 
-     * @param detail task detail
-     * @return to info
-     * @throws MissingEventException error if missing from and to detail
+     * Process to info from task detail.
+     *
+     * @param detail Task detail
+     * @return To info
+     * @throws MissingEventException Error if missing from and to detail
      */
     private static LocalDate processTo(String detail) throws MissingEventException {
         String[] processed = detail.split("/to");

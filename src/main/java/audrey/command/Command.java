@@ -28,9 +28,11 @@ public enum Command {
         }
         return null; // Invalid command
     }
+
     /**
-     * Returns command which is mapped
-     * @return string command
+     * Returns command which is mapped.
+     *
+     * @return String command
      */
     public String getCommandString() {
         return commandString;

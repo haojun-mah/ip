@@ -5,25 +5,27 @@ import audrey.storage.Storage;
 import audrey.task.List;
 
 /**
- * Contains logic for bot workflow
- * 
+ * Contains logic for bot workflow.
  */
 public class Audrey {
     private static final String AUDREY_DB = "audrey_db.txt";
 
     /**
-     * Entry point
-     * 
-     * @param args
+     * Entry point.
+     *
+     * @param args Command line arguments
      */
     public static void main(String[] args) {
-        String logo = "\n" + "  #####  ##   ## #####  ##### ####### ##   ##\n"
-                                        + " ##   ## ##   ## ##  ## ##  ## ##      ##  ##\n"
-                                        + " ##   ## ##   ## ##  ## ##  ## ##       ## ##\n"
-                                        + " ####### ##   ## ##  ## #####  #####     ### \n"
-                                        + " ##   ## ##   ## ##  ## ##  ## ##          ##\n"
-                                        + " ##   ## ##   ## ##  ## ##  ## ##          ##\n"
-                                        + " ##   ##  #####  #####  ##  ## #######     ##\n";
+        String logo = """
+
+                  #####  ##   ## #####  ##### ####### ##   ##
+                 ##   ## ##   ## ##  ## ##  ## ##      ##  ##
+                 ##   ## ##   ## ##  ## ##  ## ##       ## ##
+                 ####### ##   ## ##  ## #####  #####     ### 
+                 ##   ## ##   ## ##  ## ##  ## ##          ##
+                 ##   ## ##   ## ##  ## ##  ## ##          ##
+                 ##   ##  #####  #####  ##  ## #######     ##
+                """;
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
 
         Storage audreyStorage = new Storage(AUDREY_DB);
@@ -42,9 +44,9 @@ public class Audrey {
     }
 
     /**
-     * Prettier print for CLI
-     * 
-     * @param string text to print
+     * Prettier print for CLI.
+     *
+     * @param string Text to print
      */
     private static void print(String string) {
         String[] splitString = string.split("\n");
