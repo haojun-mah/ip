@@ -7,7 +7,7 @@ import audrey.task.List;
 import audrey.task.Task;
 
 /**
- * Parser class encapsulates command logic.
+ * Parser class encapsulates command logic
  */
 public class Parser {
     private final Scanner scanner;
@@ -19,9 +19,9 @@ public class Parser {
     }
 
     /**
-     * Prettier print for CLI.
-     *
-     * @param string Text to print
+     * Prettier print for CLI
+     * 
+     * @param string text to print
      */
     private void print(String string) {
         String[] splitString = string.split("\n");
@@ -39,20 +39,25 @@ public class Parser {
     }
 
     /**
-     * Run command loop.
+     * Run command loop
      */
     public void runInput() {
         String input = scanner.nextLine();
-        
+
         while (true) {
             if ("bye".equalsIgnoreCase(input)) {
                 break;
             } else if ("list".equalsIgnoreCase(input)) {
                 print("To Do List Activated!");
-                
+
                 while (true) {
                     input = scanner.nextLine();
-                    String[] processedInput = input.split(" ", 2);
+                    String[] processedInput = input.split(" ", 2); // obtain
+                                                                   // first
+                                                                   // string of
+                                                                   // words
+                                                                   // before
+                                                                   // whitespace
                     String detectMark = processedInput[0];
                     Command command = Command.fromString(detectMark);
 
@@ -65,7 +70,7 @@ public class Parser {
                     } else {
                         switch (command) {
                         case BYE:
-                            break;
+                            break; // This will break out of the while loop
                         case LIST:
                             print(toDoList.showList());
                             break;
@@ -109,22 +114,6 @@ public class Parser {
                                 print(toDoList.delete(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
-                            }
-                            break;
-                        case FIND:
-                            if (processedInput.length > 1) {
-                                String printString = "Here are the matching tasks in your list:\n";
-                                ArrayList<Task> findList = toDoList.findTasks(processedInput[1].trim());
-                                if (findList.isEmpty()) {
-                                    print("No matching task found!");
-                                } else {
-                                    for (int i = 0; i < findList.size(); i++) {
-                                        printString += String.format("%d.%s\n", i + 1, findList.get(i));
-                                    }
-                                    print(printString);
-                                }
-                            } else {
-                                print("Find description is empty");
                             }
                             break;
                         default:
