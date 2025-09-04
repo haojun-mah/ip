@@ -21,7 +21,8 @@ public class Parser {
     /**
      * Prettier print for CLI.
      *
-     * @param string Text to print
+     * @param string
+     *            Text to print
      */
     private void print(String string) {
         String[] splitString = string.split("\n");
@@ -43,13 +44,13 @@ public class Parser {
      */
     public void runInput() {
         String input = scanner.nextLine();
-        
+
         while (true) {
             if ("bye".equalsIgnoreCase(input)) {
                 break;
             } else if ("list".equalsIgnoreCase(input)) {
                 print("To Do List Activated!");
-                
+
                 while (true) {
                     input = scanner.nextLine();
                     String[] processedInput = input.split(" ", 2);
@@ -64,54 +65,54 @@ public class Parser {
                         break;
                     } else {
                         switch (command) {
-                        case BYE:
+                        case BYE :
                             break;
-                        case LIST:
+                        case LIST :
                             print(toDoList.showList());
                             break;
-                        case MARK:
+                        case MARK :
                             try {
                                 print(toDoList.markTask(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
                             }
                             break;
-                        case UNMARK:
+                        case UNMARK :
                             try {
                                 print(toDoList.unmarkTask(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
                             }
                             break;
-                        case TODO:
+                        case TODO :
                             if (processedInput.length > 1) {
                                 print(toDoList.addToDos(processedInput[1]));
                             } else {
                                 print("Todo description cannot be empty!");
                             }
                             break;
-                        case DEADLINE:
+                        case DEADLINE :
                             if (processedInput.length > 1) {
                                 print(toDoList.addDeadline(processedInput[1]));
                             } else {
                                 print("Deadline description cannot be empty!");
                             }
                             break;
-                        case EVENT:
+                        case EVENT :
                             if (processedInput.length > 1) {
                                 print(toDoList.addEvent(processedInput[1]));
                             } else {
                                 print("Event description cannot be empty!");
                             }
                             break;
-                        case DELETE:
+                        case DELETE :
                             try {
                                 print(toDoList.delete(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
                             }
                             break;
-                        case FIND:
+                        case FIND :
                             if (processedInput.length > 1) {
                                 String printString = "Here are the matching tasks in your list:\n";
                                 ArrayList<Task> findList = toDoList.findTasks(processedInput[1].trim());
@@ -127,7 +128,7 @@ public class Parser {
                                 print("Find description is empty");
                             }
                             break;
-                        default:
+                        default :
                             break;
                         }
                     }

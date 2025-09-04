@@ -13,19 +13,20 @@ public class Audrey {
     /**
      * Entry point.
      *
-     * @param args Command line arguments
+     * @param args
+     *            Command line arguments
      */
     public static void main(String[] args) {
         String logo = """
 
-                  #####  ##   ## #####  ##### ####### ##   ##
-                 ##   ## ##   ## ##  ## ##  ## ##      ##  ##
-                 ##   ## ##   ## ##  ## ##  ## ##       ## ##
-                 ####### ##   ## ##  ## #####  #####     ### 
-                 ##   ## ##   ## ##  ## ##  ## ##          ##
-                 ##   ## ##   ## ##  ## ##  ## ##          ##
-                 ##   ##  #####  #####  ##  ## #######     ##
-                """;
+                                          #####  ##   ## #####  ##### ####### ##   ##
+                                         ##   ## ##   ## ##  ## ##  ## ##      ##  ##
+                                         ##   ## ##   ## ##  ## ##  ## ##       ## ##
+                                         ####### ##   ## ##  ## #####  #####     ###
+                                         ##   ## ##   ## ##  ## ##  ## ##          ##
+                                         ##   ## ##   ## ##  ## ##  ## ##          ##
+                                         ##   ##  #####  #####  ##  ## #######     ##
+                                        """;
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
 
         Storage audreyStorage = new Storage(AUDREY_DB);
@@ -46,7 +47,8 @@ public class Audrey {
     /**
      * Prettier print for CLI.
      *
-     * @param string Text to print
+     * @param string
+     *            Text to print
      */
     private static void print(String string) {
         String[] splitString = string.split("\n");

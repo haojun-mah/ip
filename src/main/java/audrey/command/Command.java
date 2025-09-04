@@ -4,16 +4,9 @@ package audrey.command;
  * Enum which maps command for easier use in Audrey
  */
 public enum Command {
-    BYE("bye"),
-    LIST("list"),
-    MARK("mark"),
-    UNMARK("unmark"),
-    TODO("todo"),
-    DEADLINE("deadline"),
-    EVENT("event"),
-    DELETE("delete"),
-    FIND("find");
-    
+    BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), TODO("todo"), DEADLINE("deadline"), EVENT(
+                                    "event"), DELETE("delete"), FIND("find");
+
     private final String commandString;
 
     Command(String commandString) {
