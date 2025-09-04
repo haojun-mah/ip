@@ -45,8 +45,9 @@ public class Storage {
 
     /**
      * Regex matching to store tasks into List
-     * 
-     * @param line Task from db
+     *
+     * @param line
+     *            Task from db
      */
     private void parseTaskLine(String line) {
         try {
@@ -122,7 +123,7 @@ public class Storage {
 
     /**
      * Returns list object containing tasks loaded from db.
-     * 
+     *
      * @return List object containing tasks
      */
     public List getToDoList() {

@@ -19,9 +19,16 @@ public class Parser {
     }
 
     /**
+<<<<<<< HEAD
      * Prettier print for CLI
      * 
      * @param string text to print
+=======
+     * Prettier print for CLI.
+     *
+     * @param string
+     *            Text to print
+>>>>>>> branch-A-CheckStyle
      */
     private void print(String string) {
         String[] splitString = string.split("\n");
@@ -69,54 +76,70 @@ public class Parser {
                         break;
                     } else {
                         switch (command) {
-                        case BYE:
-                            break; // This will break out of the while loop
-                        case LIST:
+                        case BYE :
+                            break;
+                        case LIST :
                             print(toDoList.showList());
                             break;
-                        case MARK:
+                        case MARK :
                             try {
                                 print(toDoList.markTask(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
                             }
                             break;
-                        case UNMARK:
+                        case UNMARK :
                             try {
                                 print(toDoList.unmarkTask(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
                             }
                             break;
-                        case TODO:
+                        case TODO :
                             if (processedInput.length > 1) {
                                 print(toDoList.addToDos(processedInput[1]));
                             } else {
                                 print("Todo description cannot be empty!");
                             }
                             break;
-                        case DEADLINE:
+                        case DEADLINE :
                             if (processedInput.length > 1) {
                                 print(toDoList.addDeadline(processedInput[1]));
                             } else {
                                 print("Deadline description cannot be empty!");
                             }
                             break;
-                        case EVENT:
+                        case EVENT :
                             if (processedInput.length > 1) {
                                 print(toDoList.addEvent(processedInput[1]));
                             } else {
                                 print("Event description cannot be empty!");
                             }
                             break;
-                        case DELETE:
+                        case DELETE :
                             try {
                                 print(toDoList.delete(Integer.parseInt(processedInput[1])));
                             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                                 print("Number not provided!");
                             }
                             break;
-                        default:
+                        case FIND :
+                            if (processedInput.length > 1) {
+                                String printString = "Here are the matching tasks in your list:\n";
+                                ArrayList<Task> findList = toDoList.findTasks(processedInput[1].trim());
+                                if (findList.isEmpty()) {
+                                    print("No matching task found!");
+                                } else {
+                                    for (int i = 0; i < findList.size(); i++) {
+                                        printString += String.format("%d.%s\n", i + 1, findList.get(i));
+                                    }
+                                    print(printString);
+                                }
+                            } else {
+                                print("Find description is empty");
+                            }
+                            break;
+                        default :
                             break;
                         }
                     }

@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'checkstyle'
+    id 'com.diffplug.spotless' version '6.22.0'
 }
 
 repositories {
@@ -11,6 +13,22 @@ repositories {
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
+}
+
+checkstyle {
+    toolVersion = '10.12.4'
+    configFile = file('config/checkstyle/checkstyle.xml')
+    ignoreFailures = true
+}
+
+spotless {
+    java {
+        eclipse('4.26.0').configFile('eclipse-java-formatter.xml')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+        target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
+    }
 }
 
 test {
@@ -37,7 +55,10 @@ shadowJar {
     destinationDirectory = file('src/builds/libs')
 }
 
-
-run{
+run {
     standardInput = System.in
+    dependsOn 'spotlessApply'
 }
+
+compileJava.dependsOn spotlessApply
+compileTestJava.dependsOn spotlessApply
