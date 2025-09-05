@@ -30,8 +30,7 @@ public class Audrey {
     /**
      * Entry point.
      *
-     * @param args
-     *            Command line arguments
+     * @param args Command line arguments
      */
     public static void main(String[] args) {
         String logo = """
@@ -52,8 +51,7 @@ public class Audrey {
     /**
      * Prettier print for CLI.
      *
-     * @param string
-     *            Text to print
+     * @param string Text to print
      */
     private static void print(String string) {
         String[] splitString = string.split("\n");
@@ -82,8 +80,7 @@ public class Audrey {
     /**
      * Instance method for GUI to get response.
      *
-     * @param input
-     *            User input string
+     * @param input User input string
      * @return Response string
      */
     public String getInstanceResponse(String input) {

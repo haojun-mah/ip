@@ -27,11 +27,9 @@ public class Event extends Task {
     /**
      * Process task description from task detail.
      *
-     * @param detail
-     *            Task detail
+     * @param detail Task detail
      * @return Task description
-     * @throws MissingEventException
-     *             Error if missing from and to detail
+     * @throws MissingEventException Error if missing from and to detail
      */
     private static String processDetail(String detail) throws MissingEventException {
         String[] processed = detail.split("/from");
@@ -44,11 +42,9 @@ public class Event extends Task {
     /**
      * Process from info from task detail.
      *
-     * @param detail
-     *            Task detail
+     * @param detail Task detail
      * @return From info
-     * @throws MissingEventException
-     *             Error if missing from and to detail
+     * @throws MissingEventException Error if missing from and to detail
      */
     private static LocalDate processFrom(String detail) throws MissingEventException {
         String[] fromSplit = detail.split("/from");
@@ -72,11 +68,9 @@ public class Event extends Task {
     /**
      * Process to info from task detail.
      *
-     * @param detail
-     *            Task detail
+     * @param detail Task detail
      * @return To info
-     * @throws MissingEventException
-     *             Error if missing from and to detail
+     * @throws MissingEventException Error if missing from and to detail
      */
     private static LocalDate processTo(String detail) throws MissingEventException {
         String[] processed = detail.split("/to");

@@ -46,8 +46,7 @@ public class Storage {
     /**
      * Regex matching to store tasks into List
      *
-     * @param line
-     *            Task from db
+     * @param line Task from db
      */
     private void parseTaskLine(String line) {
         try {
