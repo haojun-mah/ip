@@ -72,7 +72,7 @@ shadowJar {
 
 run {
     standardInput = System.in
-    // dependsOn 'spotlessApply'
+    dependsOn 'spotlessApply'
 }
 
 compileJava.dependsOn spotlessApply

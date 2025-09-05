@@ -24,8 +24,9 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
-    private static final Image USER_IMAGE = new Image(DialogBox.class.getResourceAsStream("/images/DaUser.png"));
-    private static final Image AUDREY_IMAGE = new Image(DialogBox.class.getResourceAsStream("/images/DaDuke.png"));
+    private static final Image USER_IMAGE = new Image(DialogBox.class.getResourceAsStream("/images/userimage.jpg"));
+    private static final Image AUDREY_IMAGE = new Image(
+                                    DialogBox.class.getResourceAsStream("/images/audreyimage.jpeg"));
 
     private DialogBox(String text, Image img) {
         try {
@@ -52,10 +53,24 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Creates user dialog
+     *
+     * @param text
+     *            user text
+     * @return dialogbox instance
+     */
     public static DialogBox getUserDialog(String text) {
         return new DialogBox(text, USER_IMAGE);
     }
 
+    /**
+     * Creates audrey dialogue
+     *
+     * @param text
+     *            user text
+     * @return dialogbox instance
+     */
     public static DialogBox getAudreyDialog(String text) {
         var db = new DialogBox(text, AUDREY_IMAGE);
         db.flip();

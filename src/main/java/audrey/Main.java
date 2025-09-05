@@ -15,6 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Orchestrator for JavaFX GUI
+ */
 public class Main extends Application {
 
     @FXML
@@ -43,19 +46,20 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Set audrey instance
+     *
+     * @param a
+     *            audrey instance
+     */
     public void setAudrey(Audrey a) {
         audrey = a;
-        dialogContainer.getChildren().addAll(DialogBox
-                                        .getAudreyDialog("Hello! I am Audrey, your personal bot. Tell what to do! \nEnter list to enable list mode!"));
+        dialogContainer.getChildren().addAll(DialogBox.getAudreyDialog(
+                                        "Hello! I am Audrey, your personal bot. Tell what to do! \nEnter list to enable list mode!"));
     }
 
     /**
-     * Iteration 1: Creates a label with the specified text and adds it to the
-     * dialog container.
-     *
-     * @param text
-     *            String containing text to add
-     * @return a label with the specified text that has word wrap enabled.
+     * Contains logic to process user input
      */
     @FXML
     private void handleUserInput() {
