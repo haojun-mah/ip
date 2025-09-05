@@ -14,6 +14,12 @@ public class Parser {
     private final List toDoList;
     private boolean isListMode;
 
+    /**
+     * Creates parser instance
+     *
+     * @param toDoList
+     *            list extracted from DB
+     */
     public Parser(List toDoList) {
         scanner = new Scanner(System.in);
         this.toDoList = toDoList;

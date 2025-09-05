@@ -13,6 +13,13 @@ public enum Command {
         this.commandString = commandString;
     }
 
+    /**
+     * Matches command with enum
+     *
+     * @param input
+     *            command
+     * @return command matched
+     */
     public static Command fromString(String input) {
         for (Command cmd : Command.values()) {
             if (cmd.commandString.equalsIgnoreCase(input)) {
