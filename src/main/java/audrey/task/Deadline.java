@@ -19,11 +19,9 @@ public class Deadline extends Task {
     /**
      * Process task detail to sieve out task description.
      *
-     * @param detail
-     *            Task detail
+     * @param detail Task detail
      * @return Task description
-     * @throws MissingDeadlineException
-     *             Error if deadline is missing
+     * @throws MissingDeadlineException Error if deadline is missing
      */
     private static String processDetail(String detail) throws MissingDeadlineException {
         String[] processed = detail.split("/by");
@@ -36,11 +34,9 @@ public class Deadline extends Task {
     /**
      * Process task detail to sieve out task deadline.
      *
-     * @param detail
-     *            Task detail
+     * @param detail Task detail
      * @return Task deadline
-     * @throws MissingDeadlineException
-     *             Error if deadline is missing
+     * @throws MissingDeadlineException Error if deadline is missing
      */
     private static LocalDate processDeadline(String detail) throws MissingDeadlineException {
         String[] processed = detail.split("/by");

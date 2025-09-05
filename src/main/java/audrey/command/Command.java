@@ -16,8 +16,7 @@ public enum Command {
     /**
      * Matches command with enum
      *
-     * @param input
-     *            command
+     * @param input command
      * @return command matched
      */
     public static Command fromString(String input) {

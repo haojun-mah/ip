@@ -17,8 +17,7 @@ public class Parser {
     /**
      * Creates parser instance
      *
-     * @param toDoList
-     *            list extracted from DB
+     * @param toDoList list extracted from DB
      */
     public Parser(List toDoList) {
         scanner = new Scanner(System.in);
@@ -29,8 +28,7 @@ public class Parser {
     /**
      * Prettier print for CLI.
      *
-     * @param string
-     *            Text to print
+     * @param string Text to print
      */
     private void print(String string) {
         String[] splitString = string.split("\n");

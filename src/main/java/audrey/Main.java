@@ -49,8 +49,7 @@ public class Main extends Application {
     /**
      * Set audrey instance
      *
-     * @param a
-     *            audrey instance
+     * @param a audrey instance
      */
     public void setAudrey(Audrey a) {
         audrey = a;
