@@ -9,6 +9,23 @@ import audrey.task.List;
  */
 public class Audrey {
     private static final String AUDREY_DB = "audrey_db.txt";
+    private static final Storage audreyStorage = new Storage(AUDREY_DB);
+    private static final List toDoList = audreyStorage.getToDoList();
+    private static final Parser command = new Parser(toDoList);
+
+    // Instance variables for GUI mode
+    private Storage instanceStorage;
+    private List instanceToDoList;
+    private Parser instanceCommand;
+
+    /**
+     * Default constructor for GUI usage.
+     */
+    public Audrey() {
+        this.instanceStorage = new Storage(AUDREY_DB);
+        this.instanceToDoList = instanceStorage.getToDoList();
+        this.instanceCommand = new Parser(instanceToDoList);
+    }
 
     /**
      * Entry point.
@@ -28,20 +45,8 @@ public class Audrey {
                                          ##   ##  #####  #####  ##  ## #######     ##
                                         """;
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
-
-        Storage audreyStorage = new Storage(AUDREY_DB);
-        List toDoList = audreyStorage.getToDoList();
         print("Task that you have pending:\n" + toDoList.toString());
-        Parser command = new Parser(toDoList);
 
-        try {
-            command.runInput();
-        } catch (Exception e) {
-            print("Error with parser");
-        } finally {
-            audreyStorage.saveToFile();
-            print("Bye! Hope to see you again!");
-        }
     }
 
     /**
@@ -63,6 +68,41 @@ public class Audrey {
         System.out.println("    ____________________________________________________________________");
         System.out.println(formattedString.toString());
         System.out.println("    ____________________________________________________________________");
+    }
+
+    public static String getResponse(String input) {
+        try {
+            return command.runInput(input);
+        } catch (Exception e) {
+            print("Error with parser");
+            return "Error with parser";
+        }
+    }
+
+    /**
+     * Instance method for GUI to get response.
+     *
+     * @param input
+     *            User input string
+     * @return Response string
+     */
+    public String getInstanceResponse(String input) {
+        try {
+            return instanceCommand.runInput(input);
+        } catch (Exception e) {
+            return "Error with parser";
+        }
+    }
+
+    public static void shutdown() {
+        audreyStorage.saveToFile();
+    }
+
+    /**
+     * Instance method for GUI to shutdown.
+     */
+    public void instanceShutdown() {
+        instanceStorage.saveToFile();
     }
 
 }
