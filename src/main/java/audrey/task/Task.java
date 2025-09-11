@@ -8,6 +8,10 @@ public abstract class Task {
     private boolean completed;
 
     public Task(String description) {
+        // Assert: Task description should not be null or empty
+        assert description != null : "Task description cannot be null";
+        assert !description.trim().isEmpty() : "Task description cannot be empty";
+        
         this.description = description;
         completed = false;
     }

@@ -29,6 +29,11 @@ public class DialogBox extends HBox {
                                     DialogBox.class.getResourceAsStream("/images/audreyimage.jpeg"));
 
     private DialogBox(String text, Image img) {
+        // Assert: Text parameter should not be null
+        assert text != null : "Dialog text cannot be null";
+        // Assert: Image parameter should not be null
+        assert img != null : "Dialog image cannot be null";
+        
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DialogBox.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -38,6 +43,10 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
+        // Assert: FXML components should be loaded
+        assert dialog != null : "Dialog label should be loaded from FXML";
+        assert displayPicture != null : "Display picture should be loaded from FXML";
+        
         dialog.setText(text);
         displayPicture.setImage(img);
     }
@@ -59,7 +68,17 @@ public class DialogBox extends HBox {
      * @return dialogbox instance
      */
     public static DialogBox getUserDialog(String text) {
-        return new DialogBox(text, USER_IMAGE);
+        // Assert: User image should be loaded
+        assert USER_IMAGE != null : "User image should be loaded";
+        // Assert: Text should not be null
+        assert text != null : "User dialog text cannot be null";
+        
+        DialogBox userDialog = new DialogBox(text, USER_IMAGE);
+        
+        // Assert: Created dialog should not be null
+        assert userDialog != null : "Created user dialog should not be null";
+        
+        return userDialog;
     }
 
     /**

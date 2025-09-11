@@ -12,8 +12,14 @@ public class Deadline extends Task {
     private final LocalDate deadline;
 
     public Deadline(String details) throws MissingDeadlineException {
+        // Assert: Details parameter should not be null
+        assert details != null : "Deadline details cannot be null";
+        
         super(processDetail(details));
         deadline = processDeadline(details);
+        
+        // Assert: Deadline should be properly initialized
+        assert deadline != null : "Deadline should be properly initialized";
     }
 
     /**
@@ -24,11 +30,24 @@ public class Deadline extends Task {
      * @throws MissingDeadlineException Error if deadline is missing
      */
     private static String processDetail(String detail) throws MissingDeadlineException {
+        // Assert: Detail parameter should not be null
+        assert detail != null : "Deadline detail cannot be null";
+        
         String[] processed = detail.split("/by");
+        
+        // Assert: Split should produce an array
+        assert processed != null : "Split result should not be null";
+        
         if (processed.length != 2 || processed[0].trim().isEmpty()) {
             throw new MissingDeadlineException();
         }
-        return processed[0].trim();
+        
+        String result = processed[0].trim();
+        
+        // Assert: Processed result should not be empty
+        assert !result.isEmpty() : "Processed deadline description should not be empty";
+        
+        return result;
     }
 
     /**

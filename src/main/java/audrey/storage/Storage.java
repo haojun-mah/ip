@@ -16,9 +16,18 @@ public class Storage {
     private final List toDoList;
 
     public Storage(String filePath) {
+        // Assert: File path should not be null or empty
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
+        
         this.filePath = filePath;
         this.db = new File(filePath);
         this.toDoList = new List();
+
+        // Assert: All components should be properly initialized
+        assert this.filePath != null : "File path should be properly initialized";
+        assert this.db != null : "File object should be properly initialized";
+        assert this.toDoList != null : "Todo list should be properly initialized";
 
         if (db.exists()) {
             loadFromFile();
@@ -111,8 +120,16 @@ public class Storage {
      * Save info into DB
      */
     public void saveToFile() {
+        // Assert: File path should be valid
+        assert filePath != null && !filePath.trim().isEmpty() : "File path should be valid for saving";
+        // Assert: Todo list should be initialized
+        assert toDoList != null : "Todo list should be initialized for saving";
+        
         try (FileWriter fw = new FileWriter(filePath)) {
             for (int i = 0; i < toDoList.size(); i++) {
+                // Assert: Each task should exist and be valid
+                assert toDoList.getTask(i) != null : "Task at index " + i + " should not be null";
+                
                 fw.write(toDoList.getTask(i).toString() + "\n");
             }
         } catch (IOException e) {
