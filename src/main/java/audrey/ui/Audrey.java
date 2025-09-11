@@ -24,11 +24,11 @@ public class Audrey {
     public Audrey() {
         // Assert: Database filename should be valid
         assert AUDREY_DB != null && !AUDREY_DB.trim().isEmpty() : "Database filename should be valid";
-        
+
         this.instanceStorage = new Storage(AUDREY_DB);
         this.instanceToDoList = instanceStorage.getToDoList();
         this.instanceCommand = new Parser(instanceToDoList);
-        
+
         // Assert: All instance variables should be properly initialized
         assert this.instanceStorage != null : "Instance storage should be properly initialized";
         assert this.instanceToDoList != null : "Instance todo list should be properly initialized";
@@ -81,13 +81,13 @@ public class Audrey {
         assert input != null : "User input cannot be null";
         // Assert: Static command should be initialized
         assert command != null : "Static command parser should be initialized";
-        
+
         try {
             String response = command.runInput(input);
-            
+
             // Assert: Response should not be null
             assert response != null : "Parser response should not be null";
-            
+
             return response;
         } catch (Exception e) {
             print("Error with parser");
@@ -106,13 +106,13 @@ public class Audrey {
         assert input != null : "User input cannot be null";
         // Assert: Instance command should be initialized
         assert instanceCommand != null : "Instance command parser should be initialized";
-        
+
         try {
             String response = instanceCommand.runInput(input);
-            
+
             // Assert: Response should not be null
             assert response != null : "Parser response should not be null";
-            
+
             return response;
         } catch (Exception e) {
             return "Error with parser";

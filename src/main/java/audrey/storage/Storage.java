@@ -19,7 +19,7 @@ public class Storage {
         // Assert: File path should not be null or empty
         assert filePath != null : "File path cannot be null";
         assert !filePath.trim().isEmpty() : "File path cannot be empty";
-        
+
         this.filePath = filePath;
         this.db = new File(filePath);
         this.toDoList = new List();
@@ -124,12 +124,12 @@ public class Storage {
         assert filePath != null && !filePath.trim().isEmpty() : "File path should be valid for saving";
         // Assert: Todo list should be initialized
         assert toDoList != null : "Todo list should be initialized for saving";
-        
+
         try (FileWriter fw = new FileWriter(filePath)) {
             for (int i = 0; i < toDoList.size(); i++) {
                 // Assert: Each task should exist and be valid
                 assert toDoList.getTask(i) != null : "Task at index " + i + " should not be null";
-                
+
                 fw.write(toDoList.getTask(i).toString() + "\n");
             }
         } catch (IOException e) {
