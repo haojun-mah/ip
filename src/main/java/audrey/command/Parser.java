@@ -20,9 +20,16 @@ public class Parser {
      * @param toDoList list extracted from DB
      */
     public Parser(List toDoList) {
+        // Assert: Todo list should not be null
+        assert toDoList != null : "Todo list cannot be null";
+
         scanner = new Scanner(System.in);
         this.toDoList = toDoList;
         this.isListMode = false;
+
+        // Assert: Parser should be properly initialized
+        assert this.toDoList != null : "Parser todo list should be properly initialized";
+        assert this.scanner != null : "Scanner should be properly initialized";
     }
 
     /**
@@ -49,9 +56,16 @@ public class Parser {
      * Run command loop
      */
     public String runInput(String input) {
+        // Assert: Input should not be null
+        assert input != null : "Input string cannot be null";
+
         if ("list".equalsIgnoreCase(input) && !isListMode) {
             isListMode = true;
             print("To Do List Activated!");
+
+            // Assert: After activation, list mode should be true
+            assert isListMode : "List mode should be activated";
+
             return "To Do List Activated!\n\n" + toDoList.showList();
         } else if (isListMode) {
             String[] processedInput = input.split(" ", 2);
