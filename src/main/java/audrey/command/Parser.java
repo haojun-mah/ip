@@ -163,6 +163,60 @@ public class Parser {
                         print(errorMsg);
                         return errorMsg;
                     }
+                case SNOOZE :
+                    if (processedInput.length == 1) {
+                        // Just "snooze" - show snoozable tasks
+                        String snoozeableList = toDoList.showSnoozableTasks();
+                        print(snoozeableList);
+                        return snoozeableList;
+                    } else {
+                        // Parse snooze parameters manually
+                        String[] snoozeParams = processedInput[1].split(" ");
+                        if (snoozeParams.length == 1) {
+                            // "snooze 1" - snooze task forever
+                            try {
+                                String snoozeResult = toDoList.snoozeTaskForever(Integer.parseInt(snoozeParams[0]));
+                                print(snoozeResult);
+                                return snoozeResult;
+                            } catch (NumberFormatException e) {
+                                String errorMsg = "Invalid task number!";
+                                print(errorMsg);
+                                return errorMsg;
+                            }
+                        } else if (snoozeParams.length == 2) {
+                            // "snooze 1 2024-12-25" - snooze task until date
+                            try {
+                                String snoozeResult = toDoList.snoozeTaskUntil(Integer.parseInt(snoozeParams[0]),
+                                                                snoozeParams[1]);
+                                print(snoozeResult);
+                                return snoozeResult;
+                            } catch (NumberFormatException e) {
+                                String errorMsg = "Invalid task number!";
+                                print(errorMsg);
+                                return errorMsg;
+                            }
+                        } else {
+                            String errorMsg = "Invalid snooze command. Use: 'snooze', 'snooze 1', or 'snooze 1 YYYY-MM-DD'";
+                            print(errorMsg);
+                            return errorMsg;
+                        }
+                    }
+                case UNSNOOZE :
+                    if (processedInput.length == 2) {
+                        try {
+                            String unsnoozeResult = toDoList.unsnoozeTask(Integer.parseInt(processedInput[1]));
+                            print(unsnoozeResult);
+                            return unsnoozeResult;
+                        } catch (NumberFormatException e) {
+                            String errorMsg = "Invalid task number!";
+                            print(errorMsg);
+                            return errorMsg;
+                        }
+                    } else {
+                        String errorMsg = "Invalid unsnooze command. Use: 'unsnooze [task number]'";
+                        print(errorMsg);
+                        return errorMsg;
+                    }
                 default :
                     String defaultMsg = "Unknown command";
                     print(defaultMsg);
