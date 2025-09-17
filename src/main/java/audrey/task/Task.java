@@ -10,6 +10,11 @@ public abstract class Task {
     private boolean completed;
     private LocalDate snoozeUntil; // null means not snoozed, LocalDate.MAX means snoozed forever
 
+    /**
+     * Constructor for Task.
+     *
+     * @param description Description of the task
+     */
     public Task(String description) {
         // Assert: Task description should not be null or empty
         assert description != null : "Task description cannot be null";

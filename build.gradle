@@ -37,12 +37,14 @@ checkstyle {
 
 spotless {
     java {
-        eclipse('4.26.0').configFile('eclipse-java-formatter.xml')
+        eclipse('4.26').configFile('eclipse-java-formatter.xml')
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
         target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
-        targetExclude 'src/main/java/audrey/ui/Main.java'
+        
+        // Import ordering according to SE-EDU standards
+        importOrder('static ', 'java', 'javax', 'org', 'com', '')
     }
 }
 

@@ -13,12 +13,14 @@ import audrey.exception.WrongFromToOrientationException;
  * List object manages and hold task objects
  */
 public class List {
-    private static final String TASK_ADDED_FORMAT = "Got it. I've added this task:\n   %s\nNow you have %s tasks in the list.";
+    private static final String TASK_ADDED_FORMAT = "Got it. I've added this task:\n   %s\n"
+            + "Now you have %s tasks in the list.";
     private static final String TASK_MARKED_FORMAT = "Nice! I've marked this task as done!:\n   %s";
     private static final String TASK_UNMARKED_FORMAT = "Ok! I've marked this task as not done yet!:\n   %s";
     private static final String TASK_DELETED_FORMAT = "Removing this task!\n %s\nNow you have %s task in your list!";
     private static final String TASK_NOT_EXIST_MSG = "Task does not exist!";
-    private static final String INVALID_DATE_FORMAT_MSG = "Invalid Format for date. Enter: YYYY-MM-DD . E.g.: 2018-03-07";
+    private static final String INVALID_DATE_FORMAT_MSG = "Invalid Format for date. "
+            + "Enter: YYYY-MM-DD . E.g.: 2018-03-07";
     private static final String INVALID_TIME_DATE_MSG = "Invalid time date";
     private static final String LIST_HEADER = "Here are the tasks in your list:\n";
     private static final String SNOOZE_HEADER = "Here are the tasks you can snooze:\n";
@@ -30,6 +32,9 @@ public class List {
     private final ArrayList<Task> taskStorage;
     private int count;
 
+    /**
+     * Constructor for List class. Initializes an empty task storage.
+     */
     public List() {
         taskStorage = new ArrayList<>();
         count = 0;
@@ -267,7 +272,7 @@ public class List {
      * Returns specific tasks which matches with given regex
      *
      * @param task Target task characters
-     * @return ArrayList<Task> contains matched task
+     * @return ArrayList containing matched tasks
      */
     public ArrayList<Task> findTasks(String task) {
         // Assert: Search parameter should not be null
@@ -298,12 +303,12 @@ public class List {
      */
     public String showSnoozableTasks() {
         StringBuilder output = new StringBuilder(SNOOZE_HEADER);
-        boolean foundAny = false;
+        boolean hasFoundAny = false;
 
         for (int i = 0; i < count; i++) {
             Task task = taskStorage.get(i);
             if (!task.isCompleted()) { // Only show non-completed tasks
-                foundAny = true;
+                hasFoundAny = true;
                 String snoozeStatus = "";
                 if (task.isSnoozed()) {
                     if (task.isSnoozedForever()) {
@@ -322,11 +327,12 @@ public class List {
             }
         }
 
-        if (!foundAny) {
+        if (!hasFoundAny) {
             return NO_TASKS_TO_SNOOZE_MSG;
         }
 
-        output.append("\nCommands: 'snooze [number]' (forever), 'snooze [number] YYYY-MM-DD' (until date), 'unsnooze [number]' (remove snooze)");
+        output.append("\nCommands: 'snooze [number]' (forever), ").append("'snooze [number] YYYY-MM-DD' (until date), ")
+                .append("'unsnooze [number]' (remove snooze)");
 
         return output.toString();
     }
@@ -390,7 +396,7 @@ public class List {
                 if (task.isSnoozedForever()) {
                     task.snooze(snoozeDate);
                     return String.format("Task was snoozed forever, now changed to snooze until %s:\n   %s", snoozeDate,
-                                                    task);
+                            task);
                 } else {
                     task.snooze(snoozeDate);
                     return String.format("Task snooze date updated to %s:\n   %s", snoozeDate, task);

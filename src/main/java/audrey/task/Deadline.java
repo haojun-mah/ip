@@ -15,6 +15,12 @@ public class Deadline extends Task {
 
     private final LocalDate deadline;
 
+    /**
+     * Constructor for Deadline task.
+     *
+     * @param details Details containing task description and deadline
+     * @throws MissingDeadlineException If deadline details are missing or invalid
+     */
     public Deadline(String details) throws MissingDeadlineException {
         super(processDetail(details));
         deadline = processDeadline(details);

@@ -15,6 +15,11 @@ public class Storage {
     private File db;
     private final List toDoList;
 
+    /**
+     * Constructor for Storage class.
+     *
+     * @param filePath Path to the storage file
+     */
     public Storage(String filePath) {
         // Assert: File path should not be null or empty
         assert filePath != null : "File path cannot be null";
@@ -59,48 +64,72 @@ public class Storage {
      */
     private void parseTaskLine(String line) {
         try {
-            // Regex patterns for different task types
-            String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
-            String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
-            String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
-
-            if (line.matches(todoPattern)) { // Remove substring(2) - it was
-                                             // causing issues
-                java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
-                if (matcher.find()) {
-                    String status = matcher.group(1);
-                    String task = matcher.group(2);
-                    toDoList.addToDos(task);
-                    if ("X".equals(status)) {
-                        toDoList.markTask(toDoList.size());
-                    }
-                }
-            } else if (line.matches(deadlinePattern)) {
-                java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
-                if (matcher.find()) {
-                    String status = matcher.group(1);
-                    String task = matcher.group(2);
-                    String deadline = matcher.group(3);
-                    toDoList.addDeadline(task + " /by " + deadline);
-                    if ("X".equals(status)) {
-                        toDoList.markTask(toDoList.size());
-                    }
-                }
-            } else if (line.matches(eventPattern)) {
-                java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(eventPattern).matcher(line);
-                if (matcher.find()) {
-                    String status = matcher.group(1);
-                    String task = matcher.group(2);
-                    String from = matcher.group(3);
-                    String to = matcher.group(4);
-                    toDoList.addEvent(task + " /from " + from + " /to " + to);
-                    if ("X".equals(status)) {
-                        toDoList.markTask(toDoList.size());
-                    }
-                }
+            if (isTodoLine(line)) {
+                parseTodoLine(line);
+            } else if (isDeadlineLine(line)) {
+                parseDeadlineLine(line);
+            } else if (isEventLine(line)) {
+                parseEventLine(line);
             }
         } catch (Exception e) {
             System.out.println("Error parsing line: " + line + " - " + e.getMessage());
+        }
+    }
+
+    private boolean isTodoLine(String line) {
+        String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
+        return line.matches(todoPattern);
+    }
+
+    private boolean isDeadlineLine(String line) {
+        String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
+        return line.matches(deadlinePattern);
+    }
+
+    private boolean isEventLine(String line) {
+        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
+        return line.matches(eventPattern);
+    }
+
+    private void parseTodoLine(String line) {
+        String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
+        if (matcher.find()) {
+            String status = matcher.group(1);
+            String task = matcher.group(2);
+            toDoList.addToDos(task);
+            if ("X".equals(status)) {
+                toDoList.markTask(toDoList.size());
+            }
+        }
+    }
+
+    private void parseDeadlineLine(String line) {
+        String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
+        if (matcher.find()) {
+            String status = matcher.group(1);
+            String task = matcher.group(2);
+            String deadline = matcher.group(3);
+            toDoList.addDeadline(task + " /by " + deadline);
+            if ("X".equals(status)) {
+                toDoList.markTask(toDoList.size());
+            }
+        }
+    }
+
+    private void parseEventLine(String line) {
+        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(eventPattern).matcher(line);
+        if (matcher.find()) {
+            String status = matcher.group(1);
+            String task = matcher.group(2);
+            String from = matcher.group(3);
+            String to = matcher.group(4);
+            toDoList.addEvent(task + " /from " + from + " /to " + to);
+            if ("X".equals(status)) {
+                toDoList.markTask(toDoList.size());
+            }
         }
     }
 

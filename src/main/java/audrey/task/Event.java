@@ -18,6 +18,13 @@ public class Event extends Task {
     private final LocalDate from;
     private final LocalDate to;
 
+    /**
+     * Constructor for Event task.
+     *
+     * @param details Details containing task description, from date, and to date
+     * @throws MissingEventException If event details are missing
+     * @throws WrongFromToOrientationException If from date is after to date
+     */
     public Event(String details) throws MissingEventException, WrongFromToOrientationException {
         super(processDetail(details));
         from = processFrom(details);
@@ -132,6 +139,6 @@ public class Event extends Task {
     @Override
     public String toString() {
         return String.format("[E]%s (from:%s to:%s)", super.toString(), from.format(DATE_FORMAT),
-                                        to.format(DATE_FORMAT));
+                to.format(DATE_FORMAT));
     }
 }

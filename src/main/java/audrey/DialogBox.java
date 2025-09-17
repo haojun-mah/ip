@@ -2,7 +2,6 @@ package audrey;
 
 import java.io.IOException;
 import java.util.Collections;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,14 +18,14 @@ import javafx.scene.layout.HBox;
  * the speaker.
  */
 public class DialogBox extends HBox {
+    private static final Image USER_IMAGE = new Image(DialogBox.class.getResourceAsStream("/images/userimage.jpg"));
+    private static final Image AUDREY_IMAGE = new Image(
+            DialogBox.class.getResourceAsStream("/images/audreyimage.jpeg"));
+
     @FXML
     private Label dialog;
     @FXML
     private ImageView displayPicture;
-
-    private static final Image USER_IMAGE = new Image(DialogBox.class.getResourceAsStream("/images/userimage.jpg"));
-    private static final Image AUDREY_IMAGE = new Image(
-                                    DialogBox.class.getResourceAsStream("/images/audreyimage.jpeg"));
 
     private DialogBox(String text, Image img) {
         // Assert: Text parameter should not be null
