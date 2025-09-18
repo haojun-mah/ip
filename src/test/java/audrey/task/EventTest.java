@@ -9,15 +9,14 @@ import org.junit.jupiter.api.Test;
 
 import audrey.exception.MissingEventException;
 
-/**
- * Unit test for Event class
- */
+/** Unit test for Event class */
 public class EventTest {
 
     @Test
     @DisplayName("Ensure dateline string format is within expectation")
     public void deadline_toString() {
-        Event event = assertDoesNotThrow(() -> new Event("activity /from 1234-12-12 /to 1234-12-23"));
+        Event event =
+                assertDoesNotThrow(() -> new Event("activity /from 1234-12-12 /to 1234-12-23"));
         String expected = "[E][ ] activity (from:1234-12-12 to:1234-12-23)";
         String actual = event.toString();
         assertEquals(expected, actual);

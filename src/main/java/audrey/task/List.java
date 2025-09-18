@@ -9,18 +9,18 @@ import audrey.exception.MissingDeadlineException;
 import audrey.exception.MissingEventException;
 import audrey.exception.WrongFromToOrientationException;
 
-/**
- * List object manages and hold task objects
- */
+/** List object manages and hold task objects */
 public class List {
-    private static final String TASK_ADDED_FORMAT = "Got it. I've added this task:\n   %s\n"
-            + "Now you have %s tasks in the list.";
+    private static final String TASK_ADDED_FORMAT =
+            "Got it. I've added this task:\n   %s\n" + "Now you have %s tasks in the list.";
     private static final String TASK_MARKED_FORMAT = "Nice! I've marked this task as done!:\n   %s";
-    private static final String TASK_UNMARKED_FORMAT = "Ok! I've marked this task as not done yet!:\n   %s";
-    private static final String TASK_DELETED_FORMAT = "Removing this task!\n %s\nNow you have %s task in your list!";
+    private static final String TASK_UNMARKED_FORMAT =
+            "Ok! I've marked this task as not done yet!:\n   %s";
+    private static final String TASK_DELETED_FORMAT =
+            "Removing this task!\n %s\nNow you have %s task in your list!";
     private static final String TASK_NOT_EXIST_MSG = "Task does not exist!";
-    private static final String INVALID_DATE_FORMAT_MSG = "Invalid Format for date. "
-            + "Enter: YYYY-MM-DD . E.g.: 2018-03-07";
+    private static final String INVALID_DATE_FORMAT_MSG =
+            "Invalid Format for date. " + "Enter: YYYY-MM-DD . E.g.: 2018-03-07";
     private static final String INVALID_TIME_DATE_MSG = "Invalid time date";
     private static final String LIST_HEADER = "Here are the tasks in your list:\n";
     private static final String SNOOZE_HEADER = "Here are the tasks you can snooze:\n";
@@ -32,9 +32,7 @@ public class List {
     private final ArrayList<Task> taskStorage;
     private int count;
 
-    /**
-     * Constructor for List class. Initializes an empty task storage.
-     */
+    /** Constructor for List class. Initializes an empty task storage. */
     public List() {
         taskStorage = new ArrayList<>();
         count = 0;
@@ -129,7 +127,8 @@ public class List {
 
         // Assert: If valid, corrected index should be within storage bounds
         if (isValid) {
-            assert correctedTaskIndex < taskStorage.size() : "Corrected task index should be within storage bounds";
+            assert correctedTaskIndex < taskStorage.size()
+                    : "Corrected task index should be within storage bounds";
         }
 
         return isValid;
@@ -197,7 +196,8 @@ public class List {
         }
 
         int correctedTaskIndex = task - 1;
-        String output = String.format(TASK_DELETED_FORMAT, taskStorage.get(correctedTaskIndex), count - 1);
+        String output =
+                String.format(TASK_DELETED_FORMAT, taskStorage.get(correctedTaskIndex), count - 1);
         taskStorage.remove(correctedTaskIndex);
         count--;
 
@@ -296,8 +296,8 @@ public class List {
     }
 
     /**
-     * Shows the list of tasks that can be snoozed (non-completed tasks). Uses the same numbering system as the regular
-     * task list.
+     * Shows the list of tasks that can be snoozed (non-completed tasks). Uses the same numbering
+     * system as the regular task list.
      *
      * @return String containing the list of snoozable tasks
      */
@@ -331,7 +331,8 @@ public class List {
             return NO_TASKS_TO_SNOOZE_MSG;
         }
 
-        output.append("\nCommands: 'snooze [number]' (forever), ").append("'snooze [number] YYYY-MM-DD' (until date), ")
+        output.append("\nCommands: 'snooze [number]' (forever), ")
+                .append("'snooze [number] YYYY-MM-DD' (until date), ")
                 .append("'unsnooze [number]' (remove snooze)");
 
         return output.toString();
@@ -395,11 +396,13 @@ public class List {
             if (task.isSnoozed()) {
                 if (task.isSnoozedForever()) {
                     task.snooze(snoozeDate);
-                    return String.format("Task was snoozed forever, now changed to snooze until %s:\n   %s", snoozeDate,
-                            task);
+                    return String.format(
+                            "Task was snoozed forever, now changed to snooze until %s:\n   %s",
+                            snoozeDate, task);
                 } else {
                     task.snooze(snoozeDate);
-                    return String.format("Task snooze date updated to %s:\n   %s", snoozeDate, task);
+                    return String.format(
+                            "Task snooze date updated to %s:\n   %s", snoozeDate, task);
                 }
             }
 

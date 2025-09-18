@@ -5,9 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import audrey.exception.MissingDeadlineException;
 
-/**
- * Deadline task containing deadline.
- */
+/** Deadline task containing deadline. */
 public class Deadline extends Task {
     private static final String BY_DELIMITER = "/by";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");

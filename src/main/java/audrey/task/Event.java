@@ -6,9 +6,7 @@ import java.time.format.DateTimeFormatter;
 import audrey.exception.MissingEventException;
 import audrey.exception.WrongFromToOrientationException;
 
-/**
- * Event task containing from and to.
- */
+/** Event task containing from and to. */
 public class Event extends Task {
     private static final String FROM_DELIMITER = "/from";
     private static final String TO_DELIMITER = "/to";
@@ -138,7 +136,8 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return String.format("[E]%s (from:%s to:%s)", super.toString(), from.format(DATE_FORMAT),
-                to.format(DATE_FORMAT));
+        return String.format(
+                "[E]%s (from:%s to:%s)",
+                super.toString(), from.format(DATE_FORMAT), to.format(DATE_FORMAT));
     }
 }

@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import audrey.exception.MissingDeadlineException;
 
-/**
- * Unit test for deadline class
- */
+/** Unit test for deadline class */
 public class DeadlineTest {
     @Test
     @DisplayName("Ensure dateline string format is within expectation")
