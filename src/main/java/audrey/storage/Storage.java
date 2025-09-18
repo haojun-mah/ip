@@ -7,9 +7,7 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
-/**
- * Encapsulate the command logic
- */
+/** Encapsulate the command logic */
 public class Storage {
     private final String filePath;
     private File db;
@@ -41,9 +39,7 @@ public class Storage {
         }
     }
 
-    /**
-     * Internal function which load db information into List
-     */
+    /** Internal function which load db information into List */
     private void loadFromFile() {
         try (Scanner fileScanner = new Scanner(db)) {
             while (fileScanner.hasNextLine()) {
@@ -87,13 +83,15 @@ public class Storage {
     }
 
     private boolean isEventLine(String line) {
-        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
+        String eventPattern =
+                "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
         return line.matches(eventPattern);
     }
 
     private void parseTodoLine(String line) {
         String todoPattern = "\\[T\\]\\[([X ])\\]\\s*(.+)";
-        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(todoPattern).matcher(line);
+        java.util.regex.Matcher matcher =
+                java.util.regex.Pattern.compile(todoPattern).matcher(line);
         if (matcher.find()) {
             String status = matcher.group(1);
             String task = matcher.group(2);
@@ -106,7 +104,8 @@ public class Storage {
 
     private void parseDeadlineLine(String line) {
         String deadlinePattern = "\\[D\\]\\[([X ])\\]\\s*(.+?)\\s*\\(by:\\s*(.+?)\\)";
-        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
+        java.util.regex.Matcher matcher =
+                java.util.regex.Pattern.compile(deadlinePattern).matcher(line);
         if (matcher.find()) {
             String status = matcher.group(1);
             String task = matcher.group(2);
@@ -119,8 +118,10 @@ public class Storage {
     }
 
     private void parseEventLine(String line) {
-        String eventPattern = "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
-        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile(eventPattern).matcher(line);
+        String eventPattern =
+                "\\[E\\]\\[([X ])\\]\\s*(.+?)\\s*\\(from:\\s*(.+?)\\s+to:\\s*(.+?)\\)";
+        java.util.regex.Matcher matcher =
+                java.util.regex.Pattern.compile(eventPattern).matcher(line);
         if (matcher.find()) {
             String status = matcher.group(1);
             String task = matcher.group(2);
@@ -133,9 +134,7 @@ public class Storage {
         }
     }
 
-    /**
-     * Creates a new DB
-     */
+    /** Creates a new DB */
     private void createNewFile() {
         try {
             db.createNewFile();
@@ -145,12 +144,11 @@ public class Storage {
         }
     }
 
-    /**
-     * Save info into DB
-     */
+    /** Save info into DB */
     public void saveToFile() {
         // Assert: File path should be valid
-        assert filePath != null && !filePath.trim().isEmpty() : "File path should be valid for saving";
+        assert filePath != null && !filePath.trim().isEmpty()
+                : "File path should be valid for saving";
         // Assert: Todo list should be initialized
         assert toDoList != null : "Todo list should be initialized for saving";
 

@@ -1,8 +1,6 @@
 package audrey.task;
 
-/**
- * Todo task.
- */
+/** Todo task. */
 public class Todo extends Task {
     public Todo(String task) {
         super(task);

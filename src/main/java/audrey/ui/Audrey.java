@@ -4,9 +4,7 @@ import audrey.command.Parser;
 import audrey.storage.Storage;
 import audrey.task.List;
 
-/**
- * Contains logic for bot workflow.
- */
+/** Contains logic for bot workflow. */
 public class Audrey {
     private static final String AUDREY_DB = "audrey_db.txt";
     private static final Storage audreyStorage = new Storage(AUDREY_DB);
@@ -18,12 +16,11 @@ public class Audrey {
     private List instanceToDoList;
     private Parser instanceCommand;
 
-    /**
-     * Default constructor for GUI usage.
-     */
+    /** Default constructor for GUI usage. */
     public Audrey() {
         // Assert: Database filename should be valid
-        assert AUDREY_DB != null && !AUDREY_DB.trim().isEmpty() : "Database filename should be valid";
+        assert AUDREY_DB != null && !AUDREY_DB.trim().isEmpty()
+                : "Database filename should be valid";
 
         this.instanceStorage = new Storage(AUDREY_DB);
         this.instanceToDoList = instanceStorage.getToDoList();
@@ -32,7 +29,8 @@ public class Audrey {
         // Assert: All instance variables should be properly initialized
         assert this.instanceStorage != null : "Instance storage should be properly initialized";
         assert this.instanceToDoList != null : "Instance todo list should be properly initialized";
-        assert this.instanceCommand != null : "Instance command parser should be properly initialized";
+        assert this.instanceCommand != null
+                : "Instance command parser should be properly initialized";
     }
 
     /**
@@ -41,7 +39,8 @@ public class Audrey {
      * @param args Command line arguments
      */
     public static void main(String[] args) {
-        String logo = """
+        String logo =
+                """
 
                   #####  ##   ## #####  ##### ####### ##   ##
                  ##   ## ##   ## ##  ## ##  ## ##      ##  ##
@@ -54,7 +53,6 @@ public class Audrey {
         print("Hello! I'm Audrey\nWhat can I do for you!\n" + logo);
         print("Task that you have pending:\n" + toDoList.toString());
         print("\n" + getHelpMessage());
-
     }
 
     /**
@@ -102,9 +100,11 @@ public class Audrey {
                 formattedString.append("    ").append(splitString[i]).append('\n');
             }
         }
-        System.out.println("    ____________________________________________________________________");
+        System.out.println(
+                "    ____________________________________________________________________");
         System.out.println(formattedString.toString());
-        System.out.println("    ____________________________________________________________________");
+        System.out.println(
+                "    ____________________________________________________________________");
     }
 
     public static String getResponse(String input) {
@@ -154,11 +154,8 @@ public class Audrey {
         audreyStorage.saveToFile();
     }
 
-    /**
-     * Instance method for GUI to shutdown.
-     */
+    /** Instance method for GUI to shutdown. */
     public void instanceShutdown() {
         instanceStorage.saveToFile();
     }
-
 }

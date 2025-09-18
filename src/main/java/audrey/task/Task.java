@@ -2,9 +2,7 @@ package audrey.task;
 
 import java.time.LocalDate;
 
-/**
- * Task class for Todo, Deadline and Event to inherit from.
- */
+/** Task class for Todo, Deadline and Event to inherit from. */
 public abstract class Task {
     private final String description;
     private boolean completed;
@@ -54,16 +52,12 @@ public abstract class Task {
         this.snoozeUntil = until;
     }
 
-    /**
-     * Snooze this task forever.
-     */
+    /** Snooze this task forever. */
     public void snoozeForever() {
         this.snoozeUntil = LocalDate.MAX;
     }
 
-    /**
-     * Unsnooze this task (remove snooze).
-     */
+    /** Unsnooze this task (remove snooze). */
     public void unsnooze() {
         this.snoozeUntil = null;
     }

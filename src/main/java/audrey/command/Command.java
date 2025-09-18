@@ -1,11 +1,19 @@
 package audrey.command;
 
-/**
- * Enum which maps command for easier use in Audrey
- */
+/** Enum which maps command for easier use in Audrey */
 public enum Command {
-    BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), TODO("todo"), DEADLINE("deadline"), EVENT(
-            "event"), DELETE("delete"), FIND("find"), SNOOZE("snooze"), UNSNOOZE("unsnooze"), HELP("help");
+    BYE("bye"),
+    LIST("list"),
+    MARK("mark"),
+    UNMARK("unmark"),
+    TODO("todo"),
+    DEADLINE("deadline"),
+    EVENT("event"),
+    DELETE("delete"),
+    FIND("find"),
+    SNOOZE("snooze"),
+    UNSNOOZE("unsnooze"),
+    HELP("help");
 
     private final String commandString;
 

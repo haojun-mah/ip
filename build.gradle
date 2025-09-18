@@ -37,7 +37,9 @@ checkstyle {
 
 spotless {
     java {
-        eclipse('4.26').configFile('eclipse-java-formatter.xml')
+        // Use Google Java Format with AOSP style (4-space indentation) 
+        // which is closer to SE-EDU standards than default Google style
+        googleJavaFormat('1.17.0').aosp()
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
