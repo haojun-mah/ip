@@ -59,13 +59,22 @@ public class Parser {
         // Assert: Input should not be null
         assert input != null : "Input string cannot be null";
 
-        if (isListActivationCommand(input)) {
+        if (isHelpCommand(input)) {
+            return getHelpMessage();
+        } else if (isListActivationCommand(input)) {
             return activateListMode();
         } else if (isListMode) {
             return processListModeCommand(input);
         } else {
             return echoInput(input);
         }
+    }
+
+    /**
+     * Checks if the input is a help command.
+     */
+    private boolean isHelpCommand(String input) {
+        return "help".equalsIgnoreCase(input.trim());
     }
 
     /**
@@ -249,11 +258,46 @@ public class Parser {
                 print(errorMsg);
                 return errorMsg;
             }
+        case HELP:
+            String helpMsg = getHelpMessage();
+            print(helpMsg);
+            return helpMsg;
         default:
             String defaultMsg = "Unknown command";
             print(defaultMsg);
             return defaultMsg;
         }
+    }
+
+    /**
+     * Returns a help message showing all available commands.
+     *
+     * @return String containing help information
+     */
+    private String getHelpMessage() {
+        return """
+                Available Commands:
+                ==================
+                • list - Show all tasks
+                • todo <description> - Add a todo task
+                • deadline <description> /by <date> - Add a deadline task (date: YYYY-MM-DD)
+                • event <description> /from <date> /to <date> - Add an event task
+                • mark <number> - Mark task as done
+                • unmark <number> - Mark task as not done
+                • delete <number> - Delete a task
+                • find <keyword> - Find tasks containing keyword
+                • snooze <number> - Snooze task forever
+                • snooze <number> <date> - Snooze task until date (YYYY-MM-DD)
+                • unsnooze <number> - Remove snooze status from task
+                • help - Show this help message
+                • bye - Exit the application
+
+                Examples:
+                • todo Read book
+                • deadline Submit assignment /by 2025-09-25
+                • event Meeting /from 2025-09-20 /to 2025-09-20
+                • snooze 1 2025-10-01
+                """;
     }
 
     /**

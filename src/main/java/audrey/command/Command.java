@@ -5,7 +5,7 @@ package audrey.command;
  */
 public enum Command {
     BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), TODO("todo"), DEADLINE("deadline"), EVENT(
-            "event"), DELETE("delete"), FIND("find"), SNOOZE("snooze"), UNSNOOZE("unsnooze");
+            "event"), DELETE("delete"), FIND("find"), SNOOZE("snooze"), UNSNOOZE("unsnooze"), HELP("help");
 
     private final String commandString;
 

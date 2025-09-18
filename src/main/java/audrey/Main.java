@@ -53,8 +53,9 @@ public class Main extends Application {
      */
     public void setAudrey(Audrey a) {
         audrey = a;
-        dialogContainer.getChildren().addAll(DialogBox.getAudreyDialog(
-                "Hello! I am Audrey, your personal bot. Tell what to do! \n" + "Enter list to enable list mode!"));
+        dialogContainer.getChildren()
+                .addAll(DialogBox.getAudreyDialog("Hello! I am Audrey, your personal bot. Tell what to do! \n"
+                        + "Enter list to enable list mode!" + '\n' + "Enter help to see all commands!"));
     }
 
     /**
