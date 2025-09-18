@@ -83,17 +83,80 @@ public class Deadline extends Task {
     }
 
     /**
-     * Parses a date string with proper error handling.
+     * Parses a date string with comprehensive validation.
      *
      * @param dateString Date string to parse
      * @return Parsed LocalDate
-     * @throws MissingDeadlineException If date parsing fails
+     * @throws MissingDeadlineException If date parsing fails or date is invalid
      */
     private static LocalDate parseDate(String dateString) throws MissingDeadlineException {
+        if (dateString == null || dateString.trim().isEmpty()) {
+            throw new MissingDeadlineException("Date cannot be empty");
+        }
+
+        String trimmedDate = dateString.trim();
+
+        // Check basic format before parsing (YYYY-MM-DD)
+        if (!trimmedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            throw new MissingDeadlineException(
+                    "Date must be in YYYY-MM-DD format, got: " + trimmedDate);
+        }
+
         try {
-            return LocalDate.parse(dateString);
+            LocalDate parsedDate = LocalDate.parse(trimmedDate);
+
+            // Validate date is not too far in the past
+            LocalDate earliestValidDate = LocalDate.now().minusYears(10);
+            if (parsedDate.isBefore(earliestValidDate)) {
+                throw new MissingDeadlineException("Date too far in the past: " + trimmedDate);
+            }
+
+            // Validate date is not too far in the future
+            LocalDate latestValidDate = LocalDate.now().plusYears(100);
+            if (parsedDate.isAfter(latestValidDate)) {
+                throw new MissingDeadlineException("Date too far in the future: " + trimmedDate);
+            }
+
+            return parsedDate;
+
+        } catch (java.time.format.DateTimeParseException e) {
+            // Check for common invalid dates
+            String[] parts = trimmedDate.split("-");
+            if (parts.length == 3) {
+                try {
+                    int month = Integer.parseInt(parts[1]);
+                    int day = Integer.parseInt(parts[2]);
+
+                    if (month < 1 || month > 12) {
+                        throw new MissingDeadlineException(
+                                "Invalid month: " + month + " (must be 1-12)");
+                    }
+
+                    if (day < 1 || day > 31) {
+                        throw new MissingDeadlineException(
+                                "Invalid day: " + day + " (must be 1-31)");
+                    }
+
+                    // Special case for common invalid dates
+                    if ((month == 2 && day > 29)
+                            || ((month == 4 || month == 6 || month == 9 || month == 11)
+                                    && day > 30)) {
+                        throw new MissingDeadlineException(
+                                "Invalid date: "
+                                        + trimmedDate
+                                        + " (day doesn't exist in that month)");
+                    }
+
+                } catch (NumberFormatException nfe) {
+                    // Fall through to generic error
+                }
+            }
+
+            throw new MissingDeadlineException(
+                    "Invalid date format: " + trimmedDate + " (use YYYY-MM-DD)");
         } catch (Exception e) {
-            throw new MissingDeadlineException();
+            throw new MissingDeadlineException(
+                    "Error parsing date: " + trimmedDate + " - " + e.getMessage());
         }
     }
 
