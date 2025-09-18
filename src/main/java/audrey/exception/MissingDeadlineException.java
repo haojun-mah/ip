@@ -5,4 +5,8 @@ public class MissingDeadlineException extends Exception {
     public MissingDeadlineException() {
         super("Missing Deadline Details!");
     }
+
+    public MissingDeadlineException(String message) {
+        super(message);
+    }
 }

@@ -16,8 +16,8 @@ public class DeadlineTest {
     @Test
     @DisplayName("Ensure dateline string format is within expectation")
     public void deadline_toString() {
-        Deadline deadline = assertDoesNotThrow(() -> new Deadline("activity /by 1234-12-12"));
-        String expected = "[D][ ] activity (by:1234-12-12)";
+        Deadline deadline = assertDoesNotThrow(() -> new Deadline("activity /by 2025-12-12"));
+        String expected = "[D][ ] activity (by:2025-12-12)";
         String actual = deadline.toString();
         assertEquals(expected, actual);
     }
