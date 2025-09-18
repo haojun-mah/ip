@@ -1,36 +1,14 @@
 # Audrey User Guide
 
-**Audrey** is a desktop task management application optimized for use via a Command Line Interface (CLI) while also providing the benefits of a Graphical User Interface (GUI). If you're comfortable typing commands, Audrey can help you manage your tasks more efficiently than traditional GUI applications.
+Welcome to **Audrey** - your personal task management assistant! This guide will help you master all of Audrey's features and commands.
 
----
+## Getting Started
 
-## Quick Start
-
-1. **Ensure you have Java 17 or above installed** on your computer.
-
-2. **Download the latest `audrey.jar` file** from the releases section.
-
-3. **Copy the file** to the folder you want to use as the home folder for Audrey.
-
-4. **Open a command terminal**, navigate to the folder containing the jar file, and run the following command:
-   ```bash
-   java -jar audrey.jar
-   ```
-
-5. **A GUI similar to the one below should appear** in a few seconds. The app will start with an empty task list.
-
-6. **Type commands in the command box** and press Enter to execute them. For example:
-   - Type `help` and press Enter to see all available commands
-   - Type `list` to activate list mode and view your tasks
-
-7. **Try some example commands:**
-   - `todo Read a book` : Adds a simple todo task
-   - `deadline Submit report /by 2025-12-25` : Adds a task with a deadline
-   - `list` : Shows all your current tasks
-   - `mark 1` : Marks the first task as completed
-   - `bye` : Exits the application
-
-Refer to the [Features](#features) section below for details on each command.
+1. Type `help` to see all available commands
+2. Type `list` to activate task management mode
+3. Start adding tasks with `todo`, `deadline`, or `event` commands
+4. Use `mark` and `unmark` to track your progress
+5. Type `bye` to exit list mode
 
 ---
 
