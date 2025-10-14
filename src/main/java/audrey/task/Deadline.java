@@ -10,6 +10,22 @@ public class Deadline extends Task {
     private static final String BY_DELIMITER = "/by";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int EXPECTED_PARTS_COUNT = 2;
+    private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
+    private static final int YEARS_BACK_VALIDATION = 10;
+    private static final int YEARS_FORWARD_VALIDATION = 100;
+
+    // Date validation constants
+    private static final int MIN_MONTH = 1;
+    private static final int MAX_MONTH = 12;
+    private static final int MIN_DAY = 1;
+    private static final int MAX_DAY = 31;
+    private static final int FEBRUARY = 2;
+    private static final int MAX_FEBRUARY_DAYS = 29;
+    private static final int APRIL = 4;
+    private static final int JUNE = 6;
+    private static final int SEPTEMBER = 9;
+    private static final int NOVEMBER = 11;
+    private static final int MAX_SHORT_MONTH_DAYS = 30;
 
     private final LocalDate deadline;
 
@@ -97,7 +113,7 @@ public class Deadline extends Task {
         String trimmedDate = dateString.trim();
 
         // Check basic format before parsing (YYYY-MM-DD)
-        if (!trimmedDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        if (!trimmedDate.matches(DATE_PATTERN)) {
             throw new MissingDeadlineException(
                     "Date must be in YYYY-MM-DD format, got: " + trimmedDate);
         }
@@ -106,13 +122,13 @@ public class Deadline extends Task {
             LocalDate parsedDate = LocalDate.parse(trimmedDate);
 
             // Validate date is not too far in the past
-            LocalDate earliestValidDate = LocalDate.now().minusYears(10);
+            LocalDate earliestValidDate = LocalDate.now().minusYears(YEARS_BACK_VALIDATION);
             if (parsedDate.isBefore(earliestValidDate)) {
                 throw new MissingDeadlineException("Date too far in the past: " + trimmedDate);
             }
 
             // Validate date is not too far in the future
-            LocalDate latestValidDate = LocalDate.now().plusYears(100);
+            LocalDate latestValidDate = LocalDate.now().plusYears(YEARS_FORWARD_VALIDATION);
             if (parsedDate.isAfter(latestValidDate)) {
                 throw new MissingDeadlineException("Date too far in the future: " + trimmedDate);
             }
@@ -127,20 +143,35 @@ public class Deadline extends Task {
                     int month = Integer.parseInt(parts[1]);
                     int day = Integer.parseInt(parts[2]);
 
-                    if (month < 1 || month > 12) {
+                    if (month < MIN_MONTH || month > MAX_MONTH) {
                         throw new MissingDeadlineException(
-                                "Invalid month: " + month + " (must be 1-12)");
+                                "Invalid month: "
+                                        + month
+                                        + " (must be "
+                                        + MIN_MONTH
+                                        + "-"
+                                        + MAX_MONTH
+                                        + ")");
                     }
 
-                    if (day < 1 || day > 31) {
+                    if (day < MIN_DAY || day > MAX_DAY) {
                         throw new MissingDeadlineException(
-                                "Invalid day: " + day + " (must be 1-31)");
+                                "Invalid day: "
+                                        + day
+                                        + " (must be "
+                                        + MIN_DAY
+                                        + "-"
+                                        + MAX_DAY
+                                        + ")");
                     }
 
                     // Special case for common invalid dates
-                    if ((month == 2 && day > 29)
-                            || ((month == 4 || month == 6 || month == 9 || month == 11)
-                                    && day > 30)) {
+                    if ((month == FEBRUARY && day > MAX_FEBRUARY_DAYS)
+                            || ((month == APRIL
+                                            || month == JUNE
+                                            || month == SEPTEMBER
+                                            || month == NOVEMBER)
+                                    && day > MAX_SHORT_MONTH_DAYS)) {
                         throw new MissingDeadlineException(
                                 "Invalid date: "
                                         + trimmedDate
