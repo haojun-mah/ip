@@ -78,7 +78,7 @@ public class SnoozeCommandParser extends BaseCommandParser {
     private String handleSnoozeUntilDate(int taskNumber, String dateStr) {
         // Validate date format
         if (!dateStr.matches(DATE_PATTERN)) {
-            String errorMsg = "Invalid date format: '" + dateStr + "'. Use YYYY-MM-DD format.";
+            String errorMsg = "Invalid Format for date";
             print(errorMsg);
             return errorMsg;
         }

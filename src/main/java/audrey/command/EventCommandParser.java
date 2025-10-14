@@ -26,9 +26,7 @@ public class EventCommandParser extends BaseCommandParser {
 
         // Validate /from and /to format
         if (!fullDescription.contains("/from") || !fullDescription.contains("/to")) {
-            String errorMsg =
-                    "Event must include both '/from [start]' and '/to [end]'. "
-                            + "Usage: event [description] /from [YYYY-MM-DD] /to [YYYY-MM-DD]";
+            String errorMsg = "Event must include '/from [date]'";
             print(errorMsg);
             return errorMsg;
         }
