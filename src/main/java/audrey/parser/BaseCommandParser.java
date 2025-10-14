@@ -1,4 +1,4 @@
-package audrey.command;
+package audrey.parser;
 
 import java.util.Scanner;
 

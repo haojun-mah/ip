@@ -1,13 +1,13 @@
-package audrey.command;
+package audrey.parser;
 
 import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for unsnooze commands. */
-public class UnsnoozeCommandParser extends BaseCommandParser {
+/** Parser for delete commands. */
+public class DeleteCommandParser extends BaseCommandParser {
 
-    public UnsnoozeCommandParser(List toDoList, Scanner scanner) {
+    public DeleteCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
@@ -17,7 +17,7 @@ public class UnsnoozeCommandParser extends BaseCommandParser {
         String validationError =
                 validateMinimumArgs(
                         processedInput,
-                        "Unsnooze requires a task number. Usage: unsnooze [task number]");
+                        "Delete requires a task number. Usage: delete [task number]");
         if (validationError != null) {
             return validationError;
         }
@@ -32,12 +32,12 @@ public class UnsnoozeCommandParser extends BaseCommandParser {
 
         try {
             int taskNumber = Integer.parseInt(numberStr);
-            String unsnoozeResult = toDoList.unsnoozeTask(taskNumber);
-            print(unsnoozeResult);
-            return unsnoozeResult;
+            String deleteResult = toDoList.delete(taskNumber);
+            print(deleteResult);
+            return deleteResult;
 
         } catch (Exception e) {
-            String errorMsg = "Error unsnoozing task: " + e.getMessage();
+            String errorMsg = "Error deleting task: " + e.getMessage();
             print(errorMsg);
             return errorMsg;
         }

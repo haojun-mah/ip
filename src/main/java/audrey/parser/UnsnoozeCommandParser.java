@@ -1,13 +1,13 @@
-package audrey.command;
+package audrey.parser;
 
 import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for mark commands. */
-public class MarkCommandParser extends BaseCommandParser {
+/** Parser for unsnooze commands. */
+public class UnsnoozeCommandParser extends BaseCommandParser {
 
-    public MarkCommandParser(List toDoList, Scanner scanner) {
+    public UnsnoozeCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
@@ -16,7 +16,8 @@ public class MarkCommandParser extends BaseCommandParser {
         // Validate minimum arguments
         String validationError =
                 validateMinimumArgs(
-                        processedInput, "Mark requires a task number. Usage: mark [task number]");
+                        processedInput,
+                        "Unsnooze requires a task number. Usage: unsnooze [task number]");
         if (validationError != null) {
             return validationError;
         }
@@ -31,12 +32,12 @@ public class MarkCommandParser extends BaseCommandParser {
 
         try {
             int taskNumber = Integer.parseInt(numberStr);
-            String markResult = toDoList.markTask(taskNumber);
-            print(markResult);
-            return markResult;
+            String unsnoozeResult = toDoList.unsnoozeTask(taskNumber);
+            print(unsnoozeResult);
+            return unsnoozeResult;
 
         } catch (Exception e) {
-            String errorMsg = "Error marking task: " + e.getMessage();
+            String errorMsg = "Error unsnoozing task: " + e.getMessage();
             print(errorMsg);
             return errorMsg;
         }

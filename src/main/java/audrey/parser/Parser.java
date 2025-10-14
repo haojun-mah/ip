@@ -1,7 +1,8 @@
-package audrey.command;
+package audrey.parser;
 
 import java.util.Scanner;
 
+import audrey.command.Command;
 import audrey.task.List;
 
 /** Parser class encapsulates command logic */

@@ -1,6 +1,6 @@
 package audrey.ui;
 
-import audrey.command.Parser;
+import audrey.parser.Parser;
 import audrey.storage.Storage;
 import audrey.task.List;
 
