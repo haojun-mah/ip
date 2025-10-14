@@ -7,6 +7,12 @@ import audrey.task.List;
 /** Contains logic for bot workflow. */
 public class Audrey {
     private static final String AUDREY_DB = "audrey_db.txt";
+
+    // Constants for formatting
+    private static final String INDENT = "    ";
+    private static final String SEPARATOR_LINE =
+            "    ____________________________________________________________________";
+
     private static final Storage audreyStorage = new Storage(AUDREY_DB);
     private static final List toDoList = audreyStorage.getToDoList();
     private static final Parser command = new Parser(toDoList);
@@ -95,16 +101,14 @@ public class Audrey {
         StringBuilder formattedString = new StringBuilder();
         for (int i = 0; i < splitString.length; i++) {
             if (i + 1 == splitString.length) {
-                formattedString.append("    ").append(splitString[i]);
+                formattedString.append(INDENT).append(splitString[i]);
             } else {
-                formattedString.append("    ").append(splitString[i]).append('\n');
+                formattedString.append(INDENT).append(splitString[i]).append('\n');
             }
         }
-        System.out.println(
-                "    ____________________________________________________________________");
+        System.out.println(SEPARATOR_LINE);
         System.out.println(formattedString.toString());
-        System.out.println(
-                "    ____________________________________________________________________");
+        System.out.println(SEPARATOR_LINE);
     }
 
     public static String getResponse(String input) {

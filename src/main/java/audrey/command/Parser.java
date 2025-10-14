@@ -8,6 +8,29 @@ import audrey.task.Task;
 
 /** Parser class encapsulates command logic */
 public class Parser {
+    // Constants for validation limits
+    private static final int MAX_WHITESPACE_EXCESS = 10;
+    private static final int MAX_COMMAND_LENGTH = 1000;
+    private static final int MAX_DESCRIPTION_LENGTH = 200;
+
+    // Constants for formatting
+    private static final String INDENT = "    ";
+    private static final String SEPARATOR_LINE =
+            "    ____________________________________________________________________";
+
+    // Constants for date format
+    private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
+
+    // Constants for command strings
+    private static final String HELP_COMMAND = "help";
+    private static final String LIST_COMMAND = "list";
+
+    // Constants for array operations
+    private static final int SPLIT_LIMIT_TWO = 2;
+    private static final int COMMAND_INDEX = 0;
+    private static final int ARGS_INDEX = 1;
+    private static final int MIN_ARGS_LENGTH = 2;
+
     private final Scanner scanner;
     private final List toDoList;
     private boolean isListMode;
@@ -40,16 +63,14 @@ public class Parser {
         StringBuilder formattedString = new StringBuilder();
         for (int i = 0; i < splitString.length; i++) {
             if (i + 1 == splitString.length) {
-                formattedString.append("    ").append(splitString[i]);
+                formattedString.append(INDENT).append(splitString[i]);
             } else {
-                formattedString.append("    ").append(splitString[i]).append('\n');
+                formattedString.append(INDENT).append(splitString[i]).append('\n');
             }
         }
-        System.out.println(
-                "    ____________________________________________________________________");
+        System.out.println(SEPARATOR_LINE);
         System.out.println(formattedString.toString());
-        System.out.println(
-                "    ____________________________________________________________________");
+        System.out.println(SEPARATOR_LINE);
     }
 
     /** Processes user input and returns appropriate response. */
@@ -92,13 +113,15 @@ public class Parser {
         }
 
         // Check for excessive whitespace that might indicate formatting issues
-        if (input.length() - input.trim().length() > 10) {
+        if (input.length() - input.trim().length() > MAX_WHITESPACE_EXCESS) {
             return "Too much whitespace. Please check your command format.";
         }
 
         // Check for extremely long inputs that might cause issues
-        if (input.length() > 1000) {
-            return "Command too long. Please keep commands under 1000 characters.";
+        if (input.length() > MAX_COMMAND_LENGTH) {
+            return "Command too long. Please keep commands under "
+                    + MAX_COMMAND_LENGTH
+                    + " characters.";
         }
 
         // Check for potentially problematic characters
@@ -131,12 +154,12 @@ public class Parser {
 
     /** Checks if the input is a help command. */
     private boolean isHelpCommand(String input) {
-        return "help".equalsIgnoreCase(input.trim());
+        return HELP_COMMAND.equalsIgnoreCase(input.trim());
     }
 
     /** Checks if the input is a list activation command. */
     private boolean isListActivationCommand(String input) {
-        return "list".equalsIgnoreCase(input) && !isListMode;
+        return LIST_COMMAND.equalsIgnoreCase(input) && !isListMode;
     }
 
     /** Activates list mode and returns the activation message. */
@@ -179,7 +202,7 @@ public class Parser {
         }
 
         // Split on spaces but preserve quoted strings
-        String[] parts = input.split(" ", 2);
+        String[] parts = input.split(" ", SPLIT_LIMIT_TWO);
 
         // Validate command part
         if (parts[0].isEmpty()) {
@@ -187,8 +210,9 @@ public class Parser {
         }
 
         // Check for invalid characters in command
-        if (!parts[0].matches("[a-zA-Z]+")) {
-            throw new IllegalArgumentException("Command must contain only letters: " + parts[0]);
+        if (!parts[COMMAND_INDEX].matches("[a-zA-Z]+")) {
+            throw new IllegalArgumentException(
+                    "Command must contain only letters: " + parts[COMMAND_INDEX]);
         }
 
         return parts;
@@ -215,101 +239,17 @@ public class Parser {
             case EVENT:
                 return handleEventCommand(processedInput);
             case DELETE:
-                try {
-                    String deleteResult = toDoList.delete(Integer.parseInt(processedInput[1]));
-                    print(deleteResult);
-                    return deleteResult;
-                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    String errorMsg = "Number not provided!";
-                    print(errorMsg);
-                    return errorMsg;
-                }
+                return handleDeleteCommand(processedInput);
             case FIND:
-                if (processedInput.length > 1) {
-                    String printString = "Here are the matching tasks in your list:\n";
-                    ArrayList<Task> findList = toDoList.findTasks(processedInput[1].trim());
-                    if (findList.isEmpty()) {
-                        String noResultMsg = "No matching task found!";
-                        print(noResultMsg);
-                        return noResultMsg;
-                    } else {
-                        for (int i = 0; i < findList.size(); i++) {
-                            printString += String.format("%d.%s\n", i + 1, findList.get(i));
-                        }
-                        print(printString);
-                        return printString;
-                    }
-                } else {
-                    String errorMsg = "Find description is empty";
-                    print(errorMsg);
-                    return errorMsg;
-                }
+                return handleFindCommand(processedInput);
             case SNOOZE:
-                if (processedInput.length == 1) {
-                    // Just "snooze" - show snoozable tasks
-                    String snoozeableList = toDoList.showSnoozableTasks();
-                    print(snoozeableList);
-                    return snoozeableList;
-                } else {
-                    // Parse snooze parameters manually
-                    String[] snoozeParams = processedInput[1].split(" ");
-                    if (snoozeParams.length == 1) {
-                        // "snooze 1" - snooze task forever
-                        try {
-                            String snoozeResult =
-                                    toDoList.snoozeTaskForever(Integer.parseInt(snoozeParams[0]));
-                            print(snoozeResult);
-                            return snoozeResult;
-                        } catch (NumberFormatException e) {
-                            String errorMsg = "Invalid task number!";
-                            print(errorMsg);
-                            return errorMsg;
-                        }
-                    } else if (snoozeParams.length == 2) {
-                        // "snooze 1 2024-12-25" - snooze task until date
-                        try {
-                            String snoozeResult =
-                                    toDoList.snoozeTaskUntil(
-                                            Integer.parseInt(snoozeParams[0]), snoozeParams[1]);
-                            print(snoozeResult);
-                            return snoozeResult;
-                        } catch (NumberFormatException e) {
-                            String errorMsg = "Invalid task number!";
-                            print(errorMsg);
-                            return errorMsg;
-                        }
-                    } else {
-                        String errorMsg =
-                                "Invalid snooze command. Use: 'snooze', 'snooze 1', or 'snooze 1 YYYY-MM-DD'";
-                        print(errorMsg);
-                        return errorMsg;
-                    }
-                }
+                return handleSnoozeCommand(processedInput);
             case UNSNOOZE:
-                if (processedInput.length == 2) {
-                    try {
-                        String unsnoozeResult =
-                                toDoList.unsnoozeTask(Integer.parseInt(processedInput[1]));
-                        print(unsnoozeResult);
-                        return unsnoozeResult;
-                    } catch (NumberFormatException e) {
-                        String errorMsg = "Invalid task number!";
-                        print(errorMsg);
-                        return errorMsg;
-                    }
-                } else {
-                    String errorMsg = "Invalid unsnooze command. Use: 'unsnooze [task number]'";
-                    print(errorMsg);
-                    return errorMsg;
-                }
+                return handleUnsnoozeCommand(processedInput);
             case HELP:
-                String helpMsg = getHelpMessage();
-                print(helpMsg);
-                return helpMsg;
+                return handleHelpCommand();
             default:
-                String defaultMsg = "Unknown command";
-                print(defaultMsg);
-                return defaultMsg;
+                return handleUnknownCommand();
         }
     }
 
@@ -460,8 +400,11 @@ public class Parser {
             String description = processedInput[1].trim();
 
             // Validate description length
-            if (description.length() > 200) {
-                String errorMsg = "Todo description too long. Please keep it under 200 characters.";
+            if (description.length() > MAX_DESCRIPTION_LENGTH) {
+                String errorMsg =
+                        "Todo description too long. Please keep it under "
+                                + MAX_DESCRIPTION_LENGTH
+                                + " characters.";
                 print(errorMsg);
                 return errorMsg;
             }
@@ -541,7 +484,7 @@ public class Parser {
             }
 
             // Validate date format
-            if (!dateStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            if (!dateStr.matches(DATE_PATTERN)) {
                 String errorMsg = "Invalid date format: '" + dateStr + "'. Use YYYY-MM-DD format.";
                 print(errorMsg);
                 return errorMsg;
@@ -646,14 +589,14 @@ public class Parser {
             }
 
             // Validate date formats
-            if (!fromDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            if (!fromDate.matches(DATE_PATTERN)) {
                 String errorMsg =
                         "Invalid from date format: '" + fromDate + "'. Use YYYY-MM-DD format.";
                 print(errorMsg);
                 return errorMsg;
             }
 
-            if (!toDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            if (!toDate.matches(DATE_PATTERN)) {
                 String errorMsg =
                         "Invalid to date format: '" + toDate + "'. Use YYYY-MM-DD format.";
                 print(errorMsg);
@@ -714,7 +657,12 @@ public class Parser {
 
     /** Handles invalid commands with specific input context. */
     private String handleInvalidCommand(String input) {
-        String message = "Invalid command: '" + input + "'. Type 'help' to see available commands.";
+        String message =
+                "Invalid command: '"
+                        + input
+                        + "'. Type '"
+                        + HELP_COMMAND
+                        + "' to see available commands.";
         print(message);
         return message;
     }
@@ -723,5 +671,167 @@ public class Parser {
     private String echoInput(String input) {
         print(input);
         return input;
+    }
+
+    /**
+     * Handles DELETE command with comprehensive error checking.
+     *
+     * @param processedInput Command and arguments
+     * @return Result message
+     */
+    private String handleDeleteCommand(String[] processedInput) {
+        try {
+            if (processedInput.length < MIN_ARGS_LENGTH
+                    || processedInput[ARGS_INDEX].trim().isEmpty()) {
+                String errorMsg = "Task number required. Usage: delete [task number]";
+                print(errorMsg);
+                return errorMsg;
+            }
+
+            int taskNumber = Integer.parseInt(processedInput[ARGS_INDEX].trim());
+            String deleteResult = toDoList.delete(taskNumber);
+            print(deleteResult);
+            return deleteResult;
+
+        } catch (NumberFormatException e) {
+            String errorMsg = "Invalid task number format. Please enter a valid integer.";
+            print(errorMsg);
+            return errorMsg;
+        } catch (Exception e) {
+            String errorMsg = "Error deleting task: " + e.getMessage();
+            print(errorMsg);
+            return errorMsg;
+        }
+    }
+
+    /**
+     * Handles FIND command with comprehensive validation.
+     *
+     * @param processedInput Command and arguments
+     * @return Result message
+     */
+    private String handleFindCommand(String[] processedInput) {
+        if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
+            String errorMsg = "Search keyword required. Usage: find [keyword]";
+            print(errorMsg);
+            return errorMsg;
+        }
+
+        String keyword = processedInput[1].trim();
+        ArrayList<Task> findList = toDoList.findTasks(keyword);
+
+        if (findList.isEmpty()) {
+            String noResultMsg = "No matching task found!";
+            print(noResultMsg);
+            return noResultMsg;
+        }
+
+        StringBuilder printString =
+                new StringBuilder("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < findList.size(); i++) {
+            printString.append(String.format("%d.%s\n", i + 1, findList.get(i)));
+        }
+
+        String result = printString.toString();
+        print(result);
+        return result;
+    }
+
+    /**
+     * Handles SNOOZE command with comprehensive validation.
+     *
+     * @param processedInput Command and arguments
+     * @return Result message
+     */
+    private String handleSnoozeCommand(String[] processedInput) {
+        if (processedInput.length == 1) {
+            return handleSnoozeList();
+        }
+
+        String[] snoozeParams = processedInput[1].split(" ");
+        if (snoozeParams.length == 1) {
+            return handleSnoozeForever(snoozeParams[0]);
+        } else if (snoozeParams.length == 2) {
+            return handleSnoozeUntilDate(snoozeParams[0], snoozeParams[1]);
+        } else {
+            String errorMsg =
+                    "Invalid snooze command. Use: 'snooze', 'snooze [number]', or 'snooze [number] [date]'";
+            print(errorMsg);
+            return errorMsg;
+        }
+    }
+
+    /** Shows list of snoozable tasks. */
+    private String handleSnoozeList() {
+        String snoozeableList = toDoList.showSnoozableTasks();
+        print(snoozeableList);
+        return snoozeableList;
+    }
+
+    /** Snoozes a task forever. */
+    private String handleSnoozeForever(String taskNumberStr) {
+        try {
+            int taskNumber = Integer.parseInt(taskNumberStr);
+            String snoozeResult = toDoList.snoozeTaskForever(taskNumber);
+            print(snoozeResult);
+            return snoozeResult;
+        } catch (NumberFormatException e) {
+            String errorMsg = "Invalid task number format!";
+            print(errorMsg);
+            return errorMsg;
+        }
+    }
+
+    /** Snoozes a task until a specific date. */
+    private String handleSnoozeUntilDate(String taskNumberStr, String date) {
+        try {
+            int taskNumber = Integer.parseInt(taskNumberStr);
+            String snoozeResult = toDoList.snoozeTaskUntil(taskNumber, date);
+            print(snoozeResult);
+            return snoozeResult;
+        } catch (NumberFormatException e) {
+            String errorMsg = "Invalid task number format!";
+            print(errorMsg);
+            return errorMsg;
+        }
+    }
+
+    /**
+     * Handles UNSNOOZE command with comprehensive validation.
+     *
+     * @param processedInput Command and arguments
+     * @return Result message
+     */
+    private String handleUnsnoozeCommand(String[] processedInput) {
+        if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
+            String errorMsg = "Task number required. Usage: unsnooze [task number]";
+            print(errorMsg);
+            return errorMsg;
+        }
+
+        try {
+            int taskNumber = Integer.parseInt(processedInput[1].trim());
+            String unsnoozeResult = toDoList.unsnoozeTask(taskNumber);
+            print(unsnoozeResult);
+            return unsnoozeResult;
+        } catch (NumberFormatException e) {
+            String errorMsg = "Invalid task number format!";
+            print(errorMsg);
+            return errorMsg;
+        }
+    }
+
+    /** Handles HELP command. */
+    private String handleHelpCommand() {
+        String helpMsg = getHelpMessage();
+        print(helpMsg);
+        return helpMsg;
+    }
+
+    /** Handles unknown commands. */
+    private String handleUnknownCommand() {
+        String defaultMsg = "Unknown command. Type '" + HELP_COMMAND + "' for available commands.";
+        print(defaultMsg);
+        return defaultMsg;
     }
 }
