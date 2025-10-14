@@ -1,25 +1,19 @@
 package audrey.command;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import audrey.task.List;
-import audrey.task.Task;
 
 /** Parser class encapsulates command logic */
 public class Parser {
     // Constants for validation limits
     private static final int MAX_WHITESPACE_EXCESS = 10;
     private static final int MAX_COMMAND_LENGTH = 1000;
-    private static final int MAX_DESCRIPTION_LENGTH = 200;
 
     // Constants for formatting
     private static final String INDENT = "    ";
     private static final String SEPARATOR_LINE =
             "    ____________________________________________________________________";
-
-    // Constants for date format
-    private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
 
     // Constants for command strings
     private static final String HELP_COMMAND = "help";
@@ -28,8 +22,6 @@ public class Parser {
     // Constants for array operations
     private static final int SPLIT_LIMIT_TWO = 2;
     private static final int COMMAND_INDEX = 0;
-    private static final int ARGS_INDEX = 1;
-    private static final int MIN_ARGS_LENGTH = 2;
 
     private final Scanner scanner;
     private final List toDoList;
@@ -218,400 +210,54 @@ public class Parser {
         return parts;
     }
 
-    /** Executes the given command with the processed input. */
+    /** Executes the given command with the processed input using command parsers. */
     private String executeCommand(Command command, String[] processedInput) {
+        BaseCommandParser commandParser;
+
         switch (command) {
             case BYE:
                 print("To Do List Deactivated");
                 isListMode = false;
                 return "To Do List Deactivated!";
             case LIST:
-                print(toDoList.showList());
-                return toDoList.showList();
+                commandParser = new ListCommandParser(toDoList, scanner);
+                break;
             case MARK:
-                return handleMarkCommand(processedInput);
+                commandParser = new MarkCommandParser(toDoList, scanner);
+                break;
             case UNMARK:
-                return handleUnmarkCommand(processedInput);
+                commandParser = new UnmarkCommandParser(toDoList, scanner);
+                break;
             case TODO:
-                return handleTodoCommand(processedInput);
+                commandParser = new TodoCommandParser(toDoList, scanner);
+                break;
             case DEADLINE:
-                return handleDeadlineCommand(processedInput);
+                commandParser = new DeadlineCommandParser(toDoList, scanner);
+                break;
             case EVENT:
-                return handleEventCommand(processedInput);
+                commandParser = new EventCommandParser(toDoList, scanner);
+                break;
             case DELETE:
-                return handleDeleteCommand(processedInput);
+                commandParser = new DeleteCommandParser(toDoList, scanner);
+                break;
             case FIND:
-                return handleFindCommand(processedInput);
+                commandParser = new FindCommandParser(toDoList, scanner);
+                break;
             case SNOOZE:
-                return handleSnoozeCommand(processedInput);
+                commandParser = new SnoozeCommandParser(toDoList, scanner);
+                break;
             case UNSNOOZE:
-                return handleUnsnoozeCommand(processedInput);
+                commandParser = new UnsnoozeCommandParser(toDoList, scanner);
+                break;
             case HELP:
-                return handleHelpCommand();
+                commandParser = new HelpCommandParser(toDoList, scanner);
+                break;
             default:
-                return handleUnknownCommand();
+                commandParser = new InvalidCommandParser(toDoList, scanner);
+                break;
         }
-    }
 
-    /**
-     * Handles MARK command with comprehensive error checking.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleMarkCommand(String[] processedInput) {
-        try {
-            // Validate argument exists
-            if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-                String errorMsg = "Task number required. Usage: mark [task number]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String taskNumberStr = processedInput[1].trim();
-
-            // Validate task number format
-            if (!taskNumberStr.matches("\\d+")) {
-                String errorMsg =
-                        "Invalid task number format: '"
-                                + taskNumberStr
-                                + "'. Please enter a positive integer.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            int taskNumber = Integer.parseInt(taskNumberStr);
-
-            // Validate task number range
-            if (taskNumber <= 0) {
-                String errorMsg = "Task number must be positive. You entered: " + taskNumber;
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (taskNumber > toDoList.size()) {
-                String errorMsg =
-                        "Task number "
-                                + taskNumber
-                                + " does not exist. You have "
-                                + toDoList.size()
-                                + " tasks.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String markResult = toDoList.markTask(taskNumber);
-            print(markResult);
-            return markResult;
-
-        } catch (NumberFormatException e) {
-            String errorMsg =
-                    "Invalid number format: '"
-                            + processedInput[1]
-                            + "'. Please enter a valid task number.";
-            print(errorMsg);
-            return errorMsg;
-        } catch (Exception e) {
-            String errorMsg = "Error marking task: " + e.getMessage();
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /**
-     * Handles UNMARK command with comprehensive error checking.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleUnmarkCommand(String[] processedInput) {
-        try {
-            // Validate argument exists
-            if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-                String errorMsg = "Task number required. Usage: unmark [task number]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String taskNumberStr = processedInput[1].trim();
-
-            // Validate task number format
-            if (!taskNumberStr.matches("\\d+")) {
-                String errorMsg =
-                        "Invalid task number format: '"
-                                + taskNumberStr
-                                + "'. Please enter a positive integer.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            int taskNumber = Integer.parseInt(taskNumberStr);
-
-            // Validate task number range
-            if (taskNumber <= 0) {
-                String errorMsg = "Task number must be positive. You entered: " + taskNumber;
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (taskNumber > toDoList.size()) {
-                String errorMsg =
-                        "Task number "
-                                + taskNumber
-                                + " does not exist. You have "
-                                + toDoList.size()
-                                + " tasks.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String unmarkResult = toDoList.unmarkTask(taskNumber);
-            print(unmarkResult);
-            return unmarkResult;
-
-        } catch (NumberFormatException e) {
-            String errorMsg =
-                    "Invalid number format: '"
-                            + processedInput[1]
-                            + "'. Please enter a valid task number.";
-            print(errorMsg);
-            return errorMsg;
-        } catch (Exception e) {
-            String errorMsg = "Error unmarking task: " + e.getMessage();
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /**
-     * Handles TODO command with comprehensive validation.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleTodoCommand(String[] processedInput) {
-        try {
-            if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-                String errorMsg = "Todo description cannot be empty. Usage: todo [description]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String description = processedInput[1].trim();
-
-            // Validate description length
-            if (description.length() > MAX_DESCRIPTION_LENGTH) {
-                String errorMsg =
-                        "Todo description too long. Please keep it under "
-                                + MAX_DESCRIPTION_LENGTH
-                                + " characters.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            // Check for potentially problematic characters
-            if (description.contains("|") || description.contains("\\n")) {
-                String errorMsg =
-                        "Todo description contains invalid characters. Avoid using | or line breaks.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String todoResult = toDoList.addToDos(description);
-            print(todoResult);
-            return todoResult;
-
-        } catch (Exception e) {
-            String errorMsg = "Error adding todo: " + e.getMessage();
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /**
-     * Handles DEADLINE command with comprehensive validation.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleDeadlineCommand(String[] processedInput) {
-        try {
-            if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-                String errorMsg =
-                        "Deadline description cannot be empty. Usage: deadline [description] /by [date]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String fullDescription = processedInput[1].trim();
-
-            // Validate /by format
-            if (!fullDescription.contains("/by")) {
-                String errorMsg =
-                        "Deadline must include '/by [date]'. Usage: deadline [description] /by [YYYY-MM-DD]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            // Check for multiple /by occurrences
-            if (fullDescription.split("/by").length > 2) {
-                String errorMsg = "Multiple '/by' found. Please use '/by' only once.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String[] parts = fullDescription.split("/by", 2);
-            if (parts.length != 2) {
-                String errorMsg =
-                        "Invalid deadline format. Usage: deadline [description] /by [YYYY-MM-DD]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String description = parts[0].trim();
-            String dateStr = parts[1].trim();
-
-            if (description.isEmpty()) {
-                String errorMsg = "Deadline description cannot be empty.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (dateStr.isEmpty()) {
-                String errorMsg = "Date cannot be empty. Use format: YYYY-MM-DD";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            // Validate date format
-            if (!dateStr.matches(DATE_PATTERN)) {
-                String errorMsg = "Invalid date format: '" + dateStr + "'. Use YYYY-MM-DD format.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String deadlineResult = toDoList.addDeadline(fullDescription);
-            print(deadlineResult);
-            return deadlineResult;
-
-        } catch (Exception e) {
-            String errorMsg = "Error adding deadline: " + e.getMessage();
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /**
-     * Handles EVENT command with comprehensive validation.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleEventCommand(String[] processedInput) {
-        try {
-            if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-                String errorMsg =
-                        "Event description cannot be empty. Usage: event [description] /from [date] /to [date]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String fullDescription = processedInput[1].trim();
-
-            // Validate /from and /to format
-            if (!fullDescription.contains("/from")) {
-                String errorMsg =
-                        "Event must include '/from [date]'. Usage: event [description] /from [date] /to [date]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (!fullDescription.contains("/to")) {
-                String errorMsg =
-                        "Event must include '/to [date]'. Usage: event [description] /from [date] /to [date]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            // Check for multiple occurrences
-            if (fullDescription.split("/from").length > 2) {
-                String errorMsg = "Multiple '/from' found. Please use '/from' only once.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (fullDescription.split("/to").length > 2) {
-                String errorMsg = "Multiple '/to' found. Please use '/to' only once.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            // Parse the event string
-            String[] fromSplit = fullDescription.split("/from", 2);
-            if (fromSplit.length != 2) {
-                String errorMsg =
-                        "Invalid event format. Usage: event [description] /from [date] /to [date]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String description = fromSplit[0].trim();
-            String remaining = fromSplit[1].trim();
-
-            String[] toSplit = remaining.split("/to", 2);
-            if (toSplit.length != 2) {
-                String errorMsg =
-                        "Invalid event format. Usage: event [description] /from [date] /to [date]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String fromDate = toSplit[0].trim();
-            String toDate = toSplit[1].trim();
-
-            // Validate components
-            if (description.isEmpty()) {
-                String errorMsg = "Event description cannot be empty.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (fromDate.isEmpty()) {
-                String errorMsg = "From date cannot be empty. Use format: YYYY-MM-DD";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (toDate.isEmpty()) {
-                String errorMsg = "To date cannot be empty. Use format: YYYY-MM-DD";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            // Validate date formats
-            if (!fromDate.matches(DATE_PATTERN)) {
-                String errorMsg =
-                        "Invalid from date format: '" + fromDate + "'. Use YYYY-MM-DD format.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            if (!toDate.matches(DATE_PATTERN)) {
-                String errorMsg =
-                        "Invalid to date format: '" + toDate + "'. Use YYYY-MM-DD format.";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            String eventResult = toDoList.addEvent(fullDescription);
-            print(eventResult);
-            return eventResult;
-
-        } catch (Exception e) {
-            String errorMsg = "Error adding event: " + e.getMessage();
-            print(errorMsg);
-            return errorMsg;
-        }
+        return commandParser.execute(processedInput);
     }
 
     /**
@@ -671,167 +317,5 @@ public class Parser {
     private String echoInput(String input) {
         print(input);
         return input;
-    }
-
-    /**
-     * Handles DELETE command with comprehensive error checking.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleDeleteCommand(String[] processedInput) {
-        try {
-            if (processedInput.length < MIN_ARGS_LENGTH
-                    || processedInput[ARGS_INDEX].trim().isEmpty()) {
-                String errorMsg = "Task number required. Usage: delete [task number]";
-                print(errorMsg);
-                return errorMsg;
-            }
-
-            int taskNumber = Integer.parseInt(processedInput[ARGS_INDEX].trim());
-            String deleteResult = toDoList.delete(taskNumber);
-            print(deleteResult);
-            return deleteResult;
-
-        } catch (NumberFormatException e) {
-            String errorMsg = "Invalid task number format. Please enter a valid integer.";
-            print(errorMsg);
-            return errorMsg;
-        } catch (Exception e) {
-            String errorMsg = "Error deleting task: " + e.getMessage();
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /**
-     * Handles FIND command with comprehensive validation.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleFindCommand(String[] processedInput) {
-        if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-            String errorMsg = "Search keyword required. Usage: find [keyword]";
-            print(errorMsg);
-            return errorMsg;
-        }
-
-        String keyword = processedInput[1].trim();
-        ArrayList<Task> findList = toDoList.findTasks(keyword);
-
-        if (findList.isEmpty()) {
-            String noResultMsg = "No matching task found!";
-            print(noResultMsg);
-            return noResultMsg;
-        }
-
-        StringBuilder printString =
-                new StringBuilder("Here are the matching tasks in your list:\n");
-        for (int i = 0; i < findList.size(); i++) {
-            printString.append(String.format("%d.%s\n", i + 1, findList.get(i)));
-        }
-
-        String result = printString.toString();
-        print(result);
-        return result;
-    }
-
-    /**
-     * Handles SNOOZE command with comprehensive validation.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleSnoozeCommand(String[] processedInput) {
-        if (processedInput.length == 1) {
-            return handleSnoozeList();
-        }
-
-        String[] snoozeParams = processedInput[1].split(" ");
-        if (snoozeParams.length == 1) {
-            return handleSnoozeForever(snoozeParams[0]);
-        } else if (snoozeParams.length == 2) {
-            return handleSnoozeUntilDate(snoozeParams[0], snoozeParams[1]);
-        } else {
-            String errorMsg =
-                    "Invalid snooze command. Use: 'snooze', 'snooze [number]', or 'snooze [number] [date]'";
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /** Shows list of snoozable tasks. */
-    private String handleSnoozeList() {
-        String snoozeableList = toDoList.showSnoozableTasks();
-        print(snoozeableList);
-        return snoozeableList;
-    }
-
-    /** Snoozes a task forever. */
-    private String handleSnoozeForever(String taskNumberStr) {
-        try {
-            int taskNumber = Integer.parseInt(taskNumberStr);
-            String snoozeResult = toDoList.snoozeTaskForever(taskNumber);
-            print(snoozeResult);
-            return snoozeResult;
-        } catch (NumberFormatException e) {
-            String errorMsg = "Invalid task number format!";
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /** Snoozes a task until a specific date. */
-    private String handleSnoozeUntilDate(String taskNumberStr, String date) {
-        try {
-            int taskNumber = Integer.parseInt(taskNumberStr);
-            String snoozeResult = toDoList.snoozeTaskUntil(taskNumber, date);
-            print(snoozeResult);
-            return snoozeResult;
-        } catch (NumberFormatException e) {
-            String errorMsg = "Invalid task number format!";
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /**
-     * Handles UNSNOOZE command with comprehensive validation.
-     *
-     * @param processedInput Command and arguments
-     * @return Result message
-     */
-    private String handleUnsnoozeCommand(String[] processedInput) {
-        if (processedInput.length < 2 || processedInput[1].trim().isEmpty()) {
-            String errorMsg = "Task number required. Usage: unsnooze [task number]";
-            print(errorMsg);
-            return errorMsg;
-        }
-
-        try {
-            int taskNumber = Integer.parseInt(processedInput[1].trim());
-            String unsnoozeResult = toDoList.unsnoozeTask(taskNumber);
-            print(unsnoozeResult);
-            return unsnoozeResult;
-        } catch (NumberFormatException e) {
-            String errorMsg = "Invalid task number format!";
-            print(errorMsg);
-            return errorMsg;
-        }
-    }
-
-    /** Handles HELP command. */
-    private String handleHelpCommand() {
-        String helpMsg = getHelpMessage();
-        print(helpMsg);
-        return helpMsg;
-    }
-
-    /** Handles unknown commands. */
-    private String handleUnknownCommand() {
-        String defaultMsg = "Unknown command. Type '" + HELP_COMMAND + "' for available commands.";
-        print(defaultMsg);
-        return defaultMsg;
     }
 }
