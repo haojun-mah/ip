@@ -12,12 +12,23 @@ public class FileLoader extends BaseStorageOperation {
     private final File db;
     private final TaskLineProcessor lineProcessor;
 
+    /**
+     * Builds a loader that hydrates the task list from the backing file.
+     *
+     * @param toDoList task list to populate
+     * @param db       handle to the storage file
+     */
     public FileLoader(List toDoList, File db) {
         super(toDoList);
         this.db = db;
         this.lineProcessor = new TaskLineProcessor(toDoList);
     }
 
+    /**
+     * Unsupported for this class because loading operates on entire files instead of single lines.
+     *
+     * @throws UnsupportedOperationException always thrown when invoked
+     */
     @Override
     public void execute(String line) {
         // Not used for file loading

@@ -4,7 +4,7 @@ import java.io.File;
 
 import audrey.task.List;
 
-/** Encapsulates storage operations using composition of specialized storage classes */
+/** Encapsulates storage operations using composition of specialized storage classes. */
 public class Storage {
     private final String filePath;
     private final File db;
@@ -40,7 +40,7 @@ public class Storage {
         }
     }
 
-    /** Save info into DB using FileOperations */
+    /** Persists the current task list to disk using {@link FileOperations}. */
     public void saveToFile() {
         fileOperations.saveToFile();
     }

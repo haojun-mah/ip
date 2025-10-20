@@ -4,20 +4,32 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for unsnooze commands. */
+/** Parser that resumes snoozed tasks when {@code unsnooze} is issued. */
 public class UnsnoozeCommandParser extends BaseCommandParser {
 
+    /**
+     * Builds a parser that validates and unsnoozes tasks.
+     *
+     * @param toDoList backing task list to update
+     * @param scanner  scanner providing raw user input
+     */
     public UnsnoozeCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
+    /**
+     * Parses and executes an unsnooze command, reactivating the specified task if
+     * the index is valid.
+     *
+     * @param processedInput tokenised user input containing the task index
+     * @return task list message describing the result
+     */
     @Override
     public String execute(String[] processedInput) {
         // Validate minimum arguments
-        String validationError =
-                validateMinimumArgs(
-                        processedInput,
-                        "Unsnooze requires a task number. Usage: unsnooze [task number]");
+        String validationError = validateMinimumArgs(
+                processedInput,
+                "Unsnooze requires a task number. Usage: unsnooze [task number]");
         if (validationError != null) {
             return validationError;
         }

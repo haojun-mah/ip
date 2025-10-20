@@ -1,6 +1,6 @@
 package audrey.command;
 
-/** Enum which maps command for easier use in Audrey */
+/** Enum mapping user-entered command strings to strongly-typed command identifiers. */
 public enum Command {
     BYE("bye"),
     LIST("list"),
@@ -22,10 +22,10 @@ public enum Command {
     }
 
     /**
-     * Matches command with enum
+     * Resolves a string to its corresponding command enum.
      *
-     * @param input command
-     * @return command matched
+     * @param input command token from user input
+     * @return matching command, or {@code null} if no match is found
      */
     public static Command fromString(String input) {
         for (Command cmd : Command.values()) {
@@ -36,11 +36,7 @@ public enum Command {
         return null; // Invalid command
     }
 
-    /**
-     * Returns command which is mapped.
-     *
-     * @return String command
-     */
+    /** @return canonical string version of the command */
     public String getCommandString() {
         return commandString;
     }

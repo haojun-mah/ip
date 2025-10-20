@@ -4,19 +4,30 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for mark commands. */
+/** Parser that processes {@code mark} commands and marks tasks as completed. */
 public class MarkCommandParser extends BaseCommandParser {
 
+    /**
+     * Creates a parser that marks tasks as done.
+     *
+     * @param toDoList backing task list to operate on
+     * @param scanner  scanner supplying user input
+     */
     public MarkCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
+    /**
+     * Executes the mark command by validating the index and setting the task to done.
+     *
+     * @param processedInput tokenised user input containing the task index
+     * @return user-facing result reflecting the updated task state
+     */
     @Override
     public String execute(String[] processedInput) {
         // Validate minimum arguments
-        String validationError =
-                validateMinimumArgs(
-                        processedInput, "Mark requires a task number. Usage: mark [task number]");
+        String validationError = validateMinimumArgs(
+                processedInput, "Mark requires a task number. Usage: mark [task number]");
         if (validationError != null) {
             return validationError;
         }

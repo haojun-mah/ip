@@ -1,6 +1,8 @@
 package audrey;
 
 import java.io.IOException;
+
+import audrey.ui.Audrey;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,8 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import audrey.ui.Audrey;
 
 /** Orchestrator for JavaFX GUI */
 public class Main extends Application {
@@ -81,15 +81,14 @@ public class Main extends Application {
             dialogContainer.getChildren().addAll(DialogBox.getAudreyDialog("Goodnight!"));
 
             // Close the application after showing the goodbye message
-            Platform.runLater(
-                    () -> {
-                        try {
-                            Thread.sleep(1500);
-                            Platform.exit();
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    });
+            Platform.runLater(() -> {
+                try {
+                    Thread.sleep(1500);
+                    Platform.exit();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
         } else {
             String response = audrey.getInstanceResponse(input);
 

@@ -2,21 +2,32 @@ package audrey.command;
 
 import audrey.task.List;
 
-/** Command to add an event task. */
+/** Command that adds an event with start and end dates. */
 public class EventCommand extends BaseCommand {
 
+    /**
+     * Builds a command that validates and inserts event tasks.
+     *
+     * @param toDoList backing task list to update
+     */
     public EventCommand(List toDoList) {
         super(toDoList);
     }
 
+    /**
+     * Validates the description, start date, and end date supplied before adding
+     * the new event to the task list.
+     *
+     * @param processedInput tokenised user input containing the event details
+     * @return result string from the task list or validation feedback
+     */
     @Override
     public String execute(String[] processedInput) {
         try {
             // Validate minimum arguments
-            String validationError =
-                    validateMinimumArgs(
-                            processedInput,
-                            "Event description cannot be empty. Usage: event [description] /from [start] /to [end]");
+            String validationError = validateMinimumArgs(
+                    processedInput,
+                    "Event description cannot be empty. Usage: event [description] /from [start] /to [end]");
             if (validationError != null) {
                 return validationError;
             }
@@ -25,9 +36,8 @@ public class EventCommand extends BaseCommand {
 
             // Validate /from and /to format
             if (!fullDescription.contains("/from") || !fullDescription.contains("/to")) {
-                String errorMsg =
-                        "Event must include both '/from [start]' and '/to [end]'. "
-                                + "Usage: event [description] /from [YYYY-MM-DD] /to [YYYY-MM-DD]";
+                String errorMsg = "Event must include both '/from [start]' and '/to [end]'. "
+                        + "Usage: event [description] /from [YYYY-MM-DD] /to [YYYY-MM-DD]";
                 print(errorMsg);
                 return errorMsg;
             }
@@ -86,15 +96,13 @@ public class EventCommand extends BaseCommand {
 
             // Validate date format
             if (!startDateStr.matches(DATE_PATTERN)) {
-                String errorMsg =
-                        "Invalid start date format: '" + startDateStr + "'. Use YYYY-MM-DD format.";
+                String errorMsg = "Invalid start date format: '" + startDateStr + "'. Use YYYY-MM-DD format.";
                 print(errorMsg);
                 return errorMsg;
             }
 
             if (!endDateStr.matches(DATE_PATTERN)) {
-                String errorMsg =
-                        "Invalid end date format: '" + endDateStr + "'. Use YYYY-MM-DD format.";
+                String errorMsg = "Invalid end date format: '" + endDateStr + "'. Use YYYY-MM-DD format.";
                 print(errorMsg);
                 return errorMsg;
             }

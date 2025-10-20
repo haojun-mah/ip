@@ -2,21 +2,32 @@ package audrey.command;
 
 import audrey.task.List;
 
-/** Command to add a deadline task. */
+/** Command that adds a deadline task including due date validation. */
 public class DeadlineCommand extends BaseCommand {
 
+    /**
+     * Builds a command that validates and inserts deadline tasks.
+     *
+     * @param toDoList backing task list to update
+     */
     public DeadlineCommand(List toDoList) {
         super(toDoList);
     }
 
+    /**
+     * Parses the description and {@code /by} date from the input and records the
+     * new deadline.
+     *
+     * @param processedInput tokenised user input containing description and due date
+     * @return result string from the task list or validation feedback
+     */
     @Override
     public String execute(String[] processedInput) {
         try {
             // Validate minimum arguments
-            String validationError =
-                    validateMinimumArgs(
-                            processedInput,
-                            "Deadline description cannot be empty. Usage: deadline [description] /by [date]");
+            String validationError = validateMinimumArgs(
+                    processedInput,
+                    "Deadline description cannot be empty. Usage: deadline [description] /by [date]");
             if (validationError != null) {
                 return validationError;
             }
@@ -25,9 +36,8 @@ public class DeadlineCommand extends BaseCommand {
 
             // Validate /by format
             if (!fullDescription.contains("/by")) {
-                String errorMsg =
-                        "Deadline must include '/by [date]'. "
-                                + "Usage: deadline [description] /by [YYYY-MM-DD]";
+                String errorMsg = "Deadline must include '/by [date]'. "
+                        + "Usage: deadline [description] /by [YYYY-MM-DD]";
                 print(errorMsg);
                 return errorMsg;
             }
@@ -41,9 +51,8 @@ public class DeadlineCommand extends BaseCommand {
 
             String[] parts = fullDescription.split("/by", 2);
             if (parts.length != 2) {
-                String errorMsg =
-                        "Invalid deadline format. "
-                                + "Usage: deadline [description] /by [YYYY-MM-DD]";
+                String errorMsg = "Invalid deadline format. "
+                        + "Usage: deadline [description] /by [YYYY-MM-DD]";
                 print(errorMsg);
                 return errorMsg;
             }

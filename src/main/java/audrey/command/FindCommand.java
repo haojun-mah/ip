@@ -5,20 +5,30 @@ import java.util.ArrayList;
 import audrey.task.List;
 import audrey.task.Task;
 
-/** Command to find tasks by keyword. */
+/** Command that searches tasks for a supplied keyword. */
 public class FindCommand extends BaseCommand {
 
+    /**
+     * Builds a command that queries the task list for keyword matches.
+     *
+     * @param toDoList backing task list to query
+     */
     public FindCommand(List toDoList) {
         super(toDoList);
     }
 
+    /**
+     * Validates the keyword input and returns numbered matches from the task list.
+     *
+     * @param processedInput tokenised user input containing the keyword
+     * @return formatted search results or validation feedback
+     */
     @Override
     public String execute(String[] processedInput) {
         try {
             // Validate minimum arguments
-            String validationError =
-                    validateMinimumArgs(
-                            processedInput, "Find requires a keyword. Usage: find [keyword]");
+            String validationError = validateMinimumArgs(
+                    processedInput, "Find requires a keyword. Usage: find [keyword]");
             if (validationError != null) {
                 return validationError;
             }

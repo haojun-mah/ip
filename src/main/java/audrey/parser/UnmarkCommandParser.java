@@ -4,20 +4,32 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for unmark commands. */
+/** Parser that marks tasks as incomplete when {@code unmark} is issued. */
 public class UnmarkCommandParser extends BaseCommandParser {
 
+    /**
+     * Builds a parser that validates and unmarks tasks.
+     *
+     * @param toDoList backing task list to update
+     * @param scanner  scanner providing raw user input
+     */
     public UnmarkCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
+    /**
+     * Parses and executes an unmark command, ensuring the task index is valid
+     * before updating the task.
+     *
+     * @param processedInput tokenised user input containing the task index
+     * @return outcome message from the task list or validation feedback
+     */
     @Override
     public String execute(String[] processedInput) {
         // Validate minimum arguments
-        String validationError =
-                validateMinimumArgs(
-                        processedInput,
-                        "Unmark requires a task number. Usage: unmark [task number]");
+        String validationError = validateMinimumArgs(
+                processedInput,
+                "Unmark requires a task number. Usage: unmark [task number]");
         if (validationError != null) {
             return validationError;
         }

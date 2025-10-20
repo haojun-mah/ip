@@ -5,7 +5,10 @@ import java.util.Scanner;
 import audrey.command.Command;
 import audrey.task.List;
 
-/** Parser class encapsulates command logic */
+/**
+ * Top-level parser that routes CLI input to concrete command parsers while
+ * managing list-mode state and shared formatting utilities.
+ */
 public class Parser {
     // Constants for validation limits
     private static final int MAX_WHITESPACE_EXCESS = 10;
@@ -29,9 +32,10 @@ public class Parser {
     private boolean isListMode;
 
     /**
-     * Creates parser instance
+     * Builds a parser that operates on the provided task list and reads from
+     * {@link System#in}.
      *
-     * @param toDoList list extracted from DB
+     * @param toDoList list extracted from storage and presented to the user
      */
     public Parser(List toDoList) {
         // Assert: Todo list should not be null
@@ -66,7 +70,12 @@ public class Parser {
         System.out.println(SEPARATOR_LINE);
     }
 
-    /** Processes user input and returns appropriate response. */
+    /**
+     * Processes user input and returns the formatted response or validation message.
+     *
+     * @param input raw user input line
+     * @return formatted result after executing the resolved command
+     */
     public String runInput(String input) {
         // Assert: Input should not be null
         assert input != null : "Input string cannot be null";
@@ -216,46 +225,46 @@ public class Parser {
         BaseCommandParser commandParser;
 
         switch (command) {
-            case BYE:
-                print("To Do List Deactivated");
-                isListMode = false;
-                return "To Do List Deactivated!";
-            case LIST:
-                commandParser = new ListCommandParser(toDoList, scanner);
-                break;
-            case MARK:
-                commandParser = new MarkCommandParser(toDoList, scanner);
-                break;
-            case UNMARK:
-                commandParser = new UnmarkCommandParser(toDoList, scanner);
-                break;
-            case TODO:
-                commandParser = new TodoCommandParser(toDoList, scanner);
-                break;
-            case DEADLINE:
-                commandParser = new DeadlineCommandParser(toDoList, scanner);
-                break;
-            case EVENT:
-                commandParser = new EventCommandParser(toDoList, scanner);
-                break;
-            case DELETE:
-                commandParser = new DeleteCommandParser(toDoList, scanner);
-                break;
-            case FIND:
-                commandParser = new FindCommandParser(toDoList, scanner);
-                break;
-            case SNOOZE:
-                commandParser = new SnoozeCommandParser(toDoList, scanner);
-                break;
-            case UNSNOOZE:
-                commandParser = new UnsnoozeCommandParser(toDoList, scanner);
-                break;
-            case HELP:
-                commandParser = new HelpCommandParser(toDoList, scanner);
-                break;
-            default:
-                commandParser = new InvalidCommandParser(toDoList, scanner);
-                break;
+        case BYE:
+            print("To Do List Deactivated");
+            isListMode = false;
+            return "To Do List Deactivated!";
+        case LIST:
+            commandParser = new ListCommandParser(toDoList, scanner);
+            break;
+        case MARK:
+            commandParser = new MarkCommandParser(toDoList, scanner);
+            break;
+        case UNMARK:
+            commandParser = new UnmarkCommandParser(toDoList, scanner);
+            break;
+        case TODO:
+            commandParser = new TodoCommandParser(toDoList, scanner);
+            break;
+        case DEADLINE:
+            commandParser = new DeadlineCommandParser(toDoList, scanner);
+            break;
+        case EVENT:
+            commandParser = new EventCommandParser(toDoList, scanner);
+            break;
+        case DELETE:
+            commandParser = new DeleteCommandParser(toDoList, scanner);
+            break;
+        case FIND:
+            commandParser = new FindCommandParser(toDoList, scanner);
+            break;
+        case SNOOZE:
+            commandParser = new SnoozeCommandParser(toDoList, scanner);
+            break;
+        case UNSNOOZE:
+            commandParser = new UnsnoozeCommandParser(toDoList, scanner);
+            break;
+        case HELP:
+            commandParser = new HelpCommandParser(toDoList, scanner);
+            break;
+        default:
+            commandParser = new InvalidCommandParser(toDoList, scanner);
+            break;
         }
 
         return commandParser.execute(processedInput);

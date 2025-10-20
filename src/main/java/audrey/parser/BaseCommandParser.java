@@ -5,7 +5,8 @@ import java.util.Scanner;
 import audrey.task.List;
 
 /**
- * Abstract base class for command parsers. Provides common functionality and constants for all
+ * Abstract base class for command parsers. Provides common functionality and
+ * constants for all
  * command parsing operations.
  */
 public abstract class BaseCommandParser {
@@ -16,8 +17,9 @@ public abstract class BaseCommandParser {
 
     // Constants for formatting
     protected static final String INDENT = "    ";
-    protected static final String SEPARATOR_LINE =
-            "    ____________________________________________________________________";
+    protected static final String SEPARATOR_LINE = """
+    ____________________________________________________________________
+        """;
 
     // Constants for date format
     protected static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
@@ -35,7 +37,7 @@ public abstract class BaseCommandParser {
      * Constructor for BaseCommandParser.
      *
      * @param toDoList The task list to operate on
-     * @param scanner The scanner for input operations
+     * @param scanner  The scanner for input operations
      */
     public BaseCommandParser(List toDoList, Scanner scanner) {
         assert toDoList != null : "Todo list cannot be null";
@@ -57,7 +59,7 @@ public abstract class BaseCommandParser {
      * Validates that the processed input has the minimum required arguments.
      *
      * @param processedInput The input to validate
-     * @param errorMessage The error message to return if validation fails
+     * @param errorMessage   The error message to return if validation fails
      * @return Error message if validation fails, null if successful
      */
     protected String validateMinimumArgs(String[] processedInput, String errorMessage) {
@@ -84,19 +86,17 @@ public abstract class BaseCommandParser {
                 return errorMsg;
             }
             if (taskNumber > toDoList.size()) {
-                String errorMsg =
-                        "Task number "
-                                + taskNumber
-                                + " does not exist. You have "
-                                + toDoList.size()
-                                + " tasks.";
+                String errorMsg = "Task number "
+                        + taskNumber
+                        + " does not exist. You have "
+                        + toDoList.size()
+                        + " tasks.";
                 print(errorMsg);
                 return errorMsg;
             }
             return null;
         } catch (NumberFormatException e) {
-            String errorMsg =
-                    "Invalid task number: '" + numberStr + "'. Please enter a valid number.";
+            String errorMsg = "Invalid task number: '" + numberStr + "'. Please enter a valid number.";
             print(errorMsg);
             return errorMsg;
         }

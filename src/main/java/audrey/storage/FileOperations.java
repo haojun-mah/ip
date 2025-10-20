@@ -12,12 +12,24 @@ public class FileOperations extends BaseStorageOperation {
     private final String filePath;
     private final File db;
 
+    /**
+     * Builds a file operation helper tied to the task list and backing file.
+     *
+     * @param toDoList task list whose state is persisted
+     * @param filePath path to the storage file on disk
+     * @param db       handle to the storage file
+     */
     public FileOperations(List toDoList, String filePath, File db) {
         super(toDoList);
         this.filePath = filePath;
         this.db = db;
     }
 
+    /**
+     * Unsupported for this class because file operations do not consume individual lines.
+     *
+     * @throws UnsupportedOperationException always thrown when invoked
+     */
     @Override
     public void execute(String line) {
         // Not used for file operations

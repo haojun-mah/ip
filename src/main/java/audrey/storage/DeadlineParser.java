@@ -8,6 +8,11 @@ import audrey.task.List;
 /** Handles parsing of deadline task lines from storage. */
 public class DeadlineParser extends BaseStorageOperation {
 
+    /**
+     * Builds a parser that reconstructs deadline tasks from stored lines.
+     *
+     * @param toDoList task list to populate
+     */
     public DeadlineParser(List toDoList) {
         super(toDoList);
     }

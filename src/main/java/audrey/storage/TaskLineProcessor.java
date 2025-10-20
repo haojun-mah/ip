@@ -9,6 +9,11 @@ public class TaskLineProcessor extends BaseStorageOperation {
     private final DeadlineParser deadlineParser;
     private final EventParser eventParser;
 
+    /**
+     * Builds a processor that dispatches lines to the appropriate task parser.
+     *
+     * @param toDoList task list to populate during processing
+     */
     public TaskLineProcessor(List toDoList) {
         super(toDoList);
         this.todoParser = new TodoParser(toDoList);

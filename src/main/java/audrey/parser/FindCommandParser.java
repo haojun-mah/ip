@@ -6,19 +6,31 @@ import java.util.Scanner;
 import audrey.task.List;
 import audrey.task.Task;
 
-/** Parser for find commands. */
+/** Parser that locates tasks matching keywords from {@code find} commands. */
 public class FindCommandParser extends BaseCommandParser {
 
+    /**
+     * Builds a parser that searches the task list for keyword matches.
+     *
+     * @param toDoList backing task list to query
+     * @param scanner  scanner providing raw user input
+     */
     public FindCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
+    /**
+     * Parses and executes a find command, returning numbered matches or an
+     * informative message when none exist.
+     *
+     * @param processedInput tokenised user input containing the keyword
+     * @return formatted search results from the task list
+     */
     @Override
     public String execute(String[] processedInput) {
         // Validate minimum arguments
-        String validationError =
-                validateMinimumArgs(
-                        processedInput, "Find requires a keyword. Usage: find [keyword]");
+        String validationError = validateMinimumArgs(
+                processedInput, "Find requires a keyword. Usage: find [keyword]");
         if (validationError != null) {
             return validationError;
         }

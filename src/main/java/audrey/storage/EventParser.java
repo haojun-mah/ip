@@ -10,6 +10,11 @@ import audrey.task.List;
 /** Handles parsing of event task lines from storage. */
 public class EventParser extends BaseStorageOperation {
 
+    /**
+     * Builds a parser that reconstructs event tasks from stored lines.
+     *
+     * @param toDoList task list to populate
+     */
     public EventParser(List toDoList) {
         super(toDoList);
     }

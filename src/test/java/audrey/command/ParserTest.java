@@ -10,13 +10,8 @@ import audrey.parser.Parser;
 import audrey.task.List;
 
 /**
- * @Test @DisplayName("Parser should handle case variations") public void
- * parser_caseVariations_handled() { String result1 = parser.runInput("LIST"); String result2 =
- * parser.runInput("List"); String result3 = parser.runInput("list");
- *
- * <p>// Parser handles commands case insensitively assertTrue(result1.contains("Here are the tasks
- * in your list") || result2.contains("Here are the tasks in your list") || result3.contains("Here
- * are the tasks in your list")); }r Parser class functionality
+ * Exercises the {@link Parser} to verify its command routing, validation, and
+ * list-mode behaviour across supported commands.
  */
 public class ParserTest {
     private Parser parser;
@@ -55,7 +50,8 @@ public class ParserTest {
     @Test
     @DisplayName("Parser should handle null input with assertion")
     public void parser_nullInput_assertionError() {
-        // Parser uses assert for null input, so this will throw AssertionError in test environment
+        // Parser uses assert for null input, so this will throw AssertionError in test
+        // environment
         try {
             parser.runInput(null);
             assertTrue(false, "Should have thrown AssertionError");

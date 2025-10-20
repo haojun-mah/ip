@@ -2,6 +2,7 @@ package audrey;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,6 +28,9 @@ public class DialogBox extends HBox {
     @FXML private Label dialog;
     @FXML private ImageView displayPicture;
 
+    /**
+     * Message mapping
+     */
     public enum MessageType {
         USER,
         AUDREY,
@@ -73,39 +77,47 @@ public class DialogBox extends HBox {
         displayPicture.setClip(clip);
 
         switch (type) {
-            case USER:
-                // User messages: Light blue background, right aligned
-                dialog.setStyle(
-                        "-fx-background-color: #E3F2FD; -fx-background-radius: 18; "
-                                + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
-                                + "-fx-text-fill: #1976D2; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
-                this.setAlignment(Pos.TOP_RIGHT);
-                break;
-            case AUDREY:
-                // Audrey messages: Soft purple/pink background, left aligned
-                dialog.setStyle(
-                        "-fx-background-color: #F3E5F5; -fx-background-radius: 18; "
-                                + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
-                                + "-fx-text-fill: #7B1FA2; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
-                this.setAlignment(Pos.TOP_LEFT);
-                break;
-            case ERROR:
-                // Error messages: Light red background with red text
-                dialog.setStyle(
-                        "-fx-background-color: #FFEBEE; -fx-background-radius: 18; "
-                                + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
-                                + "-fx-text-fill: #D32F2F; -fx-font-family: 'Segoe UI', Arial, sans-serif; "
-                                + "-fx-border-color: #F44336; -fx-border-width: 1; -fx-border-radius: 18;");
-                this.setAlignment(Pos.TOP_LEFT);
-                break;
-            case SUCCESS:
-                // Success messages: Light green background
-                dialog.setStyle(
-                        "-fx-background-color: #E8F5E8; -fx-background-radius: 18; "
-                                + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
-                                + "-fx-text-fill: #388E3C; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
-                this.setAlignment(Pos.TOP_LEFT);
-                break;
+        case USER:
+            // User messages: Light blue background, right aligned
+            dialog.setStyle(
+                    "-fx-background-color: #E3F2FD; -fx-background-radius: 18; "
+                            + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
+                            + "-fx-text-fill: #1976D2; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
+            this.setAlignment(Pos.TOP_RIGHT);
+            break;
+        case AUDREY:
+            // Audrey messages: Soft purple/pink background, left aligned
+            dialog.setStyle(
+                    "-fx-background-color: #F3E5F5; -fx-background-radius: 18; "
+                            + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
+                            + "-fx-text-fill: #7B1FA2; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
+            this.setAlignment(Pos.TOP_LEFT);
+            break;
+        case ERROR:
+            // Error messages: Light red background with red text
+            dialog.setStyle(
+                    "-fx-background-color: #FFEBEE; -fx-background-radius: 18; "
+                            + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
+                            + "-fx-text-fill: #D32F2F; -fx-font-family: 'Segoe UI', Arial, sans-serif; "
+                            + "-fx-border-color: #F44336; -fx-border-width: 1; -fx-border-radius: 18;");
+            this.setAlignment(Pos.TOP_LEFT);
+            break;
+        case SUCCESS:
+            // Success messages: Light green background
+            dialog.setStyle(
+                    "-fx-background-color: #E8F5E8; -fx-background-radius: 18; "
+                            + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
+                            + "-fx-text-fill: #388E3C; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
+            this.setAlignment(Pos.TOP_LEFT);
+            break;
+        default:
+            // Fallback styling mirrors Audrey messages to keep layout consistent
+            dialog.setStyle(
+                "-fx-background-color: #F3E5F5; -fx-background-radius: 18; "
+                    + "-fx-padding: 12 16 12 16; -fx-font-size: 13px; "
+                    + "-fx-text-fill: #7B1FA2; -fx-font-family: 'Segoe UI', Arial, sans-serif;");
+            this.setAlignment(Pos.TOP_LEFT);
+            break;
         }
 
         // Add some spacing between messages

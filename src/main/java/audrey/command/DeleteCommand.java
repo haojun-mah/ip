@@ -2,21 +2,31 @@ package audrey.command;
 
 import audrey.task.List;
 
-/** Command to delete a task. */
+/** Command that removes a task specified by its list index. */
 public class DeleteCommand extends BaseCommand {
 
+    /**
+     * Builds a command that deletes tasks from the backing list.
+     *
+     * @param toDoList backing task list to update
+     */
     public DeleteCommand(List toDoList) {
         super(toDoList);
     }
 
+    /**
+     * Validates the task index supplied and removes the matching entry from the list.
+     *
+     * @param processedInput tokenised user input containing the task index
+     * @return result string from the task list or validation feedback
+     */
     @Override
     public String execute(String[] processedInput) {
         try {
             // Validate minimum arguments
-            String validationError =
-                    validateMinimumArgs(
-                            processedInput,
-                            "Delete requires a task number. Usage: delete [task number]");
+            String validationError = validateMinimumArgs(
+                    processedInput,
+                    "Delete requires a task number. Usage: delete [task number]");
             if (validationError != null) {
                 return validationError;
             }

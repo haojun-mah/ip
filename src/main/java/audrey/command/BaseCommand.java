@@ -3,14 +3,16 @@ package audrey.command;
 import audrey.task.List;
 
 /**
- * Abstract base class for all command implementations. Each specific command should extend this
+ * Abstract base class for all command implementations. Each specific command
+ * should extend this
  * class and implement the execute method.
  */
 public abstract class BaseCommand {
     // Constants for formatting (shared across command classes)
     protected static final String INDENT = "    ";
-    protected static final String SEPARATOR_LINE =
-            "    ____________________________________________________________________";
+    protected static final String SEPARATOR_LINE = """
+    ____________________________________________________________________
+        """;
 
     // Constants for validation
     protected static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
@@ -62,7 +64,7 @@ public abstract class BaseCommand {
      * Validates that required arguments are present.
      *
      * @param processedInput Command input array
-     * @param usage Usage message to display on error
+     * @param usage          Usage message to display on error
      * @return Error message if validation fails, null if successful
      */
     protected String validateMinimumArgs(String[] processedInput, String usage) {
@@ -83,10 +85,9 @@ public abstract class BaseCommand {
      */
     protected String validateTaskNumber(String taskNumberStr) {
         if (!taskNumberStr.matches("\\d+")) {
-            String errorMsg =
-                    "Invalid task number format: '"
-                            + taskNumberStr
-                            + "'. Please enter a positive integer.";
+            String errorMsg = "Invalid task number format: '"
+                    + taskNumberStr
+                    + "'. Please enter a positive integer.";
             print(errorMsg);
             return errorMsg;
         }
@@ -99,12 +100,11 @@ public abstract class BaseCommand {
         }
 
         if (taskNumber > toDoList.size()) {
-            String errorMsg =
-                    "Task number "
-                            + taskNumber
-                            + " does not exist. You have "
-                            + toDoList.size()
-                            + " tasks.";
+            String errorMsg = "Task number "
+                    + taskNumber
+                    + " does not exist. You have "
+                    + toDoList.size()
+                    + " tasks.";
             print(errorMsg);
             return errorMsg;
         }

@@ -4,20 +4,32 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for deadline commands. */
+/** Parser that creates deadline tasks from {@code deadline} commands. */
 public class DeadlineCommandParser extends BaseCommandParser {
 
+    /**
+     * Builds a parser capable of validating and adding deadline tasks.
+     *
+     * @param toDoList backing task list to update
+     * @param scanner  scanner providing raw user input
+     */
     public DeadlineCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
+    /**
+     * Parses and executes a deadline command, ensuring both description and due date
+     * are supplied before creating the task.
+     *
+     * @param processedInput tokenised user input containing description and `/by`
+     * @return status message from the task list after attempting the addition
+     */
     @Override
     public String execute(String[] processedInput) {
         // Validate minimum arguments
-        String validationError =
-                validateMinimumArgs(
-                        processedInput,
-                        "Deadline description cannot be empty. Usage: deadline [description] /by [date]");
+        String validationError = validateMinimumArgs(
+                processedInput,
+                "Deadline description cannot be empty. Usage: deadline [description] /by [date]");
         if (validationError != null) {
             return validationError;
         }
@@ -26,9 +38,8 @@ public class DeadlineCommandParser extends BaseCommandParser {
 
         // Validate /by format
         if (!fullDescription.contains("/by")) {
-            String errorMsg =
-                    "Deadline must include '/by [date]'. "
-                            + "Usage: deadline [description] /by [YYYY-MM-DD]";
+            String errorMsg = "Deadline must include '/by [date]'. "
+                    + "Usage: deadline [description] /by [YYYY-MM-DD]";
             print(errorMsg);
             return errorMsg;
         }
@@ -42,8 +53,7 @@ public class DeadlineCommandParser extends BaseCommandParser {
 
         String[] parts = fullDescription.split("/by", 2);
         if (parts.length != 2) {
-            String errorMsg =
-                    "Invalid deadline format. " + "Usage: deadline [description] /by [YYYY-MM-DD]";
+            String errorMsg = "Invalid deadline format. " + "Usage: deadline [description] /by [YYYY-MM-DD]";
             print(errorMsg);
             return errorMsg;
         }

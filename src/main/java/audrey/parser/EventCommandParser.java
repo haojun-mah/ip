@@ -4,20 +4,33 @@ import java.util.Scanner;
 
 import audrey.task.List;
 
-/** Parser for event commands. */
+/** Parser that creates events from {@code event} commands. */
 public class EventCommandParser extends BaseCommandParser {
 
+    /**
+     * Builds a parser that validates and adds event tasks with start and end dates.
+     *
+     * @param toDoList backing task list to update
+     * @param scanner  scanner providing raw user input
+     */
     public EventCommandParser(List toDoList, Scanner scanner) {
         super(toDoList, scanner);
     }
 
+    /**
+     * Parses and executes an event command, ensuring the description, start, and
+     * end dates are present before creating the task.
+     *
+     * @param processedInput tokenised user input containing description and
+     *                       timing sections
+     * @return status message from the task list after attempting the addition
+     */
     @Override
     public String execute(String[] processedInput) {
         // Validate minimum arguments
-        String validationError =
-                validateMinimumArgs(
-                        processedInput,
-                        "Event description cannot be empty. Usage: event [description] /from [start] /to [end]");
+        String validationError = validateMinimumArgs(
+                processedInput,
+                "Event description cannot be empty. Usage: event [description] /from [start] /to [end]");
         if (validationError != null) {
             return validationError;
         }
@@ -85,15 +98,13 @@ public class EventCommandParser extends BaseCommandParser {
 
         // Validate date format
         if (!startDateStr.matches(DATE_PATTERN)) {
-            String errorMsg =
-                    "Invalid start date format: '" + startDateStr + "'. Use YYYY-MM-DD format.";
+            String errorMsg = "Invalid start date format: '" + startDateStr + "'. Use YYYY-MM-DD format.";
             print(errorMsg);
             return errorMsg;
         }
 
         if (!endDateStr.matches(DATE_PATTERN)) {
-            String errorMsg =
-                    "Invalid end date format: '" + endDateStr + "'. Use YYYY-MM-DD format.";
+            String errorMsg = "Invalid end date format: '" + endDateStr + "'. Use YYYY-MM-DD format.";
             print(errorMsg);
             return errorMsg;
         }
@@ -107,9 +118,8 @@ public class EventCommandParser extends BaseCommandParser {
         }
 
         try {
-            String eventResult =
-                    toDoList.addEvent(
-                            cleanedDescription + " /from " + startDateStr + " /to " + endDateStr);
+            String eventResult = toDoList.addEvent(
+                    cleanedDescription + " /from " + startDateStr + " /to " + endDateStr);
             print(eventResult);
             return eventResult;
 

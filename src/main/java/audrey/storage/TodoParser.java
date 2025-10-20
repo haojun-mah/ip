@@ -8,6 +8,11 @@ import audrey.task.List;
 /** Handles parsing of todo task lines from storage. */
 public class TodoParser extends BaseStorageOperation {
 
+    /**
+     * Builds a parser that reconstructs todo tasks from stored lines.
+     *
+     * @param toDoList task list to populate
+     */
     public TodoParser(List toDoList) {
         super(toDoList);
     }

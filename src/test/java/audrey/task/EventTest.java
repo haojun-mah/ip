@@ -17,8 +17,7 @@ public class EventTest {
     @Test
     @DisplayName("Ensure event string format is within expectation")
     public void event_toString_correctFormat() {
-        Event event =
-                assertDoesNotThrow(() -> new Event("activity /from 2025-12-12 /to 2025-12-23"));
+        Event event = assertDoesNotThrow(() -> new Event("activity /from 2025-12-12 /to 2025-12-23"));
         String expected = "[E][ ] activity (from:2025-12-12 to:2025-12-23)";
         String actual = event.toString();
         assertEquals(expected, actual);
@@ -37,8 +36,7 @@ public class EventTest {
     public void event_invalidDateFormat_throwsException() {
         assertThrows(MissingEventException.class, () -> new Event("123 /from 123-123 /to 123-123"));
         assertThrows(
-                MissingEventException.class,
-                () -> new Event("123 /from 2025-01-01 /to not-a-date"));
+                MissingEventException.class, () -> new Event("123 /from 2025-01-01 /to not-a-date"));
         assertThrows(
                 MissingEventException.class, () -> new Event("123 /from bad-date /to 2025-01-01"));
     }
@@ -47,23 +45,20 @@ public class EventTest {
     @DisplayName("Event should throw error when from date is after to date")
     public void event_fromAfterTo_throwsWrongOrientationException() {
         assertThrows(
-                WrongFromToOrientationException.class,
-                () -> new Event("backwards /from 2025-12-31 /to 2025-01-01"));
+                WrongFromToOrientationException.class, () -> new Event("backwards /from 2025-12-31 /to 2025-01-01"));
     }
 
     @Test
     @DisplayName("Event with same from and to date should work")
     public void event_sameFromAndToDate_works() {
-        Event event =
-                assertDoesNotThrow(() -> new Event("same day /from 2025-12-12 /to 2025-12-12"));
+        Event event = assertDoesNotThrow(() -> new Event("same day /from 2025-12-12 /to 2025-12-12"));
         assertTrue(event.toString().contains("from:2025-12-12 to:2025-12-12"));
     }
 
     @Test
     @DisplayName("Event with marked task should show X")
     public void event_markedTask_showsX() {
-        Event event =
-                assertDoesNotThrow(() -> new Event("meeting /from 2025-10-15 /to 2025-10-16"));
+        Event event = assertDoesNotThrow(() -> new Event("meeting /from 2025-10-15 /to 2025-10-16"));
         event.markTask();
         String expected = "[E][X] meeting (from:2025-10-15 to:2025-10-16)";
         assertEquals(expected, event.toString());
@@ -72,9 +67,7 @@ public class EventTest {
     @Test
     @DisplayName("Event should handle descriptions with keywords")
     public void event_descriptionWithKeywords_handled() {
-        Event event =
-                assertDoesNotThrow(
-                        () -> new Event("go from home to work /from 2025-10-20 /to 2025-10-21"));
+        Event event = assertDoesNotThrow(() -> new Event("go from home to work /from 2025-10-20 /to 2025-10-21"));
         assertTrue(event.toString().contains("go from home to work"));
         assertTrue(event.toString().contains("from:2025-10-20"));
         assertTrue(event.toString().contains("to:2025-10-21"));
@@ -84,19 +77,17 @@ public class EventTest {
     @DisplayName("Event should allow dates in past or future")
     public void event_extremeDates_allowed() {
         // Test that extreme dates are allowed (no exceptions thrown)
-        assertDoesNotThrow(
-                () -> {
-                    Event oldEvent = new Event("old /from 1900-01-01 /to 1900-01-02");
-                    assertTrue(oldEvent.toString().contains("1900-01-01"));
-                    assertTrue(oldEvent.toString().contains("1900-01-02"));
-                });
+        assertDoesNotThrow(() -> {
+            Event oldEvent = new Event("old /from 1900-01-01 /to 1900-01-02");
+            assertTrue(oldEvent.toString().contains("1900-01-01"));
+            assertTrue(oldEvent.toString().contains("1900-01-02"));
+        });
 
-        assertDoesNotThrow(
-                () -> {
-                    Event futureEvent = new Event("future /from 3000-01-01 /to 3000-01-02");
-                    assertTrue(futureEvent.toString().contains("3000-01-01"));
-                    assertTrue(futureEvent.toString().contains("3000-01-02"));
-                });
+        assertDoesNotThrow(() -> {
+            Event futureEvent = new Event("future /from 3000-01-01 /to 3000-01-02");
+            assertTrue(futureEvent.toString().contains("3000-01-01"));
+            assertTrue(futureEvent.toString().contains("3000-01-02"));
+        });
     }
 
     @Test
@@ -120,11 +111,7 @@ public class EventTest {
     @DisplayName("Event should reject invalid date combinations")
     public void event_invalidDateCombinations_throwsException() {
         // Invalid dates
-        assertThrows(
-                MissingEventException.class,
-                () -> new Event("bad /from 2025-02-30 /to 2025-03-01"));
-        assertThrows(
-                MissingEventException.class,
-                () -> new Event("bad /from 2025-01-01 /to 2025-13-01"));
+        assertThrows(MissingEventException.class, () -> new Event("bad /from 2025-02-30 /to 2025-03-01"));
+        assertThrows(MissingEventException.class, () -> new Event("bad /from 2025-01-01 /to 2025-13-01"));
     }
 }

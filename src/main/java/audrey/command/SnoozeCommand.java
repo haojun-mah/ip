@@ -2,21 +2,31 @@ package audrey.command;
 
 import audrey.task.List;
 
-/** Command to snooze a task. */
+/** Command that snoozes a task indefinitely or until a specified date. */
 public class SnoozeCommand extends BaseCommand {
 
+    /**
+     * Builds a command that updates snooze status on tasks.
+     *
+     * @param toDoList backing task list to update
+     */
     public SnoozeCommand(List toDoList) {
         super(toDoList);
     }
 
+    /**
+     * Parses the task number and optional date, then snoozes the matching task.
+     *
+     * @param processedInput tokenised user input containing task number and optional date
+     * @return result string from the task list or validation feedback
+     */
     @Override
     public String execute(String[] processedInput) {
         try {
             // Validate minimum arguments
-            String validationError =
-                    validateMinimumArgs(
-                            processedInput,
-                            "Snooze requires a task number. Usage: snooze [task number] [optional: YYYY-MM-DD]");
+            String validationError = validateMinimumArgs(
+                    processedInput,
+                    "Snooze requires a task number. Usage: snooze [task number] [optional: YYYY-MM-DD]");
             if (validationError != null) {
                 return validationError;
             }
@@ -41,8 +51,7 @@ public class SnoozeCommand extends BaseCommand {
 
                 // Validate date format
                 if (!dateStr.matches(DATE_PATTERN)) {
-                    String errorMsg =
-                            "Invalid date format: '" + dateStr + "'. Use YYYY-MM-DD format.";
+                    String errorMsg = "Invalid date format: '" + dateStr + "'. Use YYYY-MM-DD format.";
                     print(errorMsg);
                     return errorMsg;
                 }
